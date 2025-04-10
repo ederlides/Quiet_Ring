@@ -1,0 +1,8 @@
+{
+  "name": "Quiet_Ring",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}

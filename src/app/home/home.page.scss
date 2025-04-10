@@ -1,0 +1,116 @@
+.ion-padding {
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Altura completa de la pantalla */
+    background-color: white;
+    /* Fondo blanco */
+    width: 100%;
+
+    .logo {
+      width: 70%;
+      /* Ajusta el tamaño como sea necesario */
+      max-width: 400px;
+      /* Tamaño máximo para la imagen */
+      width: 301.0000305175781;
+      height: 84.46894073486328;
+      top: 436px;
+      left: 69px;
+    }
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    background-color: white;
+
+    /* --- Animación de desvanecimiento --- */
+    .fade {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+        /* Efecto de subida */
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+    /* Fondo blanco */
+    .image-container {
+      .logo {}
+    }
+
+    .illustration {
+      width: 100%;
+      /* Ajusta el tamaño como sea necesario */
+      max-width: 200px;
+      /* Tamaño máximo para la imagen */
+      object-fit: contain;
+      /* Mantiene la relación de aspecto de la imagen */
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #3f51b5;
+      /* Color del texto */
+      /* Margen superior e inferior */
+      text-align: center;
+
+    }
+
+    .description {
+      font-size: 16px;
+      color: #334295;
+      /* Color del texto */
+      margin-bottom: 20px;
+      /* Margen inferior */
+      padding: 0 20px;
+      /* Espaciado lateral */
+    }
+
+    /* --- Estilos para los puntos indicadores --- */
+    .dots-container {
+      position: absolute;
+      bottom: 20px;
+      display: flex;
+      gap: 10px;
+
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #334295;
+        /* Color gris por defecto */
+        transition: background-color 0.3s ease;
+      }
+
+      /* Punto activo cambia de color */
+      .dot.active {
+        background-color: #EA592D;
+        /* Azul para el punto activo */
+      }
+    }
+
+
+
+  }
+
+
+
+
+}

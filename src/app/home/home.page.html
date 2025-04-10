@@ -1,0 +1,23 @@
+<ion-app>
+  <ion-content class="ion-padding" >
+    <div *ngIf="this.jwt==false" class="logo-container">
+      <img src="../../assets/logo.svg" alt="Quiet Ring Logo" class="logo" />
+    </div>
+
+    <div  *ngIf="this.jwt==true"  class="container"  (click)="nextSlide()">
+      <div *ngFor="let item of arraySplas">
+        <div *ngIf="item.view" class="fade image-container">
+          <img [src]="item.img" class="logo" />
+        </div>
+        <div *ngIf="item.view" class="title">{{ item.title }}</div>
+        <p *ngIf="item.view" class="description">{{ item.description }}</p>
+      </div>
+      <div class="dots-container">
+        <span *ngFor="let item of arraySplas; let i = index"
+              class="dot"
+              [class.active]="isActive(i)">
+        </span>
+      </div>
+    </div>
+  </ion-content>
+</ion-app>

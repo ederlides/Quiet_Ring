@@ -1,0 +1,135 @@
+<ion-app>
+  <ion-content class="ion-padding">
+    <ion-tabs>
+      <ion-tab tab="home">
+        <div id="home-page">
+          <ion-header class="container-header">
+            <ion-toolbar>
+              <ion-title>Bells</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="container-contet" [scrollY]="false">
+            <ion-list>
+              <ion-item *ngFor="let item of items">
+                <ion-toggle class="text" [(ngModel)]="item.active"> {{ item.name }}</ion-toggle>
+                &nbsp;&nbsp;&nbsp;
+                <ion-button shape="round" fill="outline">::</ion-button>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </div>
+      </ion-tab>
+
+      <ion-tab tab="radio">
+        <div id="radio-page">
+          <ion-header class="container-header-call">
+            <ion-toolbar>
+              <ion-title>Calls</ion-title>
+              <div class="example-content">
+                <ion-button size="small" fill="outline">All</ion-button>
+                <ion-button size="small" fill="outline">Missed</ion-button>
+              </div>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="container-contet-call " [scrollY]="false">
+            <div class="table-call ">
+              <div class="text-title">Recently</div>
+              <div class="table">
+                <ion-list *ngFor="let item of calls">
+                  <ion-item>
+                    <ion-avatar aria-hidden="true" slot="start">
+                      <img alt="" [src]="item.src" />
+                    </ion-avatar>
+                    <p slot="end">{{item.date}}</p>
+                    <ion-icon slot="end" src="../../assets/icon/inf-red.svg"></ion-icon>
+                    <ion-label>
+                      <h1>{{item.name}}</h1>
+                      <p> <ion-icon src="../../assets/icon/call-declied.svg"></ion-icon> {{item.call}}</p>
+                    </ion-label>
+                  </ion-item>
+                </ion-list>
+              </div>
+            </div>
+          </ion-content>
+        </div>
+      </ion-tab>
+
+      <ion-tab tab="library">
+        <div id="library-page">
+          <ion-header class="container-header">
+            <ion-toolbar>
+              <ion-title>Order</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="container-contet-order" [scrollY]="false">
+            <div class="table-order">
+              <ion-list  *ngFor="let item of order">
+                <ion-item>
+                  <img class="img-order" [src]="item.src" />
+                  <ion-label>
+                    <h1>{{item.name}}</h1>
+                    <p> {{item.price}}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </div>
+          </ion-content>
+        </div>
+      </ion-tab>
+
+      <ion-tab tab="search">
+        <div id="search-page">
+          <ion-header class="container-header">
+            <ion-toolbar>
+              <ion-title>Setting</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="container-contet-setting">
+            <div class="container">
+              <ion-list>
+                <ion-item>
+                  <ion-icon aria-hidden="true" name="airplane" slot="start" src="../../assets/icon/perfil.svg"></ion-icon>
+                  <p>Ederlines Gutierrez</p>
+                </ion-item>
+                <ion-item>
+                  <ion-icon aria-hidden="true" name="airplane" slot="start" src="../../assets/icon/languaje.svg"></ion-icon>
+                  <p>Languages</p>
+                </ion-item>
+                <ion-item>
+                  <ion-icon aria-hidden="true" name="airplane" slot="start" src="../../assets/icon/privacity.svg"></ion-icon>
+                  <p>Privacy</p>
+                </ion-item>
+                <ion-item>
+                  <ion-icon aria-hidden="true" name="airplane" slot="start" src="../../assets/icon/inf-red.svg"></ion-icon>
+                  <p>Notifications</p>
+                </ion-item>
+              </ion-list>
+            </div>
+          </ion-content>
+        </div>
+      </ion-tab>
+
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="home">
+          <ion-icon src="../../assets/icon/bells.svg"></ion-icon>
+          Bells
+        </ion-tab-button>
+        <ion-tab-button tab="radio">
+          <ion-icon src="../../assets/icon/call.svg"></ion-icon>
+          Calls
+        </ion-tab-button>
+        <ion-fab-button tab="add">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-tab-button tab="library">
+          <ion-icon src="../../assets/icon/carrito.svg"></ion-icon>
+          Order
+        </ion-tab-button>
+        <ion-tab-button tab="search">
+          <ion-icon src="../../assets/icon/setting.svg"></ion-icon>
+          Settings
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-content>
+</ion-app>

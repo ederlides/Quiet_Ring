@@ -1,0 +1,129 @@
+.ion-padding {
+  height: 100vh;
+
+  .container-header {
+    height: 15vh;
+  }
+
+  .container-contet {
+    height: 75vh;
+  }
+
+  .example-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .container-header-call {
+    height: 20vh;
+  }
+
+  .container-contet-call {
+    height: 70vh;
+
+    .table-call {
+      width: calc(100% - 15px);
+      margin: 10px;
+      height: calc(100% - 20px);
+
+      .text-title {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #334295;
+        margin-bottom: 5px;
+      }
+
+      .table {
+        height: calc(70vh - 35px);
+        box-shadow: 4px 4px 22.76px 0px #A0A0A040;
+
+        h1 {
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          color: #334295;
+        }
+
+        p {
+          font-weight: 400;
+          font-size: 10px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          color: #334295;
+        }
+      }
+    }
+  }
+
+  .container-contet-order {
+    height: 70vh;
+
+    .table-order {
+      width: calc(100% - 15px);
+      margin: 10px;
+      height: calc(100% - 20px);
+      .img-order {
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+      }
+      h1{
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #334295;
+      
+      }
+      p {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #334295;
+      }
+    }
+  }
+
+  .container-contet-setting {
+    height: 70vh;
+    .container{
+      height: 50%;
+      margin: 20px;
+      .icon{
+        height: 30px;
+        width: 30px;
+      }
+      p{
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #334295;
+        align-items: center;
+      }
+    }
+  }
+
+
+  ion-toolbar {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  ion-title {
+    font-size: 25px;
+    font-weight: bold;
+    color: #3f51b5;
+    text-align: center;
+    /* Color del texto */
+    /* Margen superior e inferior */
+  }
+
+}
