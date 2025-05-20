@@ -61,35 +61,17 @@
 ion-list {
   overflow: hidden !important;
 }
-
-@font-face {
-  font-family: MulishRegular;
-  src: url(./assets/fonts/Mulish-Regular.ttf);
+:root {
+  --ion-font-family: 'Mulish', sans-serif;
 }
 
-@font-face {
-  font-family: MulishMedium;
-  src: url(./assets/fonts/Mulish-Medium.ttf);
-}
-
-@font-face {
-  font-family: MulishSemiBold;
-  src: url(./assets/fonts/Mulish-SemiBold.ttf);
-}
-
-@font-face {
-  font-family: MulishBold;
-  src: url(./assets/fonts/Mulish-Bold.ttf);
-}
-
-@font-face {
-  font-family: MulishExtraBold;
-  src: url(./assets/fonts/Mulish-ExtraBold.ttf);
+ion-label, ion-button, ion-title, ion-input, ion-toggle {
+  font-family: inherit;
 }
 
 ion-select,
 ion-input:not(.otp-number) {
-  font-family: MulishRegular !important;
+  font-weight: 400;
   color: #334295 !important;
 }
 
@@ -184,7 +166,7 @@ ion-tab-bar{
     &.tab-selected {
       ion-label{
         color: #EA592D;
-        font-family: MulishSemiBold;
+        font-weight: 600;
       }
 
       ion-icon{

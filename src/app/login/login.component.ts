@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { IonInput } from '@ionic/angular';
 import { IonContent, IonItem, IonLabel, IonList, IonModal, NavController, IonSelect, IonicModule } from '@ionic/angular';
 import { ApiService } from '../service/api.service';
 import { Router } from '@angular/router';
@@ -23,11 +24,15 @@ interface Country {
 export class LoginComponent implements OnInit {
   viewLogin = false;
   viewOtp = false;
+
+  inputs = Array(5);
   
   selectedCountry: Country | null = null;
   countryName: string = '';
   dialCode: string = '';
   phoneNumber: string = '';
+
+  @ViewChildren('otpInput') otpInputs!: QueryList<IonInput>;
   
   constructor(
     private navCtrl: NavController,
@@ -138,8 +143,15 @@ export class LoginComponent implements OnInit {
     this.apiService.getOtp(this, request, this.handlerSuccessGetOtp, this.handlerError);
   }
 
-  onInputChange(event: any) {
-    this.navCtrl.navigateForward('/menu');
+  // onInputChange(event: any) {
+  //   this.navCtrl.navigateForward('/menu');
+  // }
+    onInputChange(event: any, index: number) {
+    const value = event.target.value;
+    if (value && index < this.otpInputs.length - 1) {
+      const inputsArray = this.otpInputs.toArray();
+      inputsArray[index + 1].setFocus(); // Mueve al siguiente input
+    }
   }
 
   private formatData(data: string[]): string {

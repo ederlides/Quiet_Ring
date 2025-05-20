@@ -7,13 +7,13 @@
     align-items: center;
 
     ion-title{
-      font-family: MulishExtraBold;
+      font-weight: 800;
     }
   }
 
   ion-tab[tab=home]{
     ion-toggle{
-      font-family: MulishRegular;
+      font-weight: 400;
       color: #334295;
     }
 
@@ -51,7 +51,7 @@
       ion-button {
         // height: 30.8px;
         // width: 30.8px;
-        font-family: MulishRegular;
+        font-weight: 400;
         text-transform: capitalize;
         font-size: 16px;
         letter-spacing: 0px;
@@ -99,8 +99,7 @@
       height: calc(100% - 20px);
 
       .text-title {
-        // font-weight: 400;
-        font-family: MulishRegular;
+        font-weight: 400;
         font-size: 16px;
         line-height: 100%;
         letter-spacing: 0%;
@@ -113,8 +112,7 @@
         box-shadow: 4px 4px 22.76px 0px #A0A0A040;
 
         h1 {
-          // font-weight: 400;
-          font-family: MulishRegular;
+          font-weight: 400;
           font-size: 14px;
           line-height: 100%;
           letter-spacing: 0%;
@@ -122,8 +120,7 @@
         }
 
         p {
-          // font-weight: 400;
-          font-family: MulishRegular;
+          font-weight: 400;
           font-size: 12px;
           line-height: 100%;
           letter-spacing: 0;
@@ -159,7 +156,7 @@
       }
 
       h1{
-        font-family: MulishBold;
+        font-weight: 700;
         font-size: 18px;
         line-height: 100%;
         letter-spacing: 0%;
@@ -167,7 +164,7 @@
 
       }
       p {
-        font-family: MulishRegular;
+        font-weight: 400;
         font-size: 15px;
         line-height: 25px;
         letter-spacing: 0;
@@ -209,7 +206,7 @@
       }
 
       p{
-        font-family: MulishRegular;
+        font-weight: 400;
         line-height: 100%;
         color: #334295;
         align-items: center;

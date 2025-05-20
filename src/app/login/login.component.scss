@@ -26,7 +26,7 @@ ion-content{
         color: #334295;
         text-align: center;
         display: flex;
-        font-family: MulishExtraBold;
+        font-weight: 800;
       }
     }
   }
@@ -114,7 +114,7 @@ ion-content{
       align-items: center;
       width: calc(100% - 60px);
       margin: 0 30px;
-      font-family: MulishRegular;
+      font-weight: 400;
 
       p {
         text-align: center;
@@ -174,7 +174,7 @@ ion-content{
         --background: #EA592D !important;
         font-weight: bold;
         margin-bottom: 20px;
-        font-family: MulishBold;
+        font-weight: 700;
       }
 
       p {
@@ -187,7 +187,7 @@ ion-content{
         line-height: 100%;
         letter-spacing: 0%;
         text-align: center;
-        font-family: MulishRegular;
+        font-weight: 400;
       }
     }
     .list-md.list-inset {
@@ -232,7 +232,7 @@ ion-content{
       align-items: center;
       width: calc(100% - 60px);
       margin: 0 30px;
-      font-family: MulishRegular;
+      font-weight: 400;
 
       p {
         text-align: center;
@@ -260,7 +260,7 @@ ion-content{
         width: 51px;
         background: #FAFAFA;
         border-radius: 14px;
-        font-family: MulishRegular;
+        font-weight: 400;
         color: #334295;
         font-size: 32px;
       }
@@ -282,7 +282,7 @@ ion-content{
       width: calc(100% - 30px);
       display: grid;
       margin: 0 15px;
-      font-family: MulishRegular;
+      font-weight: 400;
       margin-top: 10px;
 
       p {
@@ -303,7 +303,7 @@ ion-content{
       // width: calc(100% - 30px);
       // display: grid;
       margin: 0 15px;
-      font-family: MulishRegular;
+      font-weight: 400;
 
       p {
         font-size: 13px;
@@ -319,7 +319,7 @@ ion-content{
         // width: 100%;
         margin: 3px;
         text-decoration: underline;
-        font-family: MulishBold;
+        font-weight: 700;
       }
     }
   }
