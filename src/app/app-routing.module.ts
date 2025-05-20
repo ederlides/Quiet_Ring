@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { MenuComponent } from './menu/menu.component';
 import { RegisterComponent } from './register/register.component';
 
+// En lugar de importar directamente, definiremos la ruta utilizando loadChildren
 const routes: Routes = [
   {
     path: 'home',
@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'menu',
@@ -25,6 +25,22 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+  {
+    path: 'country-selector',
+    loadChildren: () => import('./country-selector/country-selector.module').then(m => m.CountrySelectorModule)
+  },
+  {
+    path: 'activate-qr',
+    loadChildren: () => import('./activate-qr/activate-qr.module').then(m => m.ActivateQrModule)
+  },
+  {
+    path: 'qr-reader',
+    loadChildren: () => import('./qr-reader/qr-reader.module').then(m => m.QrReaderModule)
+  },
+  {
+    path: 'activation-code',
+    loadChildren: () => import('./activation-code/activation-code.module').then(m => m.ActivationCodeModule)
   }
 ];
 

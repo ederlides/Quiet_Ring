@@ -1,16 +1,19 @@
-.ion-padding {
-    height: 100vh;
+// .input-outline-container {
+//   border: none !important;
+//   margin-top: .8rem !important;
+//   margin-bottom: .8rem !important;
+// }
 
-    .container-header {
-        ion-title {
-            font-size: 25px;
-            color: #3f51b5;
-            font-weight: 800;
-            font-size: 32px;
-            line-height: 100%;
+// ion-input {
+//   background: #FAFAFA;
+// }
 
-        }
-    }
-
+:host {
+  ion-item {
+    border: none !important;
+    outline: none;
+    margin-bottom: 1rem;
+    background-color: #f8f8f8; 
+  }
 
 }

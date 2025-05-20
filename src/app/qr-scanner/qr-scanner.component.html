@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/activate-qr"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Escanear código QR</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="scanner-container">
+    <!-- Área de visualización de cámara -->
+    <div class="camera-view" *ngIf="scanActive">
+      <!-- Aquí iría el componente de la cámara -->
+      <div class="qr-frame">
+        <div class="corner-tl"></div>
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+      </div>
+      <div class="scan-line"></div>
+    </div>
+    
+    <!-- Mensaje cuando la cámara no está activa -->
+    <div class="camera-placeholder" *ngIf="!scanActive && !scanResult">
+      <ion-icon name="qr-code-outline" class="qr-icon"></ion-icon>
+      <h2>Listo para escanear</h2>
+      <p>Posiciona el código QR dentro del marco para escanear</p>
+    </div>
+    
+    <!-- Resultado del escaneo -->
+    <div class="scan-result" *ngIf="scanResult">
+      <ion-icon name="checkmark-circle" color="success" class="success-icon"></ion-icon>
+      <h2>¡Código escaneado!</h2>
+      <p>El código ha sido escaneado correctamente</p>
+      <ion-button expand="block" color="primary" (click)="goBack()">
+        Continuar
+      </ion-button>
+    </div>
+    
+    <!-- Mensaje de error -->
+    <div class="scan-error" *ngIf="error">
+      <ion-icon name="alert-circle" color="danger" class="error-icon"></ion-icon>
+      <h2>Error al escanear</h2>
+      <p>{{ error }}</p>
+      <ion-button expand="block" color="primary" (click)="startScan()">
+        Intentar de nuevo
+      </ion-button>
+    </div>
+  </div>
+  
+  <!-- Botones de control -->
+  <div class="scanner-controls" *ngIf="!scanResult && !error">
+    <ion-button expand="block" color="primary" (click)="startScan()" *ngIf="!scanActive">
+      <ion-icon name="camera-outline" slot="start"></ion-icon>
+      Iniciar escáner
+    </ion-button>
+    
+    <ion-button expand="block" color="danger" (click)="stopScan()" *ngIf="scanActive">
+      <ion-icon name="stop-circle-outline" slot="start"></ion-icon>
+      Detener escáner
+    </ion-button>
+  </div>
+  
+  <!-- Instrucciones -->
+  <div class="instructions">
+    <h3>Instrucciones:</h3>
+    <ol>
+      <li>Presiona "Iniciar escáner" para activar la cámara</li>
+      <li>Coloca el código QR dentro del marco de escaneo</li>
+      <li>Mantén el teléfono estable hasta que se complete el escaneo</li>
+      <li>Una vez escaneado, se procesará automáticamente</li>
+    </ol>
+  </div>
+</ion-content> 

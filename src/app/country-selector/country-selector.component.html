@@ -1,0 +1,39 @@
+<!-- <ion-header>
+
+</ion-header> -->
+
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-back-button defaultHref="/login"></ion-back-button>
+  </ion-buttons>
+  <ion-title>Selecciona un país</ion-title>
+</ion-toolbar>
+
+<ion-content class="ion-padding">
+  <ion-searchbar 
+    [(ngModel)]="searchTerm"
+    (ionInput)="filterCountries()"
+    placeholder="Buscar país o código"
+    animated
+    debounce="300"
+  ></ion-searchbar>
+
+  <ion-list>
+    <ion-item *ngFor="let country of filteredCountries" (click)="selectCountry(country)" button detail="true">
+      <ion-avatar slot="start">
+        <img [src]="country.flag" alt="{{country.name}}" 
+             onerror="this.onerror=null; this.src='assets/icon/placeholder-flag.svg';" />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{country.name}}</h2>
+        <p>{{country.dialCode}}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="filteredCountries.length === 0">
+      <ion-label color="medium" class="ion-text-center">
+        No se encontraron países para "{{searchTerm}}"
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

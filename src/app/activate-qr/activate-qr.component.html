@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button *ngIf="!showCodeInput" defaultHref="/login"></ion-back-button>
+      <ion-button *ngIf="showCodeInput" (click)="goBackFromCodeInput()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ showCodeInput ? 'Activar con código de Activación' : 'Activar código QR' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Vista de selección de método de activación -->
+  <div class="activate-container" *ngIf="!showCodeInput">
+    <!-- Ícono principal -->
+    <div class="icon-container">
+      <ion-icon name="qr-code" class="qr-main-icon"></ion-icon>
+    </div>
+    
+    <!-- Título y descripción -->
+    <h1 class="main-title">Activar tu timbre en segundos! 🔔</h1>
+    <p class="subtitle">Elige la opción que más te convenga:</p>
+    
+    <!-- Instrucciones -->
+    <div class="instructions">
+      <div class="step">
+        <span class="step-number">1.</span>
+        <p class="step-text">Escanea con QR (rápido y sin complicaciones)</p>
+      </div>
+      <div class="step">
+        <span class="step-number">2.</span>
+        <p class="step-text">Enfoca la cámara de tu celular al código QR...</p>
+      </div>
+      <a href="#" class="learn-more">Leer más</a>
+    </div>
+    
+    <!-- Opciones de activación -->
+    <div class="activation-options">
+      <!-- Opción de escaneo QR -->
+      <ion-item button detail lines="full" class="activation-option" (click)="goToQrScanner()">
+        <ion-icon name="qr-code-outline" slot="start" class="option-icon"></ion-icon>
+        <ion-label>
+          <h2>Usar código QR</h2>
+        </ion-label>
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+      </ion-item>
+      
+      <!-- Opción de código manual -->
+      <ion-item button detail lines="full" class="activation-option" (click)="goToCodeInput()">
+        <ion-icon name="document-text-outline" slot="start" class="option-icon"></ion-icon>
+        <ion-label>
+          <h2>Escribe el código de Activación</h2>
+        </ion-label>
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+      </ion-item>
+    </div>
+    
+    <!-- Ayuda y soporte -->
+    <div class="help-section">
+      <h3>¿Necesitas ayuda?</h3>
+      <p>Si tienes problemas para activar tu timbre, contacta a nuestro soporte técnico:</p>
+      <ion-button fill="clear" color="primary">
+        <ion-icon name="call-outline" slot="start"></ion-icon>
+        Soporte técnico
+      </ion-button>
+    </div>
+  </div>
+  
+  <!-- Vista de ingreso de código -->
+  <div class="code-input-container" *ngIf="showCodeInput">
+    <h2 class="instructions-title">Escribe el código de activación</h2>
+    
+    <div class="code-input-boxes">
+      <ion-input 
+        *ngFor="let digit of codeDigits; let i = index" 
+        type="text" 
+        inputmode="numeric" 
+        maxlength="1"
+        [(ngModel)]="codeDigits[i]"
+        class="code-digit">
+      </ion-input>
+    </div>
+    
+    <div class="activation-button">
+      <ion-button expand="block" (click)="submitCode()" [disabled]="getFullCode().length !== 6">
+        Activar
+      </ion-button>
+    </div>
+  </div>
+</ion-content> 

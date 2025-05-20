@@ -34,24 +34,168 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+// @import "@ionic/angular/css/palettes/dark.system.css";
 
+.example-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 
 .ion-padding {
-    --padding-start: var(--ion-padding, 0px);
-    --padding-end: var(--ion-padding, 0px);
-    --padding-top: var(--ion-padding, 0px);
-    --padding-bottom: var(--ion-padding, 0px);
-    padding-inline-start: var(--ion-padding, 0px);
-    padding-inline-end: var(--ion-padding, 0px);
-    padding-top: var(--ion-padding, 0px);
-    padding-bottom: var(--ion-padding, 0px);
+  --padding-start: var(--ion-padding, 0px);
+  --padding-end: var(--ion-padding, 0px);
+  --padding-top: var(--ion-padding, 0px);
+  --padding-bottom: var(--ion-padding, 0px);
+  padding-inline-start: var(--ion-padding, 0px);
+  padding-inline-end: var(--ion-padding, 0px);
+  padding-top: var(--ion-padding, 0px);
+  padding-bottom: var(--ion-padding, 0px);
 }
 
 .header-md {
-    box-shadow: none !important; 
+  box-shadow: none !important;
 }
 
 ion-list {
-    overflow: hidden !important;
+  overflow: hidden !important;
+}
+
+@font-face {
+  font-family: MulishRegular;
+  src: url(./assets/fonts/Mulish-Regular.ttf);
+}
+
+@font-face {
+  font-family: MulishMedium;
+  src: url(./assets/fonts/Mulish-Medium.ttf);
+}
+
+@font-face {
+  font-family: MulishSemiBold;
+  src: url(./assets/fonts/Mulish-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: MulishBold;
+  src: url(./assets/fonts/Mulish-Bold.ttf);
+}
+
+@font-face {
+  font-family: MulishExtraBold;
+  src: url(./assets/fonts/Mulish-ExtraBold.ttf);
+}
+
+ion-select,
+ion-input:not(.otp-number) {
+  font-family: MulishRegular !important;
+  color: #334295 !important;
+}
+
+ion-select.select-fill-outline {
+  --border-radius: 14px;
+  --border-color: #FFBAA5;
+}
+
+ion-item:focus-within {
+  ion-input {
+    border: 1px solid #FFBAA5;
+    padding: 0 10px;
+  }
+}
+
+.input-otp {
+  ion-input {
+    .input-wrapper {
+      padding: 0;
+    }
+  }
+
+  ion-input.sc-ion-input-md-h {
+    --border-width: 1px;
+    --border-color: #FFBAA5 !important;
+  }
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+// ion-toggle
+ion-toggle {
+  padding: 12px;
+
+  --track-background: #F2F2F2;
+  --track-background-checked: #F2F2F2;
+
+  --handle-background: #CACACA;
+  --handle-background-checked: #EA592D;
+
+  --handle-width: 28px;
+  --handle-height: 28px;
+  --handle-max-height: auto;
+  --handle-spacing: 4px;
+
+  --handle-border-radius: 50%;
+  --handle-box-shadow: none;
+}
+
+ion-toggle::part(track) {
+  height: 33px;
+  width: 63px;
+  border-radius: 35px;
+
+  /* Required for iOS handle to overflow the height of the track */
+  overflow: visible;
+}
+
+// ion-tab
+
+ion-tab-bar{
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  border: 1px solid lightgray;
+  min-height: 88px;
+  background: #F1F1F1;
+
+  ion-fab-button{
+    --background: #EA592D;
+    outline: 8px solid white;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  ion-tab-button {
+    background: #F1F1F1;
+    --color: var(--ion-color-medium);
+    --color-selected: #EA592D;
+
+    ion-label{
+      font-size: 15px;
+    }
+
+    &.tab-selected::before {
+      background-color: var(--ion-color-primary);
+    }
+
+    &.tab-selected {
+      ion-label{
+        color: #EA592D;
+        font-family: MulishSemiBold;
+      }
+
+      ion-icon{
+        filter: brightness(0) saturate(100%) invert(43%) sepia(50%) saturate(2792%) hue-rotate(345deg) brightness(96%) contrast(91%);
+      }
+    }
+
+    &:not(.tab-selected){
+      ion-label{
+        color: #334295;
+      }
+    }
+  }
 }

@@ -1,135 +1,368 @@
-<ion-app>
-  <ion-content class="ion-padding">
-    <ion-tabs>
-      <ion-tab tab="home">
-        <div id="home-page">
-          <ion-header class="container-header">
-            <ion-toolbar>
-              <ion-title>Bells</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content class="container-contet" [scrollY]="false">
+<ion-content class="ion-padding">
+  <ion-tabs>
+    <ion-tab tab="home">
+      <!-- <div id="home-page"> -->
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Timbres</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="container-content" [scrollY]="false">
+        <ion-list>
+          <ion-item *ngFor="let item of items" lines="none">
+            <ion-toggle class="text" [(ngModel)]="item.active">
+              {{ item.name }}
+            </ion-toggle>
+        
+            <ion-button
+              class="ion-margin-start"
+              shape="round"
+              fill="outline"
+              [id]="item.id"    
+            >
+              <ion-icon name="ellipsis-horizontal"></ion-icon>
+            </ion-button>
+        
+            <ion-popover
+              [trigger]="item.id"  
+              [dismissOnSelect]="true"
+            >
+              <ng-template>
+                <ion-content>
+                  <ion-list class="custom-ion-list">
+                    <ion-item button="true" detail="false" *ngFor="let option of options">
+                      <div class="btn-option-bells">
+                        <p style="color: #334295; font-size:1rem;" class="item-label-option">{{option.name}}</p>
+                        <ion-icon slot="icon-only" [name]="option.name" [src]="option.src" class="option-icon"></ion-icon>
+                      </div>
+                    </ion-item>
+                  </ion-list>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+          </ion-item>
+        </ion-list>
+        
+      </ion-content>
+      <!-- </div> -->
+    </ion-tab>
+
+    <ion-tab tab="radio">
+      <!-- <div id="radio-page"> -->
+      <ion-header class="container-header-call">
+        <ion-toolbar>
+          <ion-buttons class="ion-margin-end" slot="primary">
+            <ion-button class="button-option" shape="round" fill="outline">
+              <ion-icon name="ellipsis-horizontal"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-title slot="start">
+            <ion-img src="../../assets/logo.svg" alt="logo"></ion-img>
+          </ion-title>
+        </ion-toolbar>
+        <ion-toolbar>
+          <ion-buttons>
+            <ion-button size="small" fill="outline">Todas</ion-button>
+            <ion-button size="small" fill="outline">Perdidas</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <!-- Vista de la lista de llamadas (visible cuando showCallView es false) -->
+      <ion-content class="container-contet-call" [scrollY]="true" *ngIf="!showCallView">
+        <div class="table-call">
+          <div class="text-title">Recientes</div>
+          <div class="table">
             <ion-list>
-              <ion-item *ngFor="let item of items">
-                <ion-toggle class="text" [(ngModel)]="item.active"> {{ item.name }}</ion-toggle>
-                &nbsp;&nbsp;&nbsp;
-                <ion-button shape="round" fill="outline">::</ion-button>
+              <ion-item *ngFor="let item of calls" (click)="showCall(item)">
+                <ion-avatar aria-hidden="true" slot="start">
+                  <img alt="" [src]="item.src" />
+                </ion-avatar>
+                <p slot="end">{{ item.date }}</p>
+                <ion-icon
+                  class="ion-margin-start"
+                  slot="end"
+                  src="../../assets/icon/inf-red.svg"
+                ></ion-icon>
+                <ion-label>
+                  <h1>{{ item.name }}</h1>
+                  <p>
+                    <ion-icon
+                      src="../../assets/icon/call-declied.svg"
+                    ></ion-icon>
+                    {{ item.call }}
+                  </p>
+                </ion-label>
               </ion-item>
             </ion-list>
-          </ion-content>
+          </div>
         </div>
-      </ion-tab>
-
-      <ion-tab tab="radio">
-        <div id="radio-page">
-          <ion-header class="container-header-call">
+      </ion-content>
+      
+      <!-- Vista de llamada activa (visible cuando showCallView es true) -->
+      <ion-content class="calling-content" *ngIf="showCallView">
+        <div class="calling-container">
+          <ion-header class="calling-header">
             <ion-toolbar>
-              <ion-title>Calls</ion-title>
-              <div class="example-content">
-                <ion-button size="small" fill="outline">All</ion-button>
-                <ion-button size="small" fill="outline">Missed</ion-button>
+              <ion-buttons slot="start">
+                <ion-button (click)="hideCall()" class="back-button">
+                  <ion-icon name="chevron-back-outline"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+              <ion-title class="ion-text-center">
+                Llamando...
+              </ion-title>
+              <ion-buttons slot="end">
+                <ion-button class="profile-button">
+                  <ion-icon name="person-circle-outline"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          
+          <div class="calling-body">
+            <div class="caller-image-container">
+              <div class="caller-image-outer">
+                <div class="caller-image-inner">
+                  <ion-avatar class="caller-avatar">
+                    <img [src]="selectedCall?.src" alt="Caller Image">
+                  </ion-avatar>
+                </div>
               </div>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content class="container-contet-call " [scrollY]="false">
-            <div class="table-call ">
-              <div class="text-title">Recently</div>
-              <div class="table">
-                <ion-list *ngFor="let item of calls">
-                  <ion-item>
-                    <ion-avatar aria-hidden="true" slot="start">
-                      <img alt="" [src]="item.src" />
-                    </ion-avatar>
-                    <p slot="end">{{item.date}}</p>
-                    <ion-icon slot="end" src="../../assets/icon/inf-red.svg"></ion-icon>
-                    <ion-label>
-                      <h1>{{item.name}}</h1>
-                      <p> <ion-icon src="../../assets/icon/call-declied.svg"></ion-icon> {{item.call}}</p>
-                    </ion-label>
-                  </ion-item>
-                </ion-list>
-              </div>
             </div>
-          </ion-content>
-        </div>
-      </ion-tab>
-
-      <ion-tab tab="library">
-        <div id="library-page">
-          <ion-header class="container-header">
-            <ion-toolbar>
-              <ion-title>Order</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content class="container-contet-order" [scrollY]="false">
-            <div class="table-order">
-              <ion-list  *ngFor="let item of order">
-                <ion-item>
-                  <img class="img-order" [src]="item.src" />
-                  <ion-label>
-                    <h1>{{item.name}}</h1>
-                    <p> {{item.price}}</p>
-                  </ion-label>
-                </ion-item>
-              </ion-list>
+            
+            <div class="caller-info">
+              <h2>{{ selectedCall?.name }}</h2>
             </div>
-          </ion-content>
-        </div>
-      </ion-tab>
-
-      <ion-tab tab="search">
-        <div id="search-page">
-          <ion-header class="container-header">
-            <ion-toolbar>
-              <ion-title>Setting</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content class="container-contet-setting">
-            <div class="container">
-              <ion-list>
-                <ion-item>
-                  <ion-icon aria-hidden="true" name="airplane" slot="start" src="../../assets/icon/perfil.svg"></ion-icon>
-                  <p>Ederlines Gutierrez</p>
-                </ion-item>
-                <ion-item>
-                  <ion-icon aria-hidden="true" name="airplane" slot="start" src="../../assets/icon/languaje.svg"></ion-icon>
-                  <p>Languages</p>
-                </ion-item>
-                <ion-item>
-                  <ion-icon aria-hidden="true" name="airplane" slot="start" src="../../assets/icon/privacity.svg"></ion-icon>
-                  <p>Privacy</p>
-                </ion-item>
-                <ion-item>
-                  <ion-icon aria-hidden="true" name="airplane" slot="start" src="../../assets/icon/inf-red.svg"></ion-icon>
-                  <p>Notifications</p>
-                </ion-item>
-              </ion-list>
+            
+            <div class="calling-actions">
+              <ion-button fill="clear" class="action-button mute-button" shape="circle">
+                <ion-icon name="mic-off-outline"></ion-icon>
+              </ion-button>
+              
+              <ion-button fill="clear" class="action-button sound-button" shape="circle">
+                <ion-icon name="volume-high-outline"></ion-icon>
+              </ion-button>
+              
+              <ion-button fill="clear" class="action-button videocall-button" shape="circle">
+                <ion-icon name="videocam-outline"></ion-icon>
+              </ion-button>
+              
+              <ion-button fill="clear" class="action-button end-call-button" shape="circle">
+                <ion-icon name="call-outline"></ion-icon>
+              </ion-button>
             </div>
-          </ion-content>
+          </div>
         </div>
-      </ion-tab>
+      </ion-content>
+      <!-- </div> -->
+    </ion-tab>
 
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="home">
-          <ion-icon src="../../assets/icon/bells.svg"></ion-icon>
-          Bells
-        </ion-tab-button>
-        <ion-tab-button tab="radio">
-          <ion-icon src="../../assets/icon/call.svg"></ion-icon>
-          Calls
-        </ion-tab-button>
-        <ion-fab-button tab="add">
-          <ion-icon name="add"></ion-icon>
-        </ion-fab-button>
-        <ion-tab-button tab="library">
-          <ion-icon src="../../assets/icon/carrito.svg"></ion-icon>
-          Order
-        </ion-tab-button>
-        <ion-tab-button tab="search">
-          <ion-icon src="../../assets/icon/setting.svg"></ion-icon>
-          Settings
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
-  </ion-content>
-</ion-app>
+    <ion-tab tab="add">
+      <div id="add-page">
+        <ion-header class="container-header">
+          <ion-toolbar class="spacing-toolbar">
+
+            <ion-buttons class="ion-margin-end" slot="start" >
+              <ion-button class="button-option btn-back">
+                <ion-icon class="btn-back-icon" src="../../assets/icon/arrow-blue.svg" style="border-radius: 10px;"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+
+            <ion-title>Más</ion-title>
+
+            <ion-buttons class="ion-margin-end" slot="end" style="visibility: hidden">
+              <ion-button class="button-option">
+                <ion-icon name="ellipsis-horizontal"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="container-content-setting" style="height: 100vh">
+          <!-- <div class="container"> -->
+          <ion-list class="spaciong-list">
+            <ion-item button lines="none" (click)="goToActivateQR()">
+              <ion-icon
+                class="ion-no-margin ion-padding-start"
+                slot="start"
+                src="../../assets/icon/qr.svg"
+              ></ion-icon>
+              <p class="ion-margin-start ion-margin-vertical">
+                Activar código QR
+              </p>
+            </ion-item>
+            <ion-item button lines="none">
+              <ion-icon
+                class="ion-no-margin ion-padding-start"
+                slot="start"
+                src="../../assets/icon/person.svg"
+              ></ion-icon>
+              <p class="ion-margin-start ion-margin-vertical">Únase como miembro</p>
+            </ion-item>
+            <ion-item button lines="none">
+              <ion-icon
+                class="ion-no-margin ion-padding-start"
+                slot="start"
+                src="../../assets/icon/bell.svg"
+              ></ion-icon>
+              <p class="ion-margin-start ion-margin-vertical">Agregar timbre</p>
+            </ion-item>
+          </ion-list>
+          <!-- </div> -->
+        </ion-content>
+      </div>
+    </ion-tab>
+
+    <ion-tab tab="library">
+      <div id="library-page">
+        <ion-header class="container-header">
+          <ion-toolbar>
+            <ion-buttons
+              class="ion-margin-end"
+              slot="start"
+              style="visibility: hidden"
+            >
+              <ion-button class="button-option" shape="round" fill="outline">
+                <ion-icon name="ellipsis-horizontal"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+
+            <ion-title>Ordenar</ion-title>
+            <ion-buttons class="ion-margin-end" slot="primary">
+              <ion-button class="button-option" shape="round" fill="outline">
+                <ion-icon name="ellipsis-horizontal"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="container-content-order" [scrollY]="true">
+          <ng-container *ngFor="let item of order">
+            <ion-card class="ion-activatable">
+              <ion-ripple-effect></ion-ripple-effect>
+              <ion-card-content>
+                <ion-grid class="ion-no-padding">
+                  <ion-row class="ion-align-items-center">
+                    <ion-col size="3">
+                      <ion-img [src]="item.src" alt="logo"></ion-img>
+                    </ion-col>
+                    <ion-col size="8">
+                      <div
+                        class="ion-justify-content-center"
+                        style="display: flex"
+                      >
+                        <div class="ion-text-start ion-padding-start">
+                          <h1>{{ item.name }}</h1>
+                          <p>{{ item.price }}</p>
+                        </div>
+                      </div>
+                    </ion-col>
+                    <ion-col class="ion-align-self-start ion-text-end" size="1">
+                      <div>
+                        <ion-icon
+                          style="font-size: 18px"
+                          slot="start"
+                          src="../../assets/icon/arrow-black.svg"
+                        ></ion-icon>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ng-container>
+        </ion-content>
+      </div>
+    </ion-tab>
+
+    <ion-tab tab="search">
+      <div id="search-page">
+        <ion-header class="container-header">
+          <ion-toolbar>
+            <ion-buttons
+              class="ion-margin-end"
+              slot="start"
+              style="visibility: hidden"
+            >
+              <ion-button class="button-option" shape="round" fill="outline">
+                <ion-icon name="ellipsis-horizontal"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            <ion-title>Ajustes</ion-title>
+            <ion-buttons class="ion-margin-end" slot="primary">
+              <ion-button class="button-option" shape="round" fill="outline">
+                <ion-icon name="ellipsis-horizontal"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="container-content-setting">
+          <!-- <div class="container"> -->
+          <ion-list>
+            <ion-item button lines="none">
+              <ion-icon
+                class="ion-no-margin ion-padding-start"
+                slot="start"
+                src="../../assets/icon/perfil.svg"
+              ></ion-icon>
+              <p class="ion-margin-start ion-margin-vertical">
+                Ederlines Gutierrez
+              </p>
+            </ion-item>
+            <ion-item button lines="none">
+              <ion-icon
+                class="ion-no-margin ion-padding-start"
+                slot="start"
+                src="../../assets/icon/languaje.svg"
+              ></ion-icon>
+              <p class="ion-margin-start ion-margin-vertical">Idiomas</p>
+            </ion-item>
+            <ion-item button lines="none">
+              <ion-icon
+                class="ion-no-margin ion-padding-start"
+                slot="start"
+                src="../../assets/icon/privacity.svg"
+              ></ion-icon>
+              <p class="ion-margin-start ion-margin-vertical">Privacidad</p>
+            </ion-item>
+            <ion-item button lines="none">
+              <ion-icon
+                class="ion-no-margin ion-padding-start"
+                slot="start"
+                src="../../assets/icon/inf-red.svg"
+              ></ion-icon>
+              <p class="ion-margin-start ion-margin-vertical">Notificaciones</p>
+            </ion-item>
+          </ion-list>
+          <!-- </div> -->
+        </ion-content>
+      </div>
+    </ion-tab>
+
+    <ion-tab-bar color="light" slot="bottom">
+      <ion-tab-button tab="home">
+        <ion-icon src="../../assets/icon/bells.svg"></ion-icon>
+        <ion-label>Timbres</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="radio">
+        <ion-icon src="../../assets/icon/call.svg"></ion-icon>
+        <ion-label>Llamadas</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="add">
+        <div class="btn-add">
+          <ion-icon src="../../assets/icon/icon-sum-white.svg"></ion-icon>
+        </div>
+      </ion-tab-button>
+
+      <ion-tab-button tab="library">
+        <ion-icon src="../../assets/icon/carrito.svg"></ion-icon>
+        <ion-label>Ordenar</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="search">
+        <ion-icon src="../../assets/icon/setting.svg"></ion-icon>
+        <ion-label>Ajustes</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>

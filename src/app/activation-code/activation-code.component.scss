@@ -1,0 +1,65 @@
+.code-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  height: 100%;
+}
+
+.instructions-title {
+  font-size: 1.5rem;
+  color: var(--ion-color-primary);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.code-input-boxes {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.code-digit {
+  --padding-start: 0;
+  --padding-end: 0;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 3rem;
+  height: 4rem;
+  background-color: #f8f8f8;
+}
+
+ion-input.code-digit {
+  text-align: center;
+}
+
+.activation-button {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+// Estilos para el fondo con degradado similar a la imagen
+ion-content {
+  --background: linear-gradient(0deg, rgba(255,235,235,0.5) 0%, rgba(255,255,255,1) 100%);
+}
+
+// Personalización para que se vea como en la imagen
+ion-toolbar {
+  --background: transparent;
+  --color: var(--ion-color-primary);
+}
+
+ion-back-button {
+  --color: var(--ion-color-primary);
+}
+
+ion-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ion-color-primary);
+} 

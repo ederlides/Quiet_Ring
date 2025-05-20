@@ -1,15 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-typeahead',
   templateUrl: './typeahead.component.html',
   styleUrls: ['./typeahead.component.scss'],
-  
-    standalone: true,
-    imports: [IonicModule]
+  standalone: true,
+  imports: [IonicModule, CommonModule, FormsModule]
 })
-export class TypeaheadComponent  implements OnInit {
+export class TypeaheadComponent implements OnInit {
   @Input() items: any[] = [];
   @Input() selectedItems: string[] = [];
   @Input() title = 'Select Items';
@@ -74,5 +75,4 @@ export class TypeaheadComponent  implements OnInit {
       this.workingSelectedValues = []; // ✅ Si se desmarca, se borra todo
     }
   }
-
 }

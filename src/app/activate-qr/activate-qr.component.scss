@@ -1,0 +1,254 @@
+.activate-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.qr-main-icon {
+  font-size: 70px;
+  color: var(--ion-color-danger);
+  background-color: rgba(var(--ion-color-danger-rgb), 0.1);
+  border-radius: 50%;
+  padding: 16px;
+}
+
+.main-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: var(--ion-color-medium);
+  margin-bottom: 24px;
+}
+
+.instructions {
+  background-color: var(--ion-color-light);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.step {
+  display: flex;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+
+.step-number {
+  font-weight: bold;
+  color: var(--ion-color-primary);
+  margin-right: 8px;
+}
+
+.step-text {
+  margin: 0;
+  color: var(--ion-color-dark);
+}
+
+.learn-more {
+  display: block;
+  text-align: right;
+  color: var(--ion-color-primary);
+  text-decoration: none;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.activation-options {
+  margin-bottom: 24px;
+}
+
+.activation-option {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --border-radius: 10px;
+  margin-bottom: 16px;
+  --background: var(--ion-color-light);
+}
+
+.option-icon {
+  color: var(--ion-color-primary);
+  font-size: 24px;
+  margin-right: 16px;
+}
+
+.manual-code-input {
+  margin-top: 24px;
+  display: none; /* Oculto por defecto, se mostraría al hacer clic en la opción manual */
+}
+
+.help-section {
+  margin-top: 32px;
+  background-color: var(--ion-color-light);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.help-section h3 {
+  color: var(--ion-color-dark);
+  font-size: 18px;
+  margin-top: 0;
+}
+
+.help-section p {
+  color: var(--ion-color-medium);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+// Estilos para la vista de escaneo QR
+.scanner-content {
+  --background: #222222;
+  --color: white;
+}
+
+.dark-bg {
+  background-color: #222222;
+  color: white;
+}
+
+.scanner-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  
+  .back-button {
+    margin-right: 8px;
+  }
+  
+  .scanner-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: white;
+  }
+}
+
+.scan-instruction {
+  text-align: center;
+  margin: 16px 0;
+  
+  p {
+    font-size: 16px;
+    color: white;
+    margin: 0;
+  }
+}
+
+.qr-frame-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0;
+}
+
+.qr-frame {
+  width: 80%;
+  max-width: 300px;
+  height: 300px;
+  background: white;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .demo-qr {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
+  
+  .scan-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 16px;
+    color: #333;
+    
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+    
+    p {
+      font-size: 16px;
+      margin: 0;
+    }
+  }
+}
+
+.flash-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.flash-button {
+  width: 60px;
+  height: 60px;
+  --border-radius: 50%;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  ion-icon {
+    font-size: 24px;
+  }
+  
+  &.flash-on {
+    --background: #ffc409;
+  }
+}
+
+// Estilos para la vista de entrada de código
+.code-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  height: 100%;
+}
+
+.instructions-title {
+  font-size: 1.5rem;
+  color: var(--ion-color-primary);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.code-input-boxes {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.code-digit {
+  --padding-start: 0;
+  --padding-end: 0;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 3rem;
+  height: 4rem;
+  background-color: #f8f8f8;
+}
+
+.activation-button {
+  width: 100%;
+  margin-top: 2rem;
+} 

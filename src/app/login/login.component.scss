@@ -1,9 +1,18 @@
+ion-content{
+  background-color: white;
+}
+
 .ion-padding {
   height: 100vh;
 
   .container-header {
-    height: calc(20vh - 20px);
-    margin: 10px 0;
+    height: 13vh;
+    background-color: white;
+    // height: calc(20vh - 20px);
+    // height: 18vh;
+    // margin: 10px 0;
+    // padding: 10px 0;
+    margin: 20px 0 10px 0px;
     display: flex;
     align-items: end;
     ion-toolbar {
@@ -11,11 +20,13 @@
       align-items: center;
 
       ion-title {
-        font-size: 32px;
+        background-color: white;
+        font-size: 30px;
         font-weight: bold;
         color: #334295;
         text-align: center;
         display: flex;
+        font-family: MulishExtraBold;
       }
     }
   }
@@ -88,23 +99,29 @@
 
   .container-registro {
     text-align: center;
-    height: 80vh;
+    // height: 80vh;
+    height: 75vh;
     width: 100%;
-    padding: 0 10px;
+    // padding: 0 10px;
+    padding: 0 20px;
+    background-color: white;
 
     .text {
-      height: 20%;
-      height: 15vh;
+      // height: 20%;
+      // height: 15vh;
       display: flex;
+      flex-direction: column;
+      align-items: center;
       width: calc(100% - 60px);
-      display: grid;
       margin: 0 30px;
+      font-family: MulishRegular;
 
       p {
         text-align: center;
         font-size: 15px;
         color: #334295 !important;
-        width: 100%;
+        width: 80%;
+        max-width: 400px;
         text-align: center;
         margin: 3px;
       }
@@ -113,20 +130,32 @@
     .container-form {
       width: 100%;
       align-items: center;
-      height: 50%;
+      // height: 50%;
+      // height: 57%;
+      height: calc(100% - 9rem);
 
       .container-input {
         display: flex;
+        
+        margin-top: 10px;
+
+        ion-list{
+          width: 100%;
+          display: flex;
+          gap: 10px; 
+        }
 
         .indicativo {
           width: 30%;
-          height: 51px;
-          background: #FAFAFA;
-          margin-right: 10px;
+          padding: 0;
+          // height: 51px;
+          // background: #FAFAFA;
+          // margin-right: 10px;
         }
 
         .tel {
           width: 70% !important;
+          // height: 51px;
         }
       }
     }
@@ -145,7 +174,7 @@
         --background: #EA592D !important;
         font-weight: bold;
         margin-bottom: 20px;
-        
+        font-family: MulishBold;
       }
 
       p {
@@ -158,7 +187,7 @@
         line-height: 100%;
         letter-spacing: 0%;
         text-align: center;
-
+        font-family: MulishRegular;
       }
     }
     .list-md.list-inset {
@@ -172,36 +201,38 @@
     }
     
     ion-item {
-      border: 1px solid;
+      // border: 1px solid transparent;
       border-radius: 14px;
       --padding-start: 27px;
       background-color: #b3b3b3;
-      opacity: 0.3;
+      // opacity: 0.3;
     }
     
     .input-fill-outline.sc-ion-input-md-h {
-      --border-color: var(--ion-color-step-300, var(--ion-background-color-step-300, #b3b3b3));
+      --border-color: #FFBAA5;
       --border-radius: 14px;
       --padding-start: 27px;
       --padding-end: 16px;
-      min-height: 51px;
+      // min-height: 51px;
       margin-inline-start: 0px;
     }
   }
 
   .otp{
     text-align: center;
+    // height: 80vh;
     height: 80vh;
     width: 100%;
     padding: 0 10px;
 
     .text {
-      height: 20%;
-      height: 15vh;
+      // height: 20%;
+      height: 20vh;
       display: flex;
+      align-items: center;
       width: calc(100% - 60px);
-      display: grid;
       margin: 0 30px;
+      font-family: MulishRegular;
 
       p {
         text-align: center;
@@ -220,12 +251,20 @@
       align-items: center; 
       justify-content: center; 
 
+      ion-input:not(:last-child){
+        margin-right: 8px;
+      }
+
       .otp-number{
         margin: 0 2px;
         width: 51px;
         background: #FAFAFA;
         border-radius: 14px;
+        font-family: MulishRegular;
+        color: #334295;
+        font-size: 32px;
       }
+
       .input-fill-outline.sc-ion-input-md-h {
         --border-color: var(--ion-color-step-300, var(--ion-background-color-step-300, #b3b3b3));
         --border-radius: 14px;
@@ -243,6 +282,8 @@
       width: calc(100% - 30px);
       display: grid;
       margin: 0 15px;
+      font-family: MulishRegular;
+      margin-top: 10px;
 
       p {
         text-align: center;
@@ -254,28 +295,31 @@
       }
     }
     .text-intent {
-      height: 20%;
-      height: 15vh;
+      // height: 20%;
+      // height: 15vh;
       display: flex;
-      width: calc(100% - 30px);
-      display: grid;
+      flex-direction: column;
+      align-items: start;
+      // width: calc(100% - 30px);
+      // display: grid;
       margin: 0 15px;
+      font-family: MulishRegular;
 
       p {
-        text-align: center;
         font-size: 13px;
         color: #334295 !important;
-        width: 100%;
-        text-align: center;
+        // width: 100%;
+        text-align: start;
         margin: 3px;
       }
       a {
-        text-align: center;
+        text-align: start;
         font-size: 13px;
         color: #334295 !important;
-        width: 100%;
-        text-align: center;
+        // width: 100%;
         margin: 3px;
+        text-decoration: underline;
+        font-family: MulishBold;
       }
     }
   }

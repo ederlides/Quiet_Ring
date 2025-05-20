@@ -1,0 +1,142 @@
+.scanner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.camera-view {
+  width: 100%;
+  height: 300px;
+  background-color: #000;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.qr-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+}
+
+// Esquinas del marco de escaneo
+.corner-tl, .corner-tr, .corner-bl, .corner-br {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-color: #4caf50;
+}
+
+.corner-tl {
+  top: 0;
+  left: 0;
+  border-top: 4px solid;
+  border-left: 4px solid;
+}
+
+.corner-tr {
+  top: 0;
+  right: 0;
+  border-top: 4px solid;
+  border-right: 4px solid;
+}
+
+.corner-bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 4px solid;
+  border-left: 4px solid;
+}
+
+.corner-br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 4px solid;
+  border-right: 4px solid;
+}
+
+// Línea de escaneo animada
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 2px;
+  background-color: #4caf50;
+  animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    top: 20%;
+  }
+  50% {
+    top: 80%;
+  }
+  100% {
+    top: 20%;
+  }
+}
+
+.camera-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.qr-icon {
+  font-size: 80px;
+  color: var(--ion-color-primary);
+  margin-bottom: 20px;
+}
+
+.success-icon, .error-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.scan-result, .scan-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.scanner-controls {
+  margin: 20px 0;
+}
+
+.instructions {
+  background-color: var(--ion-color-light);
+  padding: a5px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.instructions h3 {
+  color: var(--ion-color-primary);
+  margin-bottom: 10px;
+}
+
+.instructions ol {
+  padding-left: 20px;
+}
+
+.instructions li {
+  margin-bottom: 8px;
+} 

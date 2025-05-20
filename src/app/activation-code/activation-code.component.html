@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()" defaultHref="/activate-qr"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Activar con código de Activación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="code-input-container">
+    <h2 class="instructions-title">Escribe el código de activación</h2>
+    
+    <div class="code-input-boxes">
+      <ion-input 
+        *ngFor="let digit of codeDigits; let i = index" 
+        type="text" 
+        inputmode="numeric" 
+        maxlength="1"
+        [(ngModel)]="codeDigits[i]"
+        class="code-digit">
+      </ion-input>
+    </div>
+    
+    <div class="activation-button">
+      <ion-button expand="block" (click)="submitCode()" [disabled]="getFullCode().length !== 6">
+        Activar
+      </ion-button>
+    </div>
+  </div>
+</ion-content> 

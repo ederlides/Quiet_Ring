@@ -1,81 +1,147 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonContent, IonicModule, IonItem, IonLabel, IonList, IonModal, NavController } from '@ionic/angular';
-import { TypeaheadComponent } from '../typeahead/typeahead.component';
+import { IonContent, IonItem, IonLabel, IonList, IonModal, NavController, IonSelect, IonicModule } from '@ionic/angular';
 import { ApiService } from '../service/api.service';
-import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TypeaheadComponent } from '../typeahead/typeahead.component';
+
+interface Country {
+  name: string;
+  code: string;
+  flag: string;
+  dialCode: string;
+}
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [IonicModule, TypeaheadComponent,NgIf]
+  imports: [IonicModule, CommonModule, FormsModule, TypeaheadComponent]
 })
 export class LoginComponent implements OnInit {
-  viewLogin=false;
-  viewOtp=false;
-
-  constructor(private navCtrl: NavController,public apiService: ApiService) { }
+  viewLogin = false;
+  viewOtp = false;
+  
+  selectedCountry: Country | null = null;
+  countryName: string = '';
+  dialCode: string = '';
+  phoneNumber: string = '';
+  
+  constructor(
+    private navCtrl: NavController,
+    public apiService: ApiService,
+    private router: Router
+  ) { }
+  
   @ViewChild('modal', { static: true }) modal!: IonModal;
 
   selectedFruitsText = '';
   selectedFruits: string[] = [];
-  mobile: String;
+  mobile: string = '';
 
   fruits: any[] = [
     { text: 'Colombia', value: '+57' },
     { text: 'Perú', value: '+58' },
-
   ];
   
   ngOnInit() {
+    console.log('Inicializando componente login');
     
+    // Verificar el estado de login
+    const loginState = localStorage.getItem('loginState');
+    if (loginState === 'phoneInput') {
+      // Si venimos de seleccionar un país, mostrar la vista de ingreso de teléfono
+      this.viewLogin = true;
+    }
+    
+    // Verificar si hay un país seleccionado en localStorage
+    const savedCountry = localStorage.getItem('selectedCountry');
+    console.log('País guardado:', savedCountry);
+    
+    if (savedCountry) {
+      try {
+        this.selectedCountry = JSON.parse(savedCountry);
+        if (this.selectedCountry) {
+          console.log('País seleccionado:', this.selectedCountry);
+          // Actualizar el nombre del país y el indicativo
+          this.countryName = this.selectedCountry.name;
+          this.dialCode = this.selectedCountry.dialCode;
+          console.log('Indicativo establecido:', this.dialCode);
+        }
+      } catch (error) {
+        console.error('Error al parsear el país seleccionado:', error);
+        localStorage.removeItem('selectedCountry');
+      }
+    }
   }
 
-  condition(){
-    this.viewLogin=true;
-    this.fruitSelectionChanged(['+57']);
+  ionViewDidEnter() {
+    console.log('Vista de login activada');
+    
+    // Verificar el estado de login
+    const loginState = localStorage.getItem('loginState');
+    if (loginState === 'phoneInput') {
+      // Si venimos de seleccionar un país, mostrar la vista de ingreso de teléfono
+      this.viewLogin = true;
+    }
+    
+    // Verificar nuevamente por si se actualizó el país
+    const savedCountry = localStorage.getItem('selectedCountry');
+    if (savedCountry) {
+      try {
+        this.selectedCountry = JSON.parse(savedCountry);
+        if (this.selectedCountry) {
+          this.countryName = this.selectedCountry.name;
+          this.dialCode = this.selectedCountry.dialCode;
+          console.log('Indicativo actualizado:', this.dialCode);
+        }
+      } catch (error) {
+        console.error('Error al parsear el país seleccionado:', error);
+      }
+    }
+  }
+
+  goToCountrySelector() {
+    console.log('Navegando a la selección de países');
+    this.router.navigate(['/country-selector']);
+  }
+
+  condition() {
+    this.viewLogin = true;
+    localStorage.setItem('loginState', 'phoneInput');
   }
 
   callOtp() {
-    this.viewOtp=true;
-    this.viewLogin=false;
+    if (!this.phoneNumber) {
+      console.log('Por favor ingrese un número de teléfono');
+      return;
+    }
+    
+    this.viewOtp = true;
+    this.viewLogin = false;
+    // Limpiar el estado de login ya que pasamos a la siguiente fase
+    localStorage.removeItem('loginState');
+    
+    // Importante: No concatenamos el indicativo con el número de teléfono
+    // Solo usamos el número de teléfono ingresado por el usuario
+    this.mobile = this.phoneNumber;
+    
     let request = {
       "idProcess": "pruebasIdProcess",
       "device": "Nokia1100",
       "ip": "10.10.10.2",
-      "mobile": this.mobile
+      "mobile": this.mobile,
+      "dialCode": this.dialCode // Enviamos el indicativo como un campo separado
     }
-    this.apiService.getOtp(this, request,this.handlerSuccessGetOtp, this.handlerError )
+    this.apiService.getOtp(this, request, this.handlerSuccessGetOtp, this.handlerError);
   }
-
 
   onInputChange(event: any) {
     this.navCtrl.navigateForward('/menu');
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//************************************************************************************************************* */
-
-
-  /**
-   * Formats the display text based on the selected fruits.
-   * @param data - Array of selected fruit values
-   * @returns A formatted string for display
-   */
   private formatData(data: string[]): string {
     if (data.length === 1) {
       const fruit = this.fruits.find((fruit) => fruit.value === data[0]);
@@ -84,10 +150,6 @@ export class LoginComponent implements OnInit {
     return `${data.length} items`;
   }
 
-  /**
-   * Handles fruit selection changes and updates the selected fruits and text.
-   * @param fruits - Array of selected fruit values
-   */
   fruitSelectionChanged(fruits: string[]) {
     this.selectedFruits = fruits;
     this.selectedFruitsText = this.formatData(this.selectedFruits);
@@ -95,13 +157,12 @@ export class LoginComponent implements OnInit {
   }
 
   navigateToNextPage() {
-    this.navCtrl.navigateForward('/menu'); // Cambia 'next-page' por la ruta de tu nueva página
+    this.navCtrl.navigateForward('/menu');
   }
 
   openRegister() {
-    this.navCtrl.navigateForward('/menu'); // Cambia 'next-page' por la ruta de tu nueva página
+    this.navCtrl.navigateForward('/menu');
   }
-
 
   handlerSuccessGetOtp(_this, data) {
     if (data.status == 200) {
@@ -112,25 +173,23 @@ export class LoginComponent implements OnInit {
 
   handlerError(_this, result) {
     if (result.status != 200) {
-
+      // Manejar error
     }
   }
 
-  callValidOtp(otp){
+  callValidOtp(otp) {
     let request = {
       "idProcess": "pruebasIdProcess",
       "device": "Nokia1100",
       "ip": "10.10.10.2",
       "otp": otp
     }
-    this.apiService.validOtp(this, request,this.handlerSuccessValidOtp, this.handlerError )
+    this.apiService.validOtp(this, request, this.handlerSuccessValidOtp, this.handlerError);
   }
 
-  handlerSuccessValidOtp(_this, data){
+  handlerSuccessValidOtp(_this, data) {
     if (data.status == 200) {
-      console.log(data.processResponse)
+      console.log(data.processResponse);
     }
   }
-
-
 }

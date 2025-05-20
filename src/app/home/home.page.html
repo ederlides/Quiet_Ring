@@ -4,6 +4,7 @@
       <img src="../../assets/logo.svg" alt="Quiet Ring Logo" class="logo" />
     </div>
 
+    <!-- Splash -->
     <div  *ngIf="this.jwt==true"  class="container"  (click)="nextSlide()">
       <div *ngFor="let item of arraySplas">
         <div *ngIf="item.view" class="fade image-container">

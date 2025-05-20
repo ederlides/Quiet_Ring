@@ -15,26 +15,26 @@ export class HomePage {
   jwt: Boolean = false;
   arraySplas = [
     {
-      title: "Private Calls with QR Code",
-      description: "Easily communicate with your visitors securely, quickly, and directly, without the need for intermediaries.",
+      title: "Llamadas privadas con código QR",
+      description: "Facilita la comunicación con tus visitantes de manera segura, rápida y directa, sin necesidad de intermediarios.",
       img: "../../assets/splas1.svg",
       view: true
     },
     {
-      title: "Say Goodbye to Traditional Doorbells",
-      description: "Modernize your home’s entrance with an innovative solution that combines technology and style.",
+      title: "Adiós a los timbres tradicionales",
+      description: "Moderniza la entrada de tu hogar con una solución innovadora que combina tecnología y estilo.",
       img: "../../assets/splas2.svg",
       view: false
     },
     {
-      title: "Fast and Secure Access",
-      description: "QR codes provide a seamless and reliable experience, ensuring your home’s safety.",
+      title: "Acceso rápido y seguro",
+      description: "Los códigos QR ofrecen una experiencia ágil y confiable, garantizando la seguridad de tu hogar.",
       img: "../../assets/splas3.svg",
       view: false
     },
     {
-      title: "Full Control from Your Smartphone",
-      description: "Answer, monitor, and manage your visitors from anywhere with just a tap.",
+      title: "Control total desde tu smartphone",
+      description: "Responde, visualiza y gestiona a tus visitantes desde cualquier lugar con solo un toque.",
       img: "../../assets/splas4.svg",
       view: false
     }

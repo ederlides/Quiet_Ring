@@ -31,10 +31,12 @@
     "@ionic/cordova-builders": "^12.1.2",
     "@maskito/angular": "^3.5.0",
     "cordova-plugin-android-permissions": "^1.1.5",
+    "country-telephone-data": "^0.6.3",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.8.1",
     "tslib": "^2.3.0",
+    "world-countries-capitals": "^3.4.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

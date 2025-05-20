@@ -1,10 +1,119 @@
-<ion-app>
   <ion-content class="ion-padding">
-    <ion-header class="container-header">
-      <ion-toolbar>
-        <ion-title>Sign up to <br> Quiet Ring</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <h1>
+      Sign up to <br />
+      Quiet Ring
+    </h1>
 
+    <form (ngSubmit)="onSubmit()">
+      <ion-item-group>
+        <ion-item>
+          <ion-input
+            label="First Name"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Enter your first name"
+            [(ngModel)]="firstName"
+            name="firstName"
+            required
+          >
+          </ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-input
+            label="Last Name"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Enter your last name"
+            [(ngModel)]="lastName"
+            name="lastName"
+            required
+          >
+          </ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-input
+            label="Email"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Enter your email"
+            [(ngModel)]="email"
+            name="email"
+            type="email"
+            required
+          >
+          </ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-input
+            label="Password"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Enter your password"
+            [(ngModel)]="password"
+            name="password"
+            type="password"
+            required
+          >
+          </ion-input>
+        </ion-item>
+  
+        <ion-item button detail="true" (click)="openCountrySelector()">
+          <ion-input
+            label="Country"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Select your country"
+            [value]="country"
+            name="country"
+            readonly
+          >
+          </ion-input>
+          <ion-avatar slot="end" *ngIf="selectedCountry && selectedCountry.flag">
+            <img [src]="'assets/flags/' + selectedCountry.flag" [alt]="selectedCountry.name + ' flag'">
+          </ion-avatar>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label position="stacked">Mobile Number</ion-label>
+          <ion-row>
+            <ion-col size="3" *ngIf="dialCode">
+              <ion-text>{{dialCode}}</ion-text>
+            </ion-col>
+            <ion-col [size]="dialCode ? 9 : 12">
+              <ion-input
+                placeholder="Enter your mobile number" 
+                [(ngModel)]="phoneNumber"
+                name="phoneNumber"
+                type="tel"
+                required
+              >
+              </ion-input>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-item-group>
+
+
+      <div style="text-align: center; margin-top: 1rem">
+        <ion-text>
+          <a href="#">You already have an account?</a>
+        </ion-text>
+      </div>
+      
+      <ion-button
+        expand="block"
+        color="danger"
+        style="margin-top: 1rem; border-radius: 10px"
+        type="submit"
+      >
+        JOIN
+      </ion-button>
+
+      <ion-item-divider>
+        <ion-label>Información Personal</ion-label>
+      </ion-item-divider>
+    </form>
   </ion-content>
-</ion-app>

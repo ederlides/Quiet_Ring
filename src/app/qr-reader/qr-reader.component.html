@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true" class="dark-bg">
+  <!-- Encabezado con botón de regreso y título -->
+  <div class="header">
+    <ion-button fill="clear" (click)="goBack()" class="back-button">
+      <ion-icon name="arrow-back-outline" color="light"></ion-icon>
+    </ion-button>
+    <span class="title">Activar código QR</span>
+  </div>
+  
+  <!-- Instrucciones para escanear -->
+  <div class="scan-instruction">
+    <p>Escanee el código QR para activar</p>
+  </div>
+  
+  <!-- Marco para el escáner QR -->
+  <div class="qr-frame-container">
+    <div class="qr-frame">
+      <!-- Aquí se mostraría la vista de la cámara en una implementación real -->
+      <!-- Para la demo, mostramos un QR estático -->
+      <div class="qr-placeholder"></div>
+    </div>
+  </div>
+  
+  <!-- Botón de linterna -->
+  <div class="flash-button-container">
+    <ion-button 
+      (click)="toggleTorch()" 
+      [color]="isTorchOn ? 'warning' : 'light'" 
+      fill="clear" 
+      class="flash-button"
+      [ngClass]="{'flash-on': isTorchOn}">
+      <ion-icon name="flash" [color]="isTorchOn ? 'dark' : 'light'"></ion-icon>
+    </ion-button>
+  </div>
+</ion-content> 

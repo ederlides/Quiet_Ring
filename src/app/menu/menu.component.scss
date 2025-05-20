@@ -1,12 +1,82 @@
 .ion-padding {
-  height: 100vh;
+  // height: 100vh;
 
-  .container-header {
+  ion-header {
     height: 15vh;
+    display: flex;
+    align-items: center;
+
+    ion-title{
+      font-family: MulishExtraBold;
+    }
   }
 
-  .container-contet {
+  ion-tab[tab=home]{
+    ion-toggle{
+      font-family: MulishRegular;
+      color: #334295;
+    }
+
+    ion-button {
+      height: 30.8px;
+      width: 30.8px;
+      --background: #fff;
+      --color: #334295;
+
+      --border-radius: 50%;
+      --border-color: #334295;
+      --border-style: solid;
+      --border-width: 2px;
+    }
+  }
+
+  .container-content {
     height: 75vh;
+  }
+
+  ion-tab[tab=radio]{
+    ion-header {
+      height: 20vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    ion-buttons{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      ion-button {
+        // height: 30.8px;
+        // width: 30.8px;
+        font-family: MulishRegular;
+        text-transform: capitalize;
+        font-size: 16px;
+        letter-spacing: 0px;
+        --background: #FEF6F4;
+        --color: #334295;
+
+        --border-radius: 4px;
+        --border-width: 0;
+
+        --padding-top: 10px;
+        --padding-bottom: 10px;
+      }
+
+      .button-option{
+        height: 30.8px;
+        width: 30.8px;
+        --background: #fff;
+        --color: #334295;
+
+        --border-radius: 50%;
+        --border-color: #334295;
+        --border-style: solid;
+        --border-width: 2px;
+      }
+    }
   }
 
   .example-content {
@@ -17,7 +87,7 @@
   }
 
   .container-header-call {
-    height: 20vh;
+    // height: 10vh;
   }
 
   .container-contet-call {
@@ -29,7 +99,8 @@
       height: calc(100% - 20px);
 
       .text-title {
-        font-weight: 400;
+        // font-weight: 400;
+        font-family: MulishRegular;
         font-size: 16px;
         line-height: 100%;
         letter-spacing: 0%;
@@ -42,79 +113,114 @@
         box-shadow: 4px 4px 22.76px 0px #A0A0A040;
 
         h1 {
-          font-weight: 400;
-          font-size: 12px;
+          // font-weight: 400;
+          font-family: MulishRegular;
+          font-size: 14px;
           line-height: 100%;
           letter-spacing: 0%;
           color: #334295;
         }
 
         p {
-          font-weight: 400;
-          font-size: 10px;
+          // font-weight: 400;
+          font-family: MulishRegular;
+          font-size: 12px;
           line-height: 100%;
-          letter-spacing: 0%;
+          letter-spacing: 0;
           color: #334295;
         }
       }
     }
   }
 
-  .container-contet-order {
-    height: 70vh;
+  ion-tab[tab=library]{
 
-    .table-order {
-      width: calc(100% - 15px);
-      margin: 10px;
-      height: calc(100% - 20px);
-      .img-order {
-        width: 50px;
-        height: 50px;
-        margin-right: 5px;
+    ion-toolbar{
+      .button-option{
+        height: 30.8px;
+        width: 30.8px;
+        --background: #fff;
+        --color: #334295;
+
+        --border-radius: 50%;
+        --border-color: #334295;
+        --border-style: solid;
+        --border-width: 2px;
       }
+    }
+
+    .container-content-order {
+      height: calc(85vh - 5.5rem);
+
+      ion-card{
+        cursor: pointer;
+        overflow: hidden;
+        box-shadow: 1px 2px 22.76px 0px #A0A0A040;
+      }
+
       h1{
-        font-weight: bold;
-        font-size: 16px;
+        font-family: MulishBold;
+        font-size: 18px;
         line-height: 100%;
         letter-spacing: 0%;
         color: #334295;
-      
+
       }
       p {
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 100%;
-        letter-spacing: 0%;
+        font-family: MulishRegular;
+        font-size: 15px;
+        line-height: 25px;
+        letter-spacing: 0;
         color: #334295;
       }
     }
   }
 
-  .container-contet-setting {
-    height: 70vh;
-    .container{
-      height: 50%;
-      margin: 20px;
-      .icon{
-        height: 30px;
-        width: 30px;
+  ion-tab[tab=search]{
+    ion-toolbar{
+      .button-option{
+        height: 30.8px;
+        width: 30.8px;
+        --background: #fff;
+        --color: #334295;
+
+        --border-radius: 50%;
+        --border-color: #334295;
+        --border-style: solid;
+        --border-width: 2px;
       }
+    }
+
+    .container-content-setting {
+      height: 70vh;
+
+      ion-item{
+        .ion-margin-vertical{
+          --margin-top: 23px;
+          --margin-bottom: 23px;
+          margin-top: 23px;
+          margin-bottom: 23px;
+        }
+
+        .ion-padding-start{
+          --padding-start: 5px;
+          padding-inline-start: 5px;
+        }
+      }
+
       p{
-        font-weight: 400;
-        font-size: 14px;
+        font-family: MulishRegular;
         line-height: 100%;
-        letter-spacing: 0%;
         color: #334295;
         align-items: center;
       }
     }
   }
 
-
   ion-toolbar {
     display: flex;
     align-items: center;
-    height: 100%;
+    // height: 100%;
   }
 
   ion-title {
@@ -126,4 +232,208 @@
     /* Margen superior e inferior */
   }
 
+}
+
+.btn-add {
+  border-radius: 50% !important;
+  background: #EA592D !important;
+}
+
+ion-card-content {
+  border: 1px solid #EA592D !important;
+  border-radius: 10px !important;
+}
+
+ion-img {
+  width: 118% !important;
+}
+
+.btn-back {
+  background: #FEF6F4;
+  border-radius: 10px !important;
+
+  .btn-back-icon {
+    padding: .2rem .2rem !important;
+  }
+}
+
+
+
+.spacing-toolbar {
+  padding: 0.5rem 1rem;
+}
+
+.spaciong-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.btn-option-bells {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option-icon {
+  font-size: 1.5rem
+}
+
+.custom-ion-list {
+  padding: 0 !important;
+
+  .item-label-option {
+    letter-spacing: 0.5px;
+    font-size: 1rem;
+    font-weight: 400; 
+    margin-right: 1.3rem;
+  }
+}
+
+// Estilos para la vista de llamada
+.calling-content {
+  --background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.calling-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+.calling-header {
+  ion-toolbar {
+    --background: transparent;
+    
+    ion-title {
+      font-size: 18px;
+      font-weight: normal;
+      color: #334295;
+    }
+    
+    .back-button {
+      color: #334295;
+      font-size: 20px;
+    }
+    
+    .profile-button {
+      color: #334295;
+      font-size: 20px;
+    }
+  }
+}
+
+.calling-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 0 60px;
+  height: 100%;
+}
+
+.caller-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.caller-image-outer {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(254, 229, 225, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.caller-image-inner {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(51, 66, 149, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.caller-avatar {
+  width: 140px;
+  height: 140px;
+  border: 3px solid #334295;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.caller-info {
+  text-align: center;
+  margin-top: 20px;
+  
+  h2 {
+    font-size: 24px;
+    font-weight: 500;
+    color: #334295;
+    margin-bottom: 0;
+  }
+}
+
+.calling-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 20px;
+  margin-top: auto;
+  
+  .action-button {
+    --border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    margin: 0 5px;
+    
+    &.mute-button {
+      --background: #f4f5f8;
+      ion-icon {
+        font-size: 24px;
+        color: #334295;
+      }
+    }
+    
+    &.sound-button {
+      --background: #f4f5f8;
+      ion-icon {
+        font-size: 24px;
+        color: #334295;
+      }
+    }
+    
+    &.videocall-button {
+      --background: #f4f5f8;
+      ion-icon {
+        font-size: 24px;
+        color: #334295;
+      }
+    }
+    
+    &.end-call-button {
+      --background: #FF3B30;
+      ion-icon {
+        font-size: 24px;
+        color: white;
+        transform: rotate(135deg);
+      }
+    }
+  }
 }
