@@ -1,3 +1,5 @@
+@import '../../theme/variables';
+
 .ion-padding {
   .logo-container {
     display: flex;
@@ -64,29 +66,19 @@
     }
 
     .title {
-      font-size: 24px;
-      font-weight: bold;
-      color: #3f51b5;
-      /* Color del texto */
-      /* Margen superior e inferior */
-      text-align: center;
-
+      padding: 0 1rem;
     }
 
     .description {
-      font-size: 16px;
-      color: #334295;
-      /* Color del texto */
+      font-size: 15px;
       margin-bottom: 20px;
-      /* Margen inferior */
       padding: 0 20px;
-      /* Espaciado lateral */
     }
 
     /* --- Estilos para los puntos indicadores --- */
     .dots-container {
       position: absolute;
-      bottom: 20px;
+      bottom: 50px;
       display: flex;
       gap: 10px;
 
@@ -94,7 +86,7 @@
         width: 12px;
         height: 12px;
         border-radius: 50%;
-        background-color: #334295;
+        background-color: $primary-color;
         /* Color gris por defecto */
         transition: background-color 0.3s ease;
       }

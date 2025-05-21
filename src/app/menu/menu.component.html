@@ -32,7 +32,7 @@
                   <ion-list class="custom-ion-list">
                     <ion-item button="true" detail="false" *ngFor="let option of options">
                       <div class="btn-option-bells">
-                        <p style="color: #334295; font-size:1rem;" class="item-label-option">{{option.name}}</p>
+                        <p style="font-size:1rem;" class="item-label-option">{{option.name}}</p>
                         <ion-icon slot="icon-only" [name]="option.name" [src]="option.src" class="option-icon"></ion-icon>
                       </div>
                     </ion-item>
@@ -340,10 +340,12 @@
     </ion-tab>
 
     <ion-tab-bar color="light" slot="bottom">
+
       <ion-tab-button tab="home">
         <ion-icon src="../../assets/icon/bells.svg"></ion-icon>
         <ion-label>Timbres</ion-label>
       </ion-tab-button>
+
       <ion-tab-button tab="radio">
         <ion-icon src="../../assets/icon/call.svg"></ion-icon>
         <ion-label>Llamadas</ion-label>
@@ -359,10 +361,12 @@
         <ion-icon src="../../assets/icon/carrito.svg"></ion-icon>
         <ion-label>Ordenar</ion-label>
       </ion-tab-button>
+
       <ion-tab-button tab="search">
         <ion-icon src="../../assets/icon/setting.svg"></ion-icon>
         <ion-label>Ajustes</ion-label>
       </ion-tab-button>
+
     </ion-tab-bar>
   </ion-tabs>
 </ion-content>

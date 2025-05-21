@@ -21,9 +21,8 @@ ion-content{
 
       ion-title {
         background-color: white;
-        font-size: 30px;
+        font-size: 32px;
         font-weight: bold;
-        color: #334295;
         text-align: center;
         display: flex;
         font-weight: 800;
@@ -50,10 +49,9 @@ ion-content{
 
       span {
         text-align: center;
-        color: #334295;
         display: flex;
         font-size: 0.8em;
-        margin: 0 10px;
+        margin: 0 50px;
         //font-weight: bold;
       }
     }
@@ -119,7 +117,6 @@ ion-content{
       p {
         text-align: center;
         font-size: 15px;
-        color: #334295 !important;
         width: 80%;
         max-width: 400px;
         text-align: center;
@@ -179,7 +176,6 @@ ion-content{
 
       p {
         font-size: 13px;
-        color: #334295 !important;
         width: calc(100% - 20px);
         margin: 0 10px;
         font-weight: 400;
@@ -237,7 +233,6 @@ ion-content{
       p {
         text-align: center;
         font-size: 15px;
-        color: #334295 !important;
         width: 100%;
         text-align: center;
         margin: 3px;
@@ -261,7 +256,6 @@ ion-content{
         background: #FAFAFA;
         border-radius: 14px;
         font-weight: 400;
-        color: #334295;
         font-size: 32px;
       }
 
@@ -288,7 +282,6 @@ ion-content{
       p {
         text-align: center;
         font-size: 15px;
-        color: #334295 !important;
         width: 100%;
         text-align: center;
         margin: 3px;
@@ -307,7 +300,6 @@ ion-content{
 
       p {
         font-size: 13px;
-        color: #334295 !important;
         // width: 100%;
         text-align: start;
         margin: 3px;
@@ -315,7 +307,6 @@ ion-content{
       a {
         text-align: start;
         font-size: 13px;
-        color: #334295 !important;
         // width: 100%;
         margin: 3px;
         text-decoration: underline;
