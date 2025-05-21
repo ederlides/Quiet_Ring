@@ -6,7 +6,7 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ showCodeInput ? 'Activar con código de Activación' : 'Activar código QR' }}</ion-title>
+    <ion-title><span style="white-space: normal;">{{ showCodeInput ? 'Activar con código de Activación' : 'Activar código QR' }}</span></ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -55,13 +55,17 @@
     <h2 class="instructions-title">Escribe el código de activación</h2>
     
     <div class="code-input-boxes">
-      <ion-input 
-        *ngFor="let digit of codeDigits; let i = index" 
-        type="text" 
-        inputmode="numeric" 
+      <ion-input
+        *ngFor="let input of inputs; let i = index"
+        #otpInput
+        class="code-digit"
+        type="text"
         maxlength="1"
-        [(ngModel)]="codeDigits[i]"
-        class="code-digit">
+        pattern="[0-9]*"
+        inputmode="numeric"
+        (ionInput)="onInputChange($event, i)"
+        fill="outline"
+        placeholder="-">
       </ion-input>
     </div>
     

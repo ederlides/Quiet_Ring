@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonInput } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -20,7 +20,9 @@ export class ActivateQrComponent implements OnInit {
   
   // Variables para la vista de entrada de código
   showCodeInput: boolean = false;
-  codeDigits: string[] = ['', '', '', '', '', ''];
+  inputs = Array(6);
+  @ViewChildren('otpInput') codeDigits!: QueryList<IonInput>;
+  // codeDigits: string[] = ['', '', '', '', '', ''];
   
   constructor(private router: Router) {}
 
@@ -45,12 +47,16 @@ export class ActivateQrComponent implements OnInit {
   
   // Método para combinar los dígitos en un solo código
   getFullCode(): string {
-    return this.codeDigits.join('');
+    console.log(this.codeDigits);
+    const digits = this.codeDigits.toArray();
+    const code = digits.map(input => input.value?.toString() ?? '').join('');
+    console.log(code);
+    return code;
   }
   
   // Método para validar y enviar el código
   submitCode() {
-    const fullCode = this.getFullCode();
+    const fullCode = 'this.getFullCode()';
     if (fullCode.length === 6) {
       console.log('Código enviado:', fullCode);
       // Aquí iría la lógica para validar el código con el backend
@@ -90,6 +96,17 @@ export class ActivateQrComponent implements OnInit {
   toggleTorch() {
     this.isTorchOn = !this.isTorchOn;
     console.log('Linterna:', this.isTorchOn ? 'encendida' : 'apagada');
+  }
+
+    onInputChange(event: any, index: number) {
+    const value = event.target.value;
+    if (value && index < this.codeDigits.length - 1) {
+      const inputsArray = this.codeDigits.toArray();
+      inputsArray[index + 1].setFocus(); // Mueve al siguiente input
+    }
+    if (index == 5) {
+      // this.navCtrl.navigateForward('/menu');
+    }
   }
   
   // Método para manejar la activación manual por código
