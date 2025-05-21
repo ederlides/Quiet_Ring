@@ -146,11 +146,14 @@ export class LoginComponent implements OnInit {
   // onInputChange(event: any) {
   //   this.navCtrl.navigateForward('/menu');
   // }
-    onInputChange(event: any, index: number) {
+  onInputChange(event: any, index: number) {
     const value = event.target.value;
     if (value && index < this.otpInputs.length - 1) {
       const inputsArray = this.otpInputs.toArray();
       inputsArray[index + 1].setFocus(); // Mueve al siguiente input
+    }
+    if (index == 4) {
+      this.navCtrl.navigateForward('/menu');
     }
   }
 

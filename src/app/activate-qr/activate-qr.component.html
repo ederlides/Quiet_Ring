@@ -19,50 +19,33 @@
     </div>
     
     <!-- Título y descripción -->
-    <h1 class="main-title">Activar tu timbre en segundos! 🔔</h1>
-    <p class="subtitle">Elige la opción que más te convenga:</p>
+    <p style="text-align: center;">Activar tu timbre en segundos! 🔔<br>Elige la opción que más te convenga:</p>
     
     <!-- Instrucciones -->
     <div class="instructions">
-      <div class="step">
-        <span class="step-number">1.</span>
-        <p class="step-text">Escanea con QR (rápido y sin complicaciones)</p>
-      </div>
-      <div class="step">
-        <span class="step-number">2.</span>
-        <p class="step-text">Enfoca la cámara de tu celular al código QR...</p>
-      </div>
+      <div class="step-text">1. Escaneo con QR (rápido y sin <span style="font-weight: bold;">complicaciones</span>)</div>
+      <div class="step-text"><span style="font-weight: bold;">Paso 1:</span> Enfoca la cámara de tu celular al código QR...</div>
       <a href="#" class="learn-more">Leer más</a>
     </div>
     
     <!-- Opciones de activación -->
     <div class="activation-options">
       <!-- Opción de escaneo QR -->
-      <ion-item button detail lines="full" class="activation-option" (click)="goToQrScanner()">
-        <ion-icon name="qr-code-outline" slot="start" class="option-icon"></ion-icon>
-        <ion-label>
-          <h2>Usar código QR</h2>
-        </ion-label>
-        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-      </ion-item>
+      <ion-button expand="block" fill="outline" class="qr-button" (click)="goToQrScanner()">
+        <div>
+          <ion-icon style="font-size: 50px;" name="qr-code-outline" slot="start"></ion-icon>
+          <span>Usar código QR</span>
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </div>
+      </ion-button>
       
       <!-- Opción de código manual -->
-      <ion-item button detail lines="full" class="activation-option" (click)="goToCodeInput()">
-        <ion-icon name="document-text-outline" slot="start" class="option-icon"></ion-icon>
-        <ion-label>
-          <h2>Escribe el código de Activación</h2>
-        </ion-label>
-        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-      </ion-item>
-    </div>
-    
-    <!-- Ayuda y soporte -->
-    <div class="help-section">
-      <h3>¿Necesitas ayuda?</h3>
-      <p>Si tienes problemas para activar tu timbre, contacta a nuestro soporte técnico:</p>
-      <ion-button fill="clear" color="primary">
-        <ion-icon name="call-outline" slot="start"></ion-icon>
-        Soporte técnico
+      <ion-button expand="block" fill="outline" class="qr-button" (click)="goToCodeInput()">
+        <div>
+          <ion-icon style="font-size: 50px;" name="document-text-outline" slot="start"></ion-icon>
+          <span>Escribe el código de Activación</span>
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </div>
       </ion-button>
     </div>
   </div>

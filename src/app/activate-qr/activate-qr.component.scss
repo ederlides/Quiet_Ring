@@ -1,3 +1,7 @@
+ion-title {
+  font-size: 30px;
+  font-weight: 800;
+}
 .activate-container {
   display: flex;
   flex-direction: column;
@@ -12,77 +16,65 @@
 
 .qr-main-icon {
   font-size: 70px;
-  color: var(--ion-color-danger);
-  background-color: rgba(var(--ion-color-danger-rgb), 0.1);
   border-radius: 50%;
   padding: 16px;
 }
 
-.main-title {
-  text-align: center;
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--ion-color-dark);
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  text-align: center;
-  font-size: 16px;
-  color: var(--ion-color-medium);
-  margin-bottom: 24px;
-}
-
 .instructions {
-  background-color: var(--ion-color-light);
   border-radius: 12px;
   padding: 16px;
-  margin-bottom: 24px;
-}
-
-.step {
-  display: flex;
-  margin-bottom: 8px;
-  align-items: flex-start;
-}
-
-.step-number {
-  font-weight: bold;
-  color: var(--ion-color-primary);
-  margin-right: 8px;
-}
-
-.step-text {
-  margin: 0;
-  color: var(--ion-color-dark);
+  width: 90%;
+  text-align: center;
+  margin: auto auto 24px;
 }
 
 .learn-more {
-  display: block;
-  text-align: right;
-  color: var(--ion-color-primary);
-  text-decoration: none;
+  // display: block;
+  // text-align: right;
+  text-decoration: underline;
   font-size: 14px;
   margin-top: 8px;
+  color: #EA592D;
 }
 
-.activation-options {
-  margin-bottom: 24px;
+.qr-button {
+  --color: #334295;
+  --border-radius: 8px;
+  --border-color: #EA592D;
+  --font-weight: 600;
+  --box-shadow: none;
+  --border-width: 1px;
+
+  // font-size: 20px;
+  font-weight: 700;
+  text-transform: none;
+  width: 90%;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  ion-icon {
+    font-size: 20px;
+  }
+
+  span {
+    font-size: 20px;
+    max-width: 78%;
+  }
+
+  &:hover {
+    --background: #f4f7ff;
+  }
 }
 
-.activation-option {
-  --padding-start: 16px;
-  --padding-end: 16px;
-  --border-radius: 10px;
-  margin-bottom: 16px;
-  --background: var(--ion-color-light);
-}
-
-.option-icon {
-  color: var(--ion-color-primary);
-  font-size: 24px;
-  margin-right: 16px;
-}
 
 .manual-code-input {
   margin-top: 24px;
@@ -91,19 +83,16 @@
 
 .help-section {
   margin-top: 32px;
-  background-color: var(--ion-color-light);
   border-radius: 12px;
   padding: 16px;
 }
 
 .help-section h3 {
-  color: var(--ion-color-dark);
   font-size: 18px;
   margin-top: 0;
 }
 
 .help-section p {
-  color: var(--ion-color-medium);
   font-size: 14px;
   margin-bottom: 16px;
 }
@@ -223,7 +212,6 @@
 
 .instructions-title {
   font-size: 1.5rem;
-  color: var(--ion-color-primary);
   margin-bottom: 2rem;
   text-align: center;
 }

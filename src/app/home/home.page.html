@@ -5,7 +5,7 @@
     </div>
 
     <!-- Splash -->
-    <div  *ngIf="this.jwt==true"  class="container"  (click)="nextSlide()">
+    <div *ngIf="this.jwt==true"  class="container"  (click)="nextSlide()">
       <div *ngFor="let item of arraySplas">
         <div *ngIf="item.view" class="fade image-container">
           <img [src]="item.img" class="logo" />
