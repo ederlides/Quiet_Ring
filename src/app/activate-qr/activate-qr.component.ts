@@ -3,6 +3,13 @@ import { Router } from '@angular/router';
 import { IonicModule, IonInput } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {
+  BarcodeScanner,
+  BarcodeFormat,
+  LensFacing,
+} from '@capacitor-mlkit/barcode-scanning';
+import { Torch } from '@capawesome/capacitor-torch';
+import { BarcodeService } from '../core/services/barcode.service';
 
 @Component({
   selector: 'app-activate-qr',
@@ -24,9 +31,30 @@ export class ActivateQrComponent implements OnInit {
   @ViewChildren('otpInput') codeDigits!: QueryList<IonInput>;
   // codeDigits: string[] = ['', '', '', '', '', ''];
   
-  constructor(private router: Router) {}
+  constructor(private router: Router, private barcodeService: BarcodeService) {}
 
   ngOnInit() {}
+
+
+
+
+  scannedCode: string | null = null;
+
+  async scanBarcode() {
+    const permissionGranted = await this.barcodeService.requestPermissions();
+    if (permissionGranted) {
+      this.scannedCode = await this.barcodeService.scanSingleBarcode();
+    } else {
+      alert('Permisos de cámara denegados');
+    }
+  }
+
+  async cancelScan() {
+    await this.barcodeService.cancelScan();
+  }
+
+
+
   
   // Método para ir a la vista de escaneo QR
   goToQrScanner() {

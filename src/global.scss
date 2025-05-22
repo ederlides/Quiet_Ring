@@ -163,3 +163,19 @@ ion-tab-bar{
     }
   }
 }
+.barcode-scanner-active,
+.barcode-scanner-active body,
+.barcode-scanner-active ion-app,
+.barcode-scanner-active ion-content,
+.barcode-scanner-active .ion-page {
+  background: transparent !important;
+  --background: transparent !important;
+}
+
+canvas, .barcode-scanner-active {
+  ion-content,
+  ion-header,
+  ion-footer {
+    display: none;
+  }
+}

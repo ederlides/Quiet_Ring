@@ -49,6 +49,21 @@
       </ion-button>
     </div>
   </div>
+
+  <!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>Escáner</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button expand="full" (click)="scanBarcode()">Escanear código</ion-button>
+  <ion-button expand="full" color="danger" (click)="cancelScan()">Cancelar escaneo</ion-button>
+
+  <div *ngIf="scannedCode">
+    <p><strong>Resultado:</strong> {{ scannedCode }}</p>
+  </div>
+</ion-content> -->
   
   <!-- Vista de ingreso de código -->
   <div class="code-input-container" *ngIf="showCodeInput">
