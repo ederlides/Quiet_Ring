@@ -41,7 +41,11 @@ const routes: Routes = [
   {
     path: 'activation-code',
     loadChildren: () => import('./activation-code/activation-code.module').then(m => m.ActivationCodeModule)
-  }
+  },
+  {
+    path: 'calling',
+    loadChildren: () => import('./calling/calling.module').then(m => m.CallingModule)
+  },
 ];
 
 @NgModule({

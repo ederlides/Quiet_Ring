@@ -1,0 +1,50 @@
+<ion-content class="call-content ion-padding ion-safe-area">
+  <div class="background-image">
+    <img [src]="'assets/men.jpg'" alt="Foto de perfil" />
+  </div>
+
+  <div class="overlay">
+    <div class="top-text">
+      <h2>{{ 'userName' }}</h2>
+      <p>Llamando...</p>
+    </div>
+
+    <div class="button-group">
+      <ion-button
+        fill="clear"
+        class="control-button"
+        [class.active]="'cameraOn'"
+        (click)="'toggleCamera()'"
+      >
+        <ion-icon name="videocam-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button
+        fill="clear"
+        class="control-button"
+        [class.active]="'speakerOn'"
+        (click)="'toggleSpeaker()'"
+      >
+        <ion-icon name="volume-high-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button
+        fill="clear"
+        class="control-button"
+        [class.active]="'muted'"
+        (click)="'toggleMute()'"
+      >
+        <ion-icon name="mic-off-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button
+        fill="clear"
+        color="lighter"
+        class="control-button end-button"
+        (click)="'endCall()'"
+      >
+        <ion-icon name="call-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

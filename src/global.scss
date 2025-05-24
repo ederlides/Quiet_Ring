@@ -20,6 +20,10 @@
   --ion-font-family: 'Mulish', sans-serif;
   --ion-text-color: #334295;
 }
+:host {
+  padding-top: constant(safe-area-inset-top); /* iOS <=11.2 */
+  padding-top: env(safe-area-inset-top); /* Estándar */
+}
 
 .example-content {
   display: flex;
@@ -29,14 +33,14 @@
 }
 
 .ion-padding {
-  --padding-start: var(--ion-padding, 0px);
-  --padding-end: var(--ion-padding, 0px);
-  --padding-top: var(--ion-padding, 0px);
-  --padding-bottom: var(--ion-padding, 0px);
-  padding-inline-start: var(--ion-padding, 0px);
-  padding-inline-end: var(--ion-padding, 0px);
-  padding-top: var(--ion-padding, 0px);
-  padding-bottom: var(--ion-padding, 0px);
+  // --padding-start: var(--ion-padding, 0px);
+  // --padding-end: var(--ion-padding, 0px);
+  // --padding-top: var(--ion-padding, 0px);
+  // --padding-bottom: var(--ion-padding, 0px);
+  // padding-inline-start: var(--ion-padding, 0px);
+  // padding-inline-end: var(--ion-padding, 0px);
+  // padding-top: var(--ion-padding, 0px);
+  // padding-bottom: var(--ion-padding, 0px);
 }
 
 .header-md {
