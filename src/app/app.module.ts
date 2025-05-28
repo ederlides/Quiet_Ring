@@ -25,7 +25,7 @@ import { ActivateQrModule } from './activate-qr/activate-qr.module';
     HttpClientModule,
     CountrySelectorModule,
     LoginModule,
-    ActivateQrModule
+    ActivateQrModule,
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 

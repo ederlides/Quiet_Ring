@@ -51,14 +51,14 @@
       <!-- <div id="radio-page"> -->
       <ion-header class="container-header-call">
         <ion-toolbar>
-          <ion-buttons class="ion-margin-end" slot="primary">
+          <ion-buttons slot="start" class="ion-margin-start">
+            <img src="../../assets/logo.svg" alt="logo" class="logo" />
+          </ion-buttons>
+          <ion-buttons slot="end" class="ion-margin-end">
             <ion-button class="button-option" shape="round" fill="outline">
               <ion-icon name="ellipsis-horizontal"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title slot="start">
-            <ion-img src="../../assets/logo.svg" alt="logo"></ion-img>
-          </ion-title>
         </ion-toolbar>
         <ion-toolbar>
           <ion-buttons>
@@ -67,7 +67,7 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-      
+
       <!-- Vista de la lista de llamadas (visible cuando showCallView es false) -->
       <ion-content class="container-contet-call" [scrollY]="true" *ngIf="!showCallView">
         <div class="table-call">
@@ -162,21 +162,12 @@
       <div id="add-page">
         <ion-header class="container-header">
           <ion-toolbar class="spacing-toolbar">
-
-            <ion-buttons class="ion-margin-end" slot="start" >
-              <ion-button class="button-option btn-back">
-                <ion-icon class="btn-back-icon" src="../../assets/icon/arrow-blue.svg" style="border-radius: 10px;"></ion-icon>
-              </ion-button>
-            </ion-buttons>
-
             <ion-title>Más</ion-title>
-
             <ion-buttons class="ion-margin-end" slot="end" style="visibility: hidden">
               <ion-button class="button-option">
                 <ion-icon name="ellipsis-horizontal"></ion-icon>
               </ion-button>
             </ion-buttons>
-
           </ion-toolbar>
         </ion-header>
         <ion-content class="container-content-setting" style="height: 100vh">
@@ -192,7 +183,7 @@
                 Activar código QR
               </p>
             </ion-item>
-            <ion-item button lines="none">
+            <ion-item button lines="none" (click)="goToActivateQR()">
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"
@@ -200,7 +191,7 @@
               ></ion-icon>
               <p class="ion-margin-start ion-margin-vertical">Únase como miembro</p>
             </ion-item>
-            <ion-item button lines="none">
+            <ion-item button lines="none" (click)="goToCreateDoorbell()">
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"

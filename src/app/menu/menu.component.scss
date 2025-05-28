@@ -233,19 +233,9 @@ ion-card-content {
 }
 
 ion-img {
-  width: 118% !important;
+  // width: 118% !important;
+  padding-left: 5%;
 }
-
-.btn-back {
-  background: #FEF6F4;
-  border-radius: 10px !important;
-
-  .btn-back-icon {
-    padding: .2rem .2rem !important;
-  }
-}
-
-
 
 .spacing-toolbar {
   padding: 0.5rem 1rem;

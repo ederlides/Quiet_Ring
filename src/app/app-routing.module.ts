@@ -46,6 +46,18 @@ const routes: Routes = [
     path: 'calling',
     loadChildren: () => import('./calling/calling.module').then(m => m.CallingModule)
   },
+  {
+    path: 'create-doorbell',
+    loadChildren: () => import('./create-doorbell/create-doorbell.module').then(m => m.CreateDoorbellModule)
+  },
+  {
+    path: 'add-members',
+    loadChildren: () => import('./add-members/add-members.module').then(m => m.AddMembersModule)
+  },
+  {
+    path: 'order-qr-code',
+    loadChildren: () => import('./order-qr-code/order-qr-code.module').then(m => m.OrderQrCodeModule)
+  },
 ];
 
 @NgModule({

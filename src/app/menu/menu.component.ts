@@ -72,6 +72,11 @@ export class MenuComponent implements OnInit {
   goToActivateQR() {
     this.router.navigate(['/activate-qr']);
   }
+  
+  // Método para navegar a la vista de Activar agregar timbre
+  goToCreateDoorbell() {
+    this.router.navigate(['/create-doorbell']);
+  }
 
   // Método para mostrar la pantalla de llamada con el contacto seleccionado
   showCall(call: Call) {
