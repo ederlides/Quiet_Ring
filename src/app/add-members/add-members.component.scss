@@ -1,0 +1,14 @@
+ion-avatar img {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #334295;
+}
+
+ion-checkbox {
+  --checkbox-background-checked: #EA592D !important;
+}
+
+ion-checkbox::part(container) {
+  border-radius: 50%;
+  border: 1px solid #B2B2B2;
+}

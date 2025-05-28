@@ -1,0 +1,33 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear" class="" (click)="close()">
+      <ion-label>Cancelar</ion-label>
+    </ion-button>
+    <ion-title class="custom-title"><span style="white-space: normal;">Agregar miembro</span></ion-title>
+    <ion-button slot="end" fill="clear" class="" (click)="'goBack()'">
+      <ion-label>Siguiente</ion-label>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-safe-area">
+  <ion-item lines="none">
+    <ion-input 
+      label="Nombre" 
+      label-placement="floating" 
+      fill="outline" 
+      placeholder="Buscar Miembro"
+      class="custom-input"
+    ></ion-input>
+  </ion-item>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <img src="assets/men.jpg" />
+      </ion-avatar>
+      <ion-label>Miembro</ion-label>
+      <ion-checkbox slot="end"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+</ion-content>
