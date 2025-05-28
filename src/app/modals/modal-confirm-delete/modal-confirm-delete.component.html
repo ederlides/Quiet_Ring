@@ -1,0 +1,40 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title class="ion-text-center custom-title">{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding content-centered">
+  <p class="message">{{ message }}</p>
+  <ion-item class="code-input-container">
+    <ion-button 
+      fill="outline" 
+      class="custom-btn btn-outline"
+      (click)="cancel()" 
+    >
+      No
+    </ion-button>
+    <ion-button 
+      fill="solid" 
+      class="custom-btn btn-solid"
+      (click)="confirm()"
+    >
+      Si
+    </ion-button>
+  </ion-item>
+</ion-content>
+
+
+
+<!-- 
+<ion-content padding class="main-view">
+  <div class="overlay" (click)="dismiss()"></div>
+  <div class="modal_content">
+    <div class="modal-content">
+      <div class="button-group">
+        <ion-button fill="outline" class="btn-cancel" expand="block" (click)="'cancel()'">No</ion-button>
+        <ion-button class="btn-confirm" expand="block" (click)="'confirm()'">Sí</ion-button>
+      </div>
+    </div>
+  </div>
+  
+</ion-content> -->

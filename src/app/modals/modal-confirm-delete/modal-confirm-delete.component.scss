@@ -1,0 +1,43 @@
+.custom-title {
+    font-size: 27.5px;
+    margin-top: 30px;
+}
+
+.content-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.message {
+  margin: auto;
+  font-size: 14px;
+  color: #444;
+  width: 200px;
+}
+
+.custom-btn {
+    width: 100px;
+}
+
+.button-group {
+//   display: flex;
+//   gap: 10px;
+  margin-top: 10px;
+//   justify-content: center;
+}
+
+// .btn-cancel {
+//   --background: #ffffff;
+//   --border-color: #ff8800;
+//   --color: #ff8800;
+//   --border-width: 2px;
+//   width: 100px;
+// }
+
+// .btn-confirm {
+//   --background: #ff8800;
+//   --color: white;
+//   width: 100px;
+// }
