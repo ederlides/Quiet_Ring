@@ -90,4 +90,28 @@ export class MenuComponent implements OnInit {
     this.showCallView = false;
     this.selectedCall = null;
   }
+
+  actions(idx: number): void {
+    switch (idx) {
+      case 0: // Descargar Código QR
+        
+      break;
+      case 1: // Agregar Miembro
+        
+      break;
+      case 2: // Verificar Miembro
+        
+      break;
+      case 3: // Editar Nombre de Timbr
+        
+      break;
+      case 4: // Eliminar Timbre
+        
+      break;
+      case 5: // Editar Miembro
+        
+      break;
+    }
+
+  }
 }

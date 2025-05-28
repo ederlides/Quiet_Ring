@@ -30,8 +30,8 @@
               <ng-template>
                 <ion-content>
                   <ion-list class="custom-ion-list">
-                    <ion-item button="true" detail="false" *ngFor="let option of options">
-                      <div class="btn-option-bells">
+                    <ion-item button="true" detail="false" *ngFor="let option of options, let i = index">
+                      <div class="btn-option-bells" (click)="actions(i)">
                         <p style="font-size:1rem;" class="item-label-option">{{option.name}}</p>
                         <ion-icon slot="icon-only" [name]="option.name" [src]="option.src" class="option-icon"></ion-icon>
                       </div>
