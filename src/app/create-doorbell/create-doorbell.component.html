@@ -1,0 +1,58 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start" fill="clear" class="custom-back-button" defaultHref="/login">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-back-button>
+    <ion-title class="custom-title"><span style="white-space: normal;">Crear timbre</span></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-safe-area">
+  <ion-item lines="none">
+    <ion-input 
+      label="Título" 
+      label-placement="floating" 
+      fill="outline" 
+      placeholder="Enter text"
+      class="custom-input"
+    ></ion-input>
+  </ion-item>
+  <ion-item lines="none">
+    <!-- <ion-label></ion-label> -->
+    <ion-toggle slot="end">Sólo audio</ion-toggle>
+    <ion-label slot="end">Llamada de video y audio</ion-label>
+  </ion-item>
+  <ion-button expand="block" fill="outline" (click)="openModalAddMembers()" class="custom-btn btn-outline">
+    Agregar miembros
+  </ion-button>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <img [src]="'assets/men.jpg'" />
+      </ion-avatar>
+      <ion-label>Miembro</ion-label>
+      <ion-buttons slot="end">
+        <ion-button fill="clear" class="color-secondary" (click)="openModalEdit()">
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" class="color-secondary" (click)="openModalDelete()">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer class="ion-padding">
+  <ion-button expand="block" fill="solid" class="custom-btn btn-solid">
+    GUARDAR TIMBRE
+  </ion-button>
+</ion-footer>
+<!-- 
+<ion-button id="open-modal" expand="block">Open Sheet Modal</ion-button>
+<ion-modal trigger="open-modal" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
+  <ng-template>
+    <app-add-members></app-add-members>
+  </ng-template>
+</ion-modal> -->
