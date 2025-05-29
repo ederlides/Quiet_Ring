@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ModalConfirmDeleteComponent } from '../modals/modal-confirm-delete/modal-confirm-delete.component';
 import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
+
 
 @Component({
   selector: 'app-order-qr-code',
@@ -16,12 +17,20 @@ import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class OrderQrCodeComponent implements OnInit {
-
+  
   constructor() {}
 
   ngOnInit() {
   }
 
+  slideNext() {
+    const swiperEl = document.querySelector('swiper-container') as any;
+    swiperEl.swiper.slideNext();
+  }
   
+  slidePrev() {
+    const swiperEl = document.querySelector('swiper-container') as any;
+    swiperEl.swiper.slidePrev();
+  }
 
 }

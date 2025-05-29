@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';import { register } from 'swiper/element/bundle';
+
+register();
 
 @Component({
   selector: 'app-root',
@@ -9,4 +11,9 @@ import { IonicModule } from '@ionic/angular';
 })
 export class AppComponent {
   constructor() {}
+  swiperConfig = {
+    pagination: { clickable: true },
+    navigation: true,
+    loop: true
+  };
 }

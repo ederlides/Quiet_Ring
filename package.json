@@ -29,7 +29,7 @@
     "@capacitor/keyboard": "7.0.0",
     "@capacitor/status-bar": "7.0.0",
     "@capawesome/capacitor-torch": "^7.0.2",
-    "@ionic/angular": "^8.0.0",
+    "@ionic/angular": "^8.5.8",
     "@ionic/cordova-builders": "^12.1.2",
     "@maskito/angular": "^3.5.0",
     "cordova-plugin-android-permissions": "^1.1.5",
@@ -37,6 +37,7 @@
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.8.1",
+    "swiper": "^11.2.8",
     "tslib": "^2.3.0",
     "world-countries-capitals": "^3.4.0",
     "zone.js": "~0.15.0"
