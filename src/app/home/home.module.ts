@@ -16,6 +16,6 @@ import { HomePageRoutingModule } from './home-routing.module';
     FormsModule 
     
   ],
-  declarations: [HomePage]
+  // declarations: [HomePage]
 })
 export class HomePageModule {}

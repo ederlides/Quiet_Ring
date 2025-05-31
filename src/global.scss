@@ -219,7 +219,15 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
+::ng-deep .swiper-pagination {
+  background: #FEF6F4 !important;
+  padding: 7px 15px !important;
+  width: max-content !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  right: 0 !important;
+  border-radius: 6px !important;
+}
 // ion-toggle
 ion-toggle {
   // padding: 12px;
@@ -371,11 +379,6 @@ swiper-container::part(button-next) {
   @extend .custom-back-button;
   margin: 0;
   top: 50%;
-}
-
-.my-slides  .swiper-pagination-bullet {
-    width: 150px ;
-    height: 150px;
 }
 
 .footer-actions {

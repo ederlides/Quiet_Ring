@@ -1,112 +1,193 @@
 @import '../../theme/variables';
 
+.custom-title {
+  max-height: max-content;
+}
+
 .ion-padding {
-  .logo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    /* Altura completa de la pantalla */
-    background-color: white;
-    /* Fondo blanco */
-    width: 100%;
+}
 
-    .logo {
-      width: 70%;
-      /* Ajusta el tamaño como sea necesario */
-      max-width: 400px;
-      /* Tamaño máximo para la imagen */
-      width: 301.0000305175781;
-      height: 84.46894073486328;
-      top: 436px;
-      left: 69px;
-    }
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 32px);
+  /* Altura completa de la pantalla */
+  background-color: white;
+  /* Fondo blanco */
+  width: 100%;
+
+  .logo {
+    width: 70%;
+    /* Ajusta el tamaño como sea necesario */
+    max-width: 400px;
+    /* Tamaño máximo para la imagen */
+    width: 301.0000305175781;
+    height: 84.46894073486328;
+    top: 436px;
+    left: 69px;
+    
+      animation: slide-up 1.2s ease-out forwards;
+      transform: translateY(100%);
+      opacity: 0;
   }
+}
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 100vh;
-    background-color: white;
-
-    /* --- Animación de desvanecimiento --- */
-    .fade {
-      animation: fadeIn 0.5s ease-in-out;
+    .slide-up-wrapper {
+      animation: slide-up 1.2s ease-out forwards;
+      transform: translateY(100%);
+      opacity: 0;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-        /* Efecto de subida */
-      }
-
+    @keyframes slide-up {
       to {
-        opacity: 1;
         transform: translateY(0);
+        opacity: 1;
       }
     }
 
-
-    /* Fondo blanco */
-    .image-container {
-      .logo {}
-    }
-
-    .illustration {
-      width: 100%;
-      /* Ajusta el tamaño como sea necesario */
-      max-width: 200px;
-      /* Tamaño máximo para la imagen */
-      object-fit: contain;
-      /* Mantiene la relación de aspecto de la imagen */
-    }
-
-    .title {
-      font-size: 34px;
-      font-weight: 900;
-      text-align: center;
-      padding: 0 1rem;
-      text-align: center;
-    }
-
-    .description {
-      font-size: 15px;
-      margin-bottom: 20px;
-      padding: 0 20px;
-    }
-
-    /* --- Estilos para los puntos indicadores --- */
-    .dots-container {
-      position: absolute;
-      bottom: 50px;
-      display: flex;
-      gap: 10px;
-
-      .dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background-color: $primary-color;
-        /* Color gris por defecto */
-        transition: background-color 0.3s ease;
-      }
-
-      /* Punto activo cambia de color */
-      .dot.active {
-        background-color: #EA592D;
-        /* Azul para el punto activo */
-      }
-    }
+.container {
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // justify-content: center;
+  // text-align: center;
+  // height: 100vh;
+  // background-color: white;
+}
 
 
+  // /* --- Animación de desvanecimiento --- */
+  // .fade {
+  //   animation: fadeIn 0.5s ease-in-out;
+  // }
 
+.slide-down {
+  transform: translateY(0px);
+  transition: 1000ms;
+  opacity: 0.5;
+}
+
+.slide-up {
+  transform: translateY(-30px);
+  transition: 1000ms;
+  opacity: 1;
+}
+
+.illustration {
+  width: 100%;
+  /* Ajusta el tamaño como sea necesario */
+  max-width: 200px;
+  /* Tamaño máximo para la imagen */
+  object-fit: contain;
+  /* Mantiene la relación de aspecto de la imagen */
+}
+
+.description {
+  font-size: 15px;
+  margin-bottom: 20px;
+  padding: 0 20px;
+}
+
+/* --- Estilos para los puntos indicadores --- */
+.dots-container {
+  position: absolute;
+  bottom: 50px;
+  display: flex;
+  gap: 10px;
+
+  .dot {
+    width: 102px;
+    height: 102px;
+    border-radius: 50%;
+    background-color: $primary-color;
+    /* Color gris por defecto */
+    transition: background-color 0.3s ease;
   }
+}
 
+.image-container {
+  width: 350px;
+  height: 450px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
 
+// estilo y animacion de campana
 
+.container-loader {
+  width: 100%;
+  height: calc(100vh - 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+/* Escala completa con esta clase */
+.loader {
+  position: relative;
+  width: 200px;
+  aspect-ratio: 1/1;
+}
+
+.wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  opacity: 0;
+  animation: waveAnim 2s infinite;
+}
+
+.wave:nth-child(1) {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(234, 89, 45, 0.2);
+  animation-delay: 0s;
+}
+
+.wave:nth-child(2) {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(234, 89, 45, 0.1);
+  animation-delay: 0.3s;
+}
+
+.wave:nth-child(3) {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(234, 89, 45, 0.05);
+  animation-delay: 0.6s;
+}
+
+@keyframes waveAnim {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+.bell {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60%; /* se adapta al contenedor */
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+  transform-origin: top center;
+}
+
+@keyframes ring {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) rotate(7deg); }
+  50% { transform: translate(-50%, -50%) rotate(0deg); }
+  75% { transform: translate(-50%, -50%) rotate(-7deg); }
+  100% { transform: translate(-50%, -50%) rotate(0deg); }
 }

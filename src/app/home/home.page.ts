@@ -1,67 +1,106 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { WebrtcService } from '../services/webrtc.service';
-import { NavController } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  standalone: false,
+  standalone: true,
+    imports: [IonicModule, CommonModule, FormsModule],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class HomePage {
 
-  constructor(private router: Router) { }
-  jwt: Boolean = false;
+  phase: number = 0;
+  showButton = false;
+  activeIndex: number = -1;
+
   arraySplas = [
     {
       title: "Llamadas privadas con código QR",
       description: "Facilita la comunicación con tus visitantes de manera segura, rápida y directa, sin necesidad de intermediarios.",
-      img: "../../assets/splas1.svg",
-      view: true
+      img: "../../assets/splas1_2.svg",
     },
     {
       title: "Adiós a los timbres tradicionales",
       description: "Moderniza la entrada de tu hogar con una solución innovadora que combina tecnología y estilo.",
-      img: "../../assets/splas2.svg",
-      view: false
+      img: "../../assets/splas2_2.svg",
     },
     {
       title: "Acceso rápido y seguro",
       description: "Los códigos QR ofrecen una experiencia ágil y confiable, garantizando la seguridad de tu hogar.",
-      img: "../../assets/splas3.svg",
-      view: false
+      img: "../../assets/splas3_2.svg",
     },
     {
       title: "Control total desde tu smartphone",
       description: "Responde, visualiza y gestiona a tus visitantes desde cualquier lugar con solo un toque.",
-      img: "../../assets/splas4.svg",
-      view: false
+      img: "../../assets/splas4_2.svg",
     }
   ];
 
-  currentIndex = 0; // Índice del elemento actual
+  @ViewChild('swiperEl', { static: false }) swiperRef!: ElementRef;
 
-  nextSlide() {
-    this.arraySplas[this.currentIndex].view = false;
-    if (this.currentIndex === this.arraySplas.length - 1) {
-      this.router.navigate(['/login']); 
-      return;
-    }
-    this.currentIndex = (this.currentIndex + 1) % this.arraySplas.length;
-    this.arraySplas[this.currentIndex].view = true;
-  }
-
-  isActive(index: number): boolean {
-    return index === this.currentIndex; // Devuelve true si el punto es el actual
-  }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     setTimeout(() => {
-      this.jwt = true;
+      this.phase = 1;
+      setTimeout(() => {
+        this.phase = 2;
+        this.activeIndex = 0;
+        setTimeout(() => {
+          const swiperEl = this.swiperRef.nativeElement;
+            
+          const paginationEl = swiperEl.shadowRoot?.querySelector('.swiper-pagination');
+      
+          if (paginationEl) {
+            Object.assign(paginationEl.style, {
+              background: '#FEF6F4',
+              padding: '7px 15px',
+              width: 'max-content',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              right: '0',
+              borderRadius: '6px',
+            });
+          }
+        }, 0);
+      }, 3000);
+    }, 3000);
+  }
 
-    }, 5000);
+  onSlideChange() {
+    const swiper = this.swiperRef.nativeElement.swiper;
+    if (swiper) {
+      this.activeIndex = swiper.activeIndex;
+      this.checkIfLastSlide();
+    }
+  }
 
+  // onSlideChange(a:any = 0) {
+  //   console.log(a);
+  //   this.checkIfLastSlide();
+  // }
+
+  checkIfLastSlide() {
+    const swiper = this.swiperRef.nativeElement.swiper;
+    if (swiper) {
+      this.showButton = swiper.isEnd;
+    }
+  }
+
+  slideNext() {
+    const swiperEl = document.querySelector('swiper-container') as any;
+    swiperEl.swiper.slideNext();
+  }
+  
+  slidePrev() {
+    const swiperEl = document.querySelector('swiper-container') as any;
+    swiperEl.swiper.slidePrev();
   }
 
 }
