@@ -42,7 +42,9 @@ export class CreateDoorbellComponent implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ModalEditComponent,
       componentProps: {
-        title: 'Editar',
+        data: {
+          title: 'Editar',
+        }
       },
       cssClass: 'modal-confirm-delete',
       showBackdrop: true,

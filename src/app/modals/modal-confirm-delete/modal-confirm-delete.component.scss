@@ -1,7 +1,14 @@
 .custom-title {
-    font-size: 27.5px;
-    margin-top: 30px;
+  font-size: 27.5px;
+  margin-top: 30px;
 }
+
+.code-input-container {
+  height: initial;
+  padding: 0.5rem 2rem;
+  --border-color: white;
+}
+
 
 .content-centered {
   display: flex;

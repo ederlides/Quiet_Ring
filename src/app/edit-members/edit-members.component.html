@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start" fill="clear" class="custom-back-button" href="/menu" defaultHref="/menu">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-back-button>
+    <ion-title class="custom-title"><span style="white-space: normal;">Editar miembro</span></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="shadowed-content">
+    <!-- <ion-item lines="none">
+      <ion-input 
+        label="Nombre" 
+        label-placement="floating" 
+        fill="outline" 
+        placeholder="Buscar Miembro"
+        class="custom-input"
+      ></ion-input>
+    </ion-item> -->
+    <ion-list>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img src="assets/men.jpg" />
+        </ion-avatar>
+        <ion-label>Miembro</ion-label>
+        <ion-button class="my-class-button-icon" (click)="openModalEdit()">
+          <ion-icon slot="icon-only" [name]="'editar'" [src]="'../../assets/icon/note-pack.svg'" class="option-icon"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<!-- <ion-footer class="ion-padding">
+  <ion-button expand="block" fill="solid" class="custom-btn btn-solid">
+    Guardar miembro
+  </ion-button>
+</ion-footer> -->

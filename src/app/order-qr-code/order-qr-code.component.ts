@@ -3,9 +3,6 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { ModalConfirmDeleteComponent } from '../modals/modal-confirm-delete/modal-confirm-delete.component';
-import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
 
 
 @Component({

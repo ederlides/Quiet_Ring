@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button *ngIf="!showCodeInput" defaultHref="/login"></ion-back-button>
+      <ion-back-button slot="start" fill="clear" class="custom-back-button" *ngIf="!showCodeInput" defaultHref="/login"></ion-back-button>
       <ion-button *ngIf="showCodeInput" (click)="goBackFromCodeInput()">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>

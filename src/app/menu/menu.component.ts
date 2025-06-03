@@ -1,8 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { ModalAddMembersComponent } from '../modals/modal-add-members/modal-add-members.component';
+import { ModalConfirmDeleteComponent } from '../modals/modal-confirm-delete/modal-confirm-delete.component';
+import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
+import { VerifyMembersComponent } from '../verify-members/verify-members.component';
 
 // Interfaz para el tipo de objeto de llamada
 interface Call {
@@ -33,12 +37,12 @@ export class MenuComponent implements OnInit {
   ];
 
   options = [
-    { id:1, name:'Descargar Código QR',src:'../../assets/icon/qr.svg'},
-    { id:2, name:'Agregar Miembro',src:'../../assets/icon/person.svg'},
-    { id:3, name:'Verificar Miembro',src:'../../assets/icon/person-check.svg'},
-    { id:4, name:'Editar Nombre de Timbre',src:'../../assets/icon/note-pack.svg'},
-    { id:5, name:'Eliminar Timbre',src:'../../assets/icon/trash.svg'},
-    { id:6, name:'Editar Miembro',src:'../../assets/icon/person-edit.svg'},
+    { id:1, name:'Descargar Código QR',src:'../../assets/icon/qr.svg', dir: '/order-qr-code'},
+    { id:2, name:'Agregar Miembro',src:'../../assets/icon/person.svg', dir: ''},
+    { id:3, name:'Verificar Miembro',src:'../../assets/icon/person-check.svg', dir: ''},
+    { id:4, name:'Editar Nombre de Timbre',src:'../../assets/icon/note-pack.svg', dir: ''},
+    { id:5, name:'Eliminar Timbre',src:'../../assets/icon/trash.svg', dir: ''},
+    { id:6, name:'Editar Miembro',src:'../../assets/icon/person-edit.svg', dir: ''},
   ]
 
   calls: Call[] = [
@@ -64,13 +68,18 @@ export class MenuComponent implements OnInit {
     {name:'Quiet Ring Sticker',price:'$4,99 Usd', src:'../../assets/qr3.svg'}
   ]
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private modalCtrl: ModalController) {}
 
   ngOnInit() { }
 
   // Método para navegar a la vista de Activar QR
   goToActivateQR() {
     this.router.navigate(['/activate-qr']);
+  }
+
+  // Método para navegar a la vista de Activar QR
+  goToJoinAsAMember() {
+    this.router.navigate(['/join-as-a-member']);
   }
   
   // Método para navegar a la vista de Activar agregar timbre
@@ -91,27 +100,106 @@ export class MenuComponent implements OnInit {
     this.selectedCall = null;
   }
 
-  actions(idx: number): void {
+  actions(idx: number, item: any): void {
     switch (idx) {
       case 0: // Descargar Código QR
-        
+        this.router.navigate(['/order-qr-code']);
       break;
       case 1: // Agregar Miembro
-        
+        this.openModalAddMembers(item);
       break;
       case 2: // Verificar Miembro
-        
+        // this.router.navigate(['/verify-members']);
+        this.openModalMembersVerify(item)
       break;
-      case 3: // Editar Nombre de Timbr
-        
+      case 3: // Editar Nombre de Timbre
+        this.openModalEdit(item)
       break;
       case 4: // Eliminar Timbre
-        
+        this.openModalDelete(item)
       break;
       case 5: // Editar Miembro
-        
+        this.router.navigate(['/edit-members']);
       break;
     }
 
   }
+
+  async openModalAddMembers(item?: any) {
+    const modal = await this.modalCtrl.create({
+      component: ModalAddMembersComponent,
+      componentProps: {
+        title: '',
+        message: ``
+      },
+      cssClass: 'modal-add-members',
+      showBackdrop: true,
+      // backdropDismiss: false,
+      // mode: 'ios'
+    });
+    await modal.present();
+    const { data, role } = await modal.onDidDismiss();
+    if (role === 'confirm') {
+    }
+  }
+
+  async openModalDelete(item?: any) {
+    const modal = await this.modalCtrl.create({
+      component: ModalConfirmDeleteComponent,
+      componentProps: {
+        title: 'Eliminar timbre',
+        message: `¿Quieres eliminar a este timbre "${item.name}?"`
+      },
+      cssClass: 'modal-confirm-delete',
+      showBackdrop: true,
+      // backdropDismiss: false,
+      // mode: 'ios'
+    });
+    await modal.present();
+    const { data, role } = await modal.onDidDismiss();
+    if (role === 'confirm') {
+    }
+  }
+
+  async openModalEdit(item?: any) {
+    const modal = await this.modalCtrl.create({
+      component: ModalEditComponent,
+      componentProps: {
+        data: {
+          id: item.id,
+        }
+        
+      },
+      cssClass: 'modal-confirm-delete',
+      showBackdrop: true,
+      backdropDismiss: false,
+      // mode: 'ios'
+    });
+    await modal.present();
+    const { data, role } = await modal.onDidDismiss();
+    if (role === 'confirm') {
+    }
+  }
+
+  async openModalMembersVerify(item?: any) {
+    const modal = await this.modalCtrl.create({
+      component: VerifyMembersComponent,
+      componentProps: {
+        data: {
+          title: 'Editar timbre',
+          value: item.name
+        }
+        
+      },
+      // cssClass: 'modal-confirm-delete',
+      showBackdrop: true,
+      backdropDismiss: false,
+      // mode: 'ios'
+    });
+    await modal.present();
+    const { data, role } = await modal.onDidDismiss();
+    if (role === 'confirm') {
+    }
+  }
+
 }

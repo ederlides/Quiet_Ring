@@ -36,6 +36,23 @@ ion-input, ion-textarea, ion-toggle .label {
   color: #334295 !important;
 }
 
+ion-header, ion-footer {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+ion-content {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+// estilo icono avatar
+
+ion-avatar img {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #334295;
+}
+
 // estilo modal confirmación
 
 .modal-confirm-delete {
@@ -54,6 +71,11 @@ ion-input, ion-textarea, ion-toggle .label {
   }
 }
 
+.modal-add-members {
+  @extend .modal-confirm-delete;
+  --height: 270px;
+}
+
 // estilo input codigo
 .code-input-container {
   display: flex;
@@ -69,17 +91,6 @@ ion-input, ion-textarea, ion-toggle .label {
   align-items: center;
   justify-content: center;
   height: 100%;
-}
-
-.ion-padding {
-  // --padding-start: var(--ion-padding, 0px);
-  // --padding-end: var(--ion-padding, 0px);
-  // --padding-top: var(--ion-padding, 0px);
-  // --padding-bottom: var(--ion-padding, 0px);
-  // padding-inline-start: var(--ion-padding, 0px);
-  // padding-inline-end: var(--ion-padding, 0px);
-  // padding-top: var(--ion-padding, 0px);
-  // padding-bottom: var(--ion-padding, 0px);
 }
 
 // declaración de clases para colores
@@ -165,10 +176,31 @@ ion-button{
   }
 }
 
-
+// título personalizado
 .custom-title {
   font-size: 32px;
   font-weight: 800;
+  text-align: center;
+}
+
+// estilo de contenedor para poner los decorados flotantes
+.overlays {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+// sombra del contenedor ion-content
+.shadowed-content {
+  box-shadow: 0 0px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  margin: 10px;
+  // background: white;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
 }
 
 .header-md {

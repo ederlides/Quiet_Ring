@@ -31,7 +31,7 @@
                 <ion-content>
                   <ion-list class="custom-ion-list">
                     <ion-item button="true" detail="false" *ngFor="let option of options, let i = index">
-                      <div class="btn-option-bells" (click)="actions(i)">
+                      <div class="btn-option-bells" (click)="actions(i, item)">
                         <p style="font-size:1rem;" class="item-label-option">{{option.name}}</p>
                         <ion-icon slot="icon-only" [name]="option.name" [src]="option.src" class="option-icon"></ion-icon>
                       </div>
@@ -183,7 +183,7 @@
                 Activar código QR
               </p>
             </ion-item>
-            <ion-item button lines="none" (click)="goToActivateQR()">
+            <ion-item button lines="none" (click)="goToJoinAsAMember()">
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"
@@ -195,7 +195,7 @@
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"
-                src="../../assets/icon/bell.svg"
+                src="../../assets/icon/bell-outline.svg"
               ></ion-icon>
               <p class="ion-margin-start ion-margin-vertical">Agregar timbre</p>
             </ion-item>
@@ -333,7 +333,7 @@
     <ion-tab-bar color="light" slot="bottom">
 
       <ion-tab-button tab="home">
-        <ion-icon src="../../assets/icon/bells.svg"></ion-icon>
+        <ion-icon src="../../assets/icon/qr-1.svg"></ion-icon>
         <ion-label>Timbres</ion-label>
       </ion-tab-button>
 

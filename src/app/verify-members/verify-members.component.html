@@ -1,0 +1,49 @@
+
+<ion-header>
+  <div style="display: flex; align-items: center; justify-content: end; width: 100%; padding-right: 10px; padding-top: 10px;">
+    <button class="close-button" (click)="closeModal()">✕</button>
+  </div>
+  <ion-toolbar>
+    <ion-segment mode="md" class="filter-segment">
+      <ion-segment-button value="opcion1">
+        <ion-label>Todos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="opcion2">
+        <ion-label>Activos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="opcion3">
+        <ion-label>Inactivos</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    <ion-title class="custom-title ion-text-center"><span style="white-space: normal;">Miembros verificados</span></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-safe-area">
+  <ion-item lines="none">
+    <ion-input 
+      label="Nombre" 
+      label-placement="floating" 
+      fill="outline" 
+      placeholder="Buscar Miembro"
+      class="custom-input"
+    ></ion-input>
+  </ion-item>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <img src="assets/men.jpg" />
+      </ion-avatar>
+      <ion-label>Miembro</ion-label>
+      <ion-toggle class="text">
+        {{ 'miembro' }}
+      </ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer class="ion-padding">
+  <ion-button expand="block" fill="solid" class="custom-btn btn-solid">
+    Guardar miembro
+  </ion-button>
+</ion-footer>

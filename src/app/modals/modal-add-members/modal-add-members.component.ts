@@ -4,13 +4,13 @@ import { IonicModule, ModalController } from '@ionic/angular';
 
 @Component({
   standalone: true,
-  selector: 'app-modal-edit',
+  selector: 'app-modal-add-members',
   imports: [CommonModule, IonicModule],
-  templateUrl: './modal-edit.component.html',
-  styleUrls: ['./modal-edit.component.scss']
+  templateUrl: './modal-add-members.component.html',
+  styleUrls: ['./modal-add-members.component.scss']
 })
-export class ModalEditComponent {
-  @Input() data?: any;
+export class ModalAddMembersComponent {
+  @Input() title: string = 'Editar';
 
   constructor(private modalCtrl: ModalController) {}
 

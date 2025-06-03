@@ -55,6 +55,18 @@ const routes: Routes = [
     loadChildren: () => import('./add-members/add-members.module').then(m => m.AddMembersModule)
   },
   {
+    path: 'verify-members',
+    loadChildren: () => import('./verify-members/verify-members.module').then(m => m.VerifyMembersModule)
+  },
+  {
+    path: 'edit-members',
+    loadChildren: () => import('./edit-members/edit-members.module').then(m => m.EditMembersModule)
+  },
+  {
+    path: 'join-as-a-member',
+    loadChildren: () => import('./join-as-a-member/join-as-a-member.module').then(m => m.JoinAsAMemberModule)
+  },
+  {
     path: 'order-qr-code',
     loadChildren: () => import('./order-qr-code/order-qr-code.module').then(m => m.OrderQrCodeModule)
   },
