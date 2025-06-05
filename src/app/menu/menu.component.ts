@@ -7,6 +7,7 @@ import { ModalAddMembersComponent } from '../modals/modal-add-members/modal-add-
 import { ModalConfirmDeleteComponent } from '../modals/modal-confirm-delete/modal-confirm-delete.component';
 import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
 import { VerifyMembersComponent } from '../verify-members/verify-members.component';
+import { ToggleCustomEvent  } from '@ionic/angular';
 
 // Interfaz para el tipo de objeto de llamada
 interface Call {
@@ -33,7 +34,7 @@ export class MenuComponent implements OnInit {
     { id:2, name: 'Dog', active: true },
     { id:3, name: 'Passport', active: false },
     { id:4, name: 'Mami Beach Apartment', active: true },
-    { id:5, name: 'Alameda del Rio', active: false }
+    { id:5, name: 'Alameda del Rio', active: false },
   ];
 
   options = [
@@ -199,6 +200,33 @@ export class MenuComponent implements OnInit {
     await modal.present();
     const { data, role } = await modal.onDidDismiss();
     if (role === 'confirm') {
+    }
+  }
+
+  async onToggleChange(event: ToggleCustomEvent , item: any) {
+    const newValue = event.detail.checked;
+    // revert visual toggle until user confirms
+    event.target.checked = !newValue;
+  
+    const modal = await this.modalCtrl.create({
+      component: ModalConfirmDeleteComponent,
+      componentProps: {
+        title: `${newValue ? 'Activar' : 'Desactivar'} timbre`,
+        message: `¿Estás seguro de que quieres ${newValue ? 'activar' : 'desactivar'} el timbre "${item.name}"?`
+      },
+      cssClass: 'modal-confirm-delete',
+      showBackdrop: true,
+      // mode: 'ios', // ← importante para permitir altura dinámica
+    });
+  
+    await modal.present();
+  
+    const { role } = await modal.onDidDismiss();
+  
+    if (role === 'confirm') {
+      item.active = newValue;
+    } else {
+      event.target.checked = item.active;
     }
   }
 

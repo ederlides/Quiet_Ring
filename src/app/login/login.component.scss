@@ -37,6 +37,9 @@ ion-content{
     padding: 0 10px;
 
     .img-welcome {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: 100%;
       height: 75%;
     }
