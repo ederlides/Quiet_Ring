@@ -1,15 +1,15 @@
 <ion-content class="ion-padding">
   <ion-tabs>
-    <ion-tab tab="home">
+    <ion-tab tab="home" style="padding-bottom: 75px;">
       <!-- <div id="home-page"> -->
-      <ion-header>
+      <ion-header class="custom-ion-header custom-padding-header">
         <ion-toolbar>
-          <ion-title>Timbres</ion-title>
+          <ion-title class="custom-title"><span style="white-space: normal;">Timbres</span></ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content class="container-content">
-        <ion-list>
-          <ion-item *ngFor="let item of items" lines="none" style="width: calc(100% - 60px); position: relative;">
+        <ion-list class="custom-ion-list">
+          <ion-item *ngFor="let item of items" lines="none" style="width: calc(100% - 60px); position: relative; --background: transparent;">
             <ion-toggle 
               class="text" 
               [checked]="item.active"
@@ -50,16 +50,21 @@
           </ion-item>
         </ion-list>
         
+        <div class="overlays">
+          <div class="circles circle-home-1"></div>
+          <div class="circles circle-home-2"></div>
+          <div class="circles circle-home-3"></div>
+        </div>
       </ion-content>
       <!-- </div> -->
     </ion-tab>
 
-    <ion-tab tab="radio">
+    <ion-tab tab="radio" style="padding-bottom: 75px;">
       <!-- <div id="radio-page"> -->
-      <ion-header class="container-header-call">
+      <ion-header class="custom-ion-header custom-padding-header" style="padding-bottom: 0;">
         <ion-toolbar>
-          <ion-buttons slot="start" class="ion-margin-start">
-            <img src="../../assets/logo.svg" alt="logo" class="logo" />
+          <ion-buttons slot="start" class="ion-margin-start" style="width: 150px;">
+            <img src="assets/logo.svg" alt="logo" class="logo" />
           </ion-buttons>
           <ion-buttons slot="end" class="ion-margin-end">
             <ion-button class="button-option" shape="round" fill="outline">
@@ -89,13 +94,13 @@
                 <ion-icon
                   class="ion-margin-start"
                   slot="end"
-                  src="../../assets/icon/inf-red.svg"
+                  src="assets/icon/inf-red.svg"
                 ></ion-icon>
                 <ion-label>
                   <h1>{{ item.name }}</h1>
                   <p>
                     <ion-icon
-                      src="../../assets/icon/call-declied.svg"
+                      src="assets/icon/call-declied.svg"
                     ></ion-icon>
                     {{ item.call }}
                   </p>
@@ -109,7 +114,7 @@
       <!-- Vista de llamada activa (visible cuando showCallView es true) -->
       <ion-content class="calling-content" *ngIf="showCallView">
         <div class="calling-container">
-          <ion-header class="calling-header">
+          <ion-header class="custom-ion-header">
             <ion-toolbar>
               <ion-buttons slot="start">
                 <ion-button (click)="hideCall()" class="back-button">
@@ -165,11 +170,20 @@
       <!-- </div> -->
     </ion-tab>
 
-    <ion-tab tab="add">
+    <ion-tab tab="add" style="padding-bottom: 75px;">
       <div id="add-page">
-        <ion-header class="container-header">
-          <ion-toolbar class="spacing-toolbar">
-            <ion-title>Más</ion-title>
+        <ion-header class="custom-ion-header custom-padding-header">
+          <ion-toolbar>
+            <ion-buttons
+              class="ion-margin-end"
+              slot="start"
+              style="visibility: hidden"
+            >
+              <ion-button class="button-option" shape="round" fill="outline">
+                <ion-icon name="ellipsis-horizontal"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            <ion-title class="custom-title"><span style="white-space: normal;">Más</span></ion-title>
             <ion-buttons class="ion-margin-end" slot="end" style="visibility: hidden">
               <ion-button class="button-option">
                 <ion-icon name="ellipsis-horizontal"></ion-icon>
@@ -184,7 +198,7 @@
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"
-                src="../../assets/icon/qr.svg"
+                src="assets/icon/qr.svg"
               ></ion-icon>
               <p class="ion-margin-start ion-margin-vertical">
                 Activar código QR
@@ -194,7 +208,7 @@
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"
-                src="../../assets/icon/person.svg"
+                src="assets/icon/person.svg"
               ></ion-icon>
               <p class="ion-margin-start ion-margin-vertical">Únase como miembro</p>
             </ion-item>
@@ -202,19 +216,24 @@
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"
-                src="../../assets/icon/bell-outline.svg"
+                src="assets/icon/bell-outline.svg"
               ></ion-icon>
               <p class="ion-margin-start ion-margin-vertical">Agregar timbre</p>
             </ion-item>
           </ion-list>
           <!-- </div> -->
+          <div class="overlays">
+            <div class="circles circle-add-1"></div>
+            <div class="circles circle-add-2"></div>
+            <div class="circles circle-add-3"></div>
+          </div>
         </ion-content>
       </div>
     </ion-tab>
 
-    <ion-tab tab="library">
+    <ion-tab tab="library" style="padding-bottom: 75px;">
       <div id="library-page">
-        <ion-header class="container-header">
+        <ion-header class="custom-ion-header custom-padding-header">
           <ion-toolbar>
             <ion-buttons
               class="ion-margin-end"
@@ -225,8 +244,7 @@
                 <ion-icon name="ellipsis-horizontal"></ion-icon>
               </ion-button>
             </ion-buttons>
-
-            <ion-title>Ordenar</ion-title>
+            <ion-title class="custom-title"><span style="white-space: normal;">Ordenar</span></ion-title>
             <ion-buttons class="ion-margin-end" slot="primary">
               <ion-button class="button-option" shape="round" fill="outline">
                 <ion-icon name="ellipsis-horizontal"></ion-icon>
@@ -260,7 +278,7 @@
                         <ion-icon
                           style="font-size: 18px"
                           slot="start"
-                          src="../../assets/icon/arrow-black.svg"
+                          src="assets/icon/arrow-black.svg"
                         ></ion-icon>
                       </div>
                     </ion-col>
@@ -273,9 +291,9 @@
       </div>
     </ion-tab>
 
-    <ion-tab tab="search">
+    <ion-tab tab="search" style="padding-bottom: 75px;">
       <div id="search-page">
-        <ion-header class="container-header">
+        <ion-header class="custom-ion-header custom-padding-header">
           <ion-toolbar>
             <ion-buttons
               class="ion-margin-end"
@@ -286,7 +304,7 @@
                 <ion-icon name="ellipsis-horizontal"></ion-icon>
               </ion-button>
             </ion-buttons>
-            <ion-title>Ajustes</ion-title>
+            <ion-title class="custom-title"><span style="white-space: normal;">Ajustes</span></ion-title>
             <ion-buttons class="ion-margin-end" slot="primary">
               <ion-button class="button-option" shape="round" fill="outline">
                 <ion-icon name="ellipsis-horizontal"></ion-icon>
@@ -295,76 +313,90 @@
           </ion-toolbar>
         </ion-header>
         <ion-content class="container-content-setting">
-          <!-- <div class="container"> -->
-          <ion-list>
-            <ion-item button lines="none">
+          <ion-list class="custom-ion-list">
+            <ion-item button lines="none" style="--background: transparent;">
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"
-                src="../../assets/icon/perfil.svg"
+                src="assets/icon/perfil.svg"
               ></ion-icon>
               <p class="ion-margin-start ion-margin-vertical">
                 Ederlines Gutierrez
               </p>
             </ion-item>
-            <ion-item button lines="none">
+            <ion-item button lines="none" style="--background: transparent;">
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"
-                src="../../assets/icon/languaje.svg"
+                src="assets/icon/languaje.svg"
               ></ion-icon>
               <p class="ion-margin-start ion-margin-vertical">Idiomas</p>
             </ion-item>
-            <ion-item button lines="none">
+            <ion-item button lines="none" style="--background: transparent;">
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"
-                src="../../assets/icon/privacity.svg"
+                src="assets/icon/privacity.svg"
               ></ion-icon>
               <p class="ion-margin-start ion-margin-vertical">Privacidad</p>
             </ion-item>
-            <ion-item button lines="none">
+            <ion-item button lines="none" style="--background: transparent;">
               <ion-icon
                 class="ion-no-margin ion-padding-start"
                 slot="start"
-                src="../../assets/icon/inf-red.svg"
+                src="assets/icon/inf-red.svg"
               ></ion-icon>
               <p class="ion-margin-start ion-margin-vertical">Notificaciones</p>
             </ion-item>
           </ion-list>
-          <!-- </div> -->
+          <p class="custom-paragraph">
+            Viewport size: {{viewportWidth}} x {{viewportHeight}} <br>
+            Screen size: {{screenWidth}} x {{screenHeight}} <br>
+            Device pixel ratio {{devicePixelRatio}} <br>
+            Physical resolution: {{realWidth}} x {{realHeight}} <br>
+          </p>
+          <div class="overlays">
+            <div style="width: 287px; height: 287px; position: fixed; top: 49%; left: 63%; z-index: -2; background-color: #EA592D; opacity: 0.05; border-radius: 50%;"></div>
+            <div style="width: 395px; height: 395px; position: fixed; top: 42%; left: 49%; z-index: -2; background-color: #EA592D; opacity: 0.05; border-radius: 50%;"></div>
+            <div style="width: 611px; height: 611px; position: fixed; top: 27%; left: 24%; z-index: -2; background-color: #EA592D; opacity: 0.025; border-radius: 50%;"></div>
+          </div>
         </ion-content>
       </div>
     </ion-tab>
 
-    <ion-tab-bar color="light" slot="bottom">
+    <div class="container-menu">
+      <div class="container-background-menu">
+        <img src="assets/banner-menu.svg" alt="banner menu" class="background-menu"/>
+      </div>
+      <div class="container-buttons-menu">
+        <ion-tab-button tab="home">
+          <ion-icon src="assets/icon/qr-1.svg"></ion-icon>
+          <ion-label>Timbres</ion-label>
+        </ion-tab-button>
+  
+        <ion-tab-button tab="radio">
+          <ion-icon src="assets/icon/call.svg"></ion-icon>
+          <ion-label>Llamadas</ion-label>
+        </ion-tab-button>
+  
+        <div style="width: 30px;"></div>
 
-      <ion-tab-button tab="home">
-        <ion-icon src="../../assets/icon/qr-1.svg"></ion-icon>
-        <ion-label>Timbres</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button tab="radio">
-        <ion-icon src="../../assets/icon/call.svg"></ion-icon>
-        <ion-label>Llamadas</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button tab="add">
-        <div class="btn-add">
-          <ion-icon src="../../assets/icon/icon-sum-white.svg"></ion-icon>
-        </div>
-      </ion-tab-button>
-
-      <ion-tab-button tab="library">
-        <ion-icon src="../../assets/icon/carrito.svg"></ion-icon>
-        <ion-label>Ordenar</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button tab="search">
-        <ion-icon src="../../assets/icon/setting.svg"></ion-icon>
-        <ion-label>Ajustes</ion-label>
-      </ion-tab-button>
-
-    </ion-tab-bar>
+        <ion-tab-button tab="add" class="button-add">
+          <div class="btn-add">
+            <ion-icon src="assets/icon/icon-sum-white.svg"></ion-icon>
+          </div>
+        </ion-tab-button>
+  
+        <ion-tab-button tab="library">
+          <ion-icon src="assets/icon/carrito.svg"></ion-icon>
+          <ion-label>Ordenar</ion-label>
+        </ion-tab-button>
+  
+        <ion-tab-button tab="search">
+          <ion-icon src="assets/icon/setting.svg"></ion-icon>
+          <ion-label>Ajustes</ion-label>
+        </ion-tab-button>
+      </div>
+    </div>
   </ion-tabs>
 </ion-content>

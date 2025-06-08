@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { allCountries } from 'country-telephone-data';
@@ -24,7 +24,7 @@ export class CountrySelectorComponent implements OnInit {
   filteredCountries: Country[] = [];
   searchTerm: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private modalCtrl: ModalController) {}
 
   ngOnInit() {
     console.log('Inicializando componente de selección de países');
@@ -72,6 +72,12 @@ export class CountrySelectorComponent implements OnInit {
     console.log('País seleccionado:', country);
     localStorage.setItem('selectedCountry', JSON.stringify(country));
     localStorage.setItem('loginState', 'phoneInput');
-    this.router.navigate(['/login']);
+    // this.router.navigate(['/login']);
+    this.modalCtrl.dismiss({ country });
+
+  }
+
+  dismiss() {
+    this.modalCtrl.dismiss();
   }
 }

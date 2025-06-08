@@ -38,40 +38,58 @@ export class MenuComponent implements OnInit {
   ];
 
   options = [
-    { id:1, name:'Descargar Código QR',src:'../../assets/icon/qr.svg', dir: '/order-qr-code'},
-    { id:2, name:'Agregar Miembro',src:'../../assets/icon/person.svg', dir: ''},
-    { id:3, name:'Verificar Miembro',src:'../../assets/icon/person-check.svg', dir: ''},
-    { id:4, name:'Editar Nombre de Timbre',src:'../../assets/icon/note-pack.svg', dir: ''},
-    { id:5, name:'Eliminar Timbre',src:'../../assets/icon/trash.svg', dir: ''},
-    { id:6, name:'Editar Miembro',src:'../../assets/icon/person-edit.svg', dir: ''},
+    { id:1, name:'Descargar Código QR',src:'assets/icon/qr.svg', dir: '/order-qr-code'},
+    { id:2, name:'Agregar Miembro',src:'assets/icon/person.svg', dir: ''},
+    { id:3, name:'Verificar Miembro',src:'assets/icon/person-check.svg', dir: ''},
+    { id:4, name:'Editar Nombre de Timbre',src:'assets/icon/note-pack.svg', dir: ''},
+    { id:5, name:'Eliminar Timbre',src:'assets/icon/trash.svg', dir: ''},
+    { id:6, name:'Editar Miembro',src:'assets/icon/person-edit.svg', dir: ''},
   ]
 
   calls: Call[] = [
-    { name:'Daniela Rodriguez',call:'Missed',date:'3/12/2024',src:'../../assets/avatar.svg'},
-    { name:'Juan Pérez',call:'Missed',date:'2/12/2024',src:'../../assets/avatar.svg'},
-    { name:'María López',call:'Answered',date:'1/12/2024',src:'../../assets/avatar.svg'},
-    { name:'Carlos Gómez',call:'Missed',date:'30/11/2024',src:'../../assets/avatar.svg'},
-    { name:'Ana Martínez',call:'Answered',date:'29/11/2024',src:'../../assets/avatar.svg'},
-    { name:'Pablo Torres',call:'Missed',date:'28/11/2024',src:'../../assets/avatar.svg'},
-    { name:'Laura Silva',call:'Answered',date:'27/11/2024',src:'../../assets/avatar.svg'},
-    { name:'Roberto Díaz',call:'Missed',date:'26/11/2024',src:'../../assets/avatar.svg'},
-    { name:'Sofía Castro',call:'Answered',date:'25/11/2024',src:'../../assets/avatar.svg'},
-    { name:'Miguel Ríos',call:'Missed',date:'24/11/2024',src:'../../assets/avatar.svg'},
-    { name:'Elena Vargas',call:'Answered',date:'23/11/2024',src:'../../assets/avatar.svg'},
-    { name:'Diego Mendoza',call:'Missed',date:'22/11/2024',src:'../../assets/avatar.svg'},
-    { name:'Carla Ortiz',call:'Answered',date:'21/11/2024',src:'../../assets/avatar.svg'},
-    { name:'Fernando Ruiz',call:'Missed',date:'20/11/2024',src:'../../assets/avatar.svg'},
+    { name:'Daniela Rodriguez',call:'Missed',date:'3/12/2024',src:'assets/avatar.svg'},
+    { name:'Juan Pérez',call:'Missed',date:'2/12/2024',src:'assets/avatar.svg'},
+    { name:'María López',call:'Answered',date:'1/12/2024',src:'assets/avatar.svg'},
+    { name:'Carlos Gómez',call:'Missed',date:'30/11/2024',src:'assets/avatar.svg'},
+    { name:'Ana Martínez',call:'Answered',date:'29/11/2024',src:'assets/avatar.svg'},
+    { name:'Pablo Torres',call:'Missed',date:'28/11/2024',src:'assets/avatar.svg'},
+    { name:'Laura Silva',call:'Answered',date:'27/11/2024',src:'assets/avatar.svg'},
+    { name:'Roberto Díaz',call:'Missed',date:'26/11/2024',src:'assets/avatar.svg'},
+    { name:'Sofía Castro',call:'Answered',date:'25/11/2024',src:'assets/avatar.svg'},
+    { name:'Miguel Ríos',call:'Missed',date:'24/11/2024',src:'assets/avatar.svg'},
+    { name:'Elena Vargas',call:'Answered',date:'23/11/2024',src:'assets/avatar.svg'},
+    { name:'Diego Mendoza',call:'Missed',date:'22/11/2024',src:'assets/avatar.svg'},
+    { name:'Carla Ortiz',call:'Answered',date:'21/11/2024',src:'assets/avatar.svg'},
+    { name:'Fernando Ruiz',call:'Missed',date:'20/11/2024',src:'assets/avatar.svg'},
   ]
 
   order =[
-    {name:'Quiet Ring Laser',price:'$19,99 Usd', src:'../../assets/qr1.svg'},
-    {name:'Quiet Ring Tag',price:'$7,99 Usd', src:'../../assets/qr2.svg'},
-    {name:'Quiet Ring Sticker',price:'$4,99 Usd', src:'../../assets/qr3.svg'}
+    {name:'Quiet Ring Laser',price:'$19,99 Usd', src:'assets/qr1.svg'},
+    {name:'Quiet Ring Tag',price:'$7,99 Usd', src:'assets/qr2.svg'},
+    {name:'Quiet Ring Sticker',price:'$4,99 Usd', src:'assets/qr3.svg'}
   ]
 
   constructor(private router: Router, private modalCtrl: ModalController) {}
-
-  ngOnInit() { }
+viewportWidth: any;
+viewportHeight: any;
+screenWidth: any;
+screenHeight: any;
+devicePixelRatio: any;
+realWidth: any;
+realHeight: any;
+  ngOnInit() {
+    this.viewportWidth = window.innerWidth;
+    this.viewportHeight = window.innerHeight;
+  
+    this.screenWidth = window.screen.width;
+    this.screenHeight = window.screen.height;
+  
+    this.devicePixelRatio = window.devicePixelRatio;
+  
+    this.realWidth = this.screenWidth * devicePixelRatio;
+    this.realHeight = this.screenHeight * devicePixelRatio;
+  
+  }
 
   // Método para navegar a la vista de Activar QR
   goToActivateQR() {

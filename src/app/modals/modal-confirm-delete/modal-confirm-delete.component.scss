@@ -1,14 +1,14 @@
 .custom-title {
   font-size: 27.5px;
   margin-top: 30px;
+  padding: 0;
 }
 
 .code-input-container {
   height: initial;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 0rem;
   --border-color: white;
 }
-
 
 .content-centered {
   display: flex;
@@ -21,11 +21,13 @@
   margin: auto;
   font-size: 14px;
   color: #444;
-  width: 200px;
+  width: 80%;
 }
 
 .custom-btn {
-    width: 100px;
+  width: 100px;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .button-group {

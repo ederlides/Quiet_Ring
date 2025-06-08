@@ -1,4 +1,4 @@
-<ion-header class="ion-no-border">
+<ion-header class="custom-ion-header">
   <ion-toolbar>
     <ion-title class="ion-text-center custom-title">{{ title }}</ion-title>
   </ion-toolbar>
@@ -6,20 +6,22 @@
 <ion-content class="ion-padding content-centered">
   <p class="message">{{ message }}</p>
   <ion-item class="code-input-container">
-    <ion-button 
-      fill="outline" 
-      class="custom-btn btn-outline"
-      (click)="cancel()" 
-    >
-      No
-    </ion-button>
-    <ion-button 
-      fill="solid" 
-      class="custom-btn btn-solid"
-      (click)="confirm()"
-    >
-      Si
-    </ion-button>
+    <div  style="display: flex; align-items: center; justify-content: space-around; width: 100%;">
+      <ion-button 
+        fill="outline" 
+        class="custom-btn btn-outline"
+        (click)="cancel()" 
+      >
+        No
+      </ion-button>
+      <ion-button 
+        fill="solid" 
+        class="custom-btn btn-solid"
+        (click)="confirm()"
+      >
+        Si
+      </ion-button>
+    </div>
   </ion-item>
 </ion-content>
 

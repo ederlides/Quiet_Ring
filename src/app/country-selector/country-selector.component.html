@@ -1,13 +1,21 @@
-<!-- <ion-header>
+<!-- <ion-header class="custom-ion-header">
 
 </ion-header> -->
 
-<ion-toolbar>
+<!-- <ion-toolbar>
   <ion-buttons slot="start">
-    <ion-back-button defaultHref="/login"></ion-back-button>
+    <ion-button (click)="dismiss()"></ion-button>
   </ion-buttons>
-  <ion-title>Selecciona un país</ion-title>
-</ion-toolbar>
+  <ion-title>Elige el país</ion-title>
+</ion-toolbar> -->
+<ion-header class="custom-ion-header">
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear" class="custom-back-button" (click)="dismiss()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-title class="custom-title"><span style="white-space: normal;">Elige el país</span></ion-title>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content class="ion-padding">
   <ion-searchbar 
@@ -21,8 +29,7 @@
   <ion-list>
     <ion-item *ngFor="let country of filteredCountries" (click)="selectCountry(country)" button detail="true">
       <ion-avatar slot="start">
-        <img [src]="country.flag" alt="{{country.name}}" 
-             onerror="this.onerror=null; this.src='assets/icon/placeholder-flag.svg';" />
+        <img [src]="country.flag" alt="{{country.name}}" onerror="this.onerror=null; this.src='assets/icon/placeholder-flag.svg';" />
       </ion-avatar>
       <ion-label>
         <h2>{{country.name}}</h2>

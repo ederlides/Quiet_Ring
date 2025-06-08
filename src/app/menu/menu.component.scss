@@ -1,15 +1,4 @@
 .ion-padding {
-  // height: 100vh;
-
-  ion-header {
-    height: 15vh;
-    display: flex;
-    align-items: center;
-
-    ion-title{
-      font-weight: 800;
-    }
-  }
 
   ion-tab[tab=home]{
     ion-toggle{
@@ -27,17 +16,14 @@
     }
   }
 
-  .container-content {
-    height: 75vh;
-  }
 
   ion-tab[tab=radio]{
-    ion-header {
-      height: 20vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+    // ion-header {
+    //   height: 20vh;
+    //   display: flex;
+    //   flex-direction: column;
+    //   justify-content: center;
+    // }
 
     ion-buttons{
       display: flex;
@@ -78,10 +64,6 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-  }
-
-  .container-header-call {
-    // height: 10vh;
   }
 
   .container-contet-call {
@@ -199,32 +181,19 @@
   }
 
   ion-toolbar {
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
     // height: 100%;
   }
 
   ion-title {
-    font-size: 25px;
-    font-weight: bold;
-    text-align: center;
+    // font-size: 25px;
+    // font-weight: bold;
+    // text-align: center;
     /* Color del texto */
     /* Margen superior e inferior */
   }
 
-}
-
-.btn-add {
-  border-radius: 50% !important;
-  background: #EA592D !important;
-      width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 0;
-    font-size: 25px;
-    outline: 7px solid white;
 }
 
 ion-card-content {
@@ -235,10 +204,6 @@ ion-card-content {
 ion-img {
   // width: 118% !important;
   padding-left: 5%;
-}
-
-.spacing-toolbar {
-  padding: 0.5rem 1rem;
 }
 
 .spaciong-list {
@@ -264,7 +229,7 @@ ion-img {
   .item-label-option {
     letter-spacing: 0.5px;
     font-size: 1rem;
-    font-weight: 400; 
+    font-weight: 400;
     margin-right: 1.3rem;
   }
 }
@@ -284,24 +249,24 @@ ion-img {
   padding: 0;
 }
 
-.calling-header {
-  ion-toolbar {
-    --background: transparent;
+// .calling-header {
+//   ion-toolbar {
+//     --background: transparent;
     
-    ion-title {
-      font-size: 18px;
-      font-weight: normal;
-    }
+//     ion-title {
+//       font-size: 18px;
+//       font-weight: normal;
+//     }
     
-    .back-button {
-      font-size: 20px;
-    }
+//     .back-button {
+//       font-size: 20px;
+//     }
     
-    .profile-button {
-      font-size: 20px;
-    }
-  }
-}
+//     .profile-button {
+//       font-size: 20px;
+//     }
+//   }
+// }
 
 .calling-body {
   flex: 1;
@@ -409,3 +374,101 @@ ion-img {
   }
 }
 
+// estilos del menú
+
+.container-menu {
+  width: 100%;
+  display: flex;
+  height: 90px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.container-background-menu {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  .background-menu {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.container-buttons-menu {
+  width: 100%;
+  display: flex;
+  padding-top: 20px;
+  .button-add {
+    position: absolute;
+    top: -60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    max-width: 70px;
+    margin: auto;
+    background: linear-gradient(0deg, white 50%, transparent 50%);
+    .btn-add {
+      border-radius: 50% !important;
+      background: #EA592D !important;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 0;
+      font-size: 25px;
+      // outline: 7px solid white;
+    }
+  }
+}
+
+// estilo de circulos del decorado home
+.circle-home-1 {
+  width: 287px;
+  height: 287px;
+  top: -21%;
+  left: -37%;
+  opacity: 0.05;
+}
+.circle-home-2 {
+  width: 395px;
+  height: 395px;
+  top: -28%;
+  left: -51%;
+  opacity: 0.05;
+}
+.circle-home-3 {
+  width: 611px;
+  height: 611px;
+  top: -43%;
+  left: -76%;
+  opacity: 0.025;
+}
+
+// estilo de circulos del decorado add
+.circle-add-1 {
+  width: 287px;
+  height: 287px;
+  top: 79%;
+  left: -7%;
+  opacity: 0.05;
+}
+.circle-add-2 {
+  width: 395px;
+  height: 395px;
+  top: 72%;
+  left: -21%;
+  opacity: 0.05;
+}
+.circle-add-3 {
+  width: 611px;
+  height: 611px;
+  top: 57%;
+  left: -46%;
+  opacity: 0.025;
+}

@@ -22,10 +22,12 @@ $secondary-color: #EA592D;
 :root {
   --ion-font-family: 'Mulish', sans-serif;
 }
+
 :host {
   padding-top: constant(safe-area-inset-top); /* iOS <=11.2 */
   padding-top: env(safe-area-inset-top); /* Estándar */
 }
+
 body, p, span, label, strong, b, i, u,
 h1, h2, h3, h4, h5, h6,
 a, small, em, mark, sub, sup,
@@ -36,17 +38,34 @@ ion-input, ion-textarea, ion-toggle .label {
   color: #334295 !important;
 }
 
-ion-header, ion-footer {
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
+// ion-header, ion-footer {
+//   padding-top: env(safe-area-inset-top);
+//   padding-bottom: env(safe-area-inset-bottom);
+// }
+
+// ion-content {
+//   padding-top: env(safe-area-inset-top);
+//   padding-bottom: env(safe-area-inset-bottom);
+// }
+
+// declaración de clases para colores
+.bg-primary {
+  --background: #334295;
 }
 
-ion-content {
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
+.color-primary {
+  color: #334295
 }
+
+.bg-secondary {
+  --background: #EA592D;
+}
+
+.color-secondary {
+  color: #EA592D;
+}
+
 // estilo icono avatar
-
 ion-avatar img {
   border-radius: 50%;
   object-fit: cover;
@@ -54,7 +73,6 @@ ion-avatar img {
 }
 
 // estilo modal confirmación
-
 .modal-confirm-delete {
   --width: 90%;
   --max-width: 400px;
@@ -93,24 +111,6 @@ ion-avatar img {
   height: 100%;
 }
 
-// declaración de clases para colores
-
-.bg-primary {
-  --background: #334295;
-}
-
-.color-primary {
-  color: #334295
-}
-
-.bg-secondary {
-  --background: #EA592D;
-}
-
-.color-secondary {
-  color: #EA592D;
-}
-
 // estilos de botones
 
 .custom-back-button {
@@ -128,6 +128,8 @@ ion-avatar img {
   align-items: center;
   justify-content: center;
   margin-left: 10px;
+  position: absolute;
+  z-index: 1;
 }
 
 ion-button{
@@ -151,9 +153,17 @@ ion-button{
   
 }
 
+// estilo de parrafo
+.custom-paragraph {
+  text-align: center;
+  width: 80%;
+  margin: auto;
+  font-size: 15px;
+  // padding-top: 16px;
+  padding-bottom: 16px;
+}
 
 // estilo de inputs
-
 .custom-input {
   margin-top: 5px;
   &.input-fill-outline{
@@ -181,6 +191,7 @@ ion-button{
   font-size: 32px;
   font-weight: 800;
   text-align: center;
+  line-height: 1.2;
 }
 
 // estilo de contenedor para poner los decorados flotantes
@@ -193,6 +204,14 @@ ion-button{
   pointer-events: none;
 }
 
+// estilo de circulos del decorado
+.circles {
+  background-color: #EA592D;
+  position: fixed;
+  border-radius: 50%;
+  z-index: -2;
+}
+
 // sombra del contenedor ion-content
 .shadowed-content {
   box-shadow: 0 0px 15px rgba(0, 0, 0, 0.2);
@@ -203,17 +222,22 @@ ion-button{
   height: calc(100% - 20px);
 }
 
-.header-md {
+// estilo del header
+.custom-ion-header {
   box-shadow: none !important;
+  &.custom-padding-header {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  ion-toolbar {
+    --background: none;
+  }
 }
 
-// ion-list {
-//   overflow: hidden !important;
-// }
-
-// ion-label, ion-button, ion-title, ion-input, ion-toggle {
-//   font-family: inherit;
-// }
+//estilo del ion list {
+.custom-ion-list {
+  background-color: transparent;
+}
 
 ion-select,
 ion-input:not(.otp-number) {
@@ -353,6 +377,7 @@ canvas, .barcode-scanner-active {
   }
 }
 
+// estilos del carrusel
 swiper-slide {
   display: flex;
   position: relative;
@@ -398,19 +423,15 @@ swiper-container::part(button-next) {
 }
 
 .custom-prev {
-  left: 0px;
-  // background-color: red;
   @extend .custom-back-button;
   margin: 0;
-  top: 50%;
+  left: 0px;
 }
 
 .custom-next {
-  right: 0px;
-  // background-color: red;
   @extend .custom-back-button;
   margin: 0;
-  top: 50%;
+  right: 0px;
 }
 
 .footer-actions {
@@ -438,4 +459,4 @@ swiper-container::part(button-next) {
 .action-label {
   font-size: 16px;
   font-weight: 700;
-}
+}	

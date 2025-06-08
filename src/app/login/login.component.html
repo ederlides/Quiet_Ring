@@ -1,8 +1,8 @@
-<ion-content class="ion-padding">
-  <ion-header class="container-header">
+<!-- <ion-content class="ion-padding">
+  <ion-header class="custom-ion-header">
     <ion-toolbar>
       <ion-title *ngIf="this.viewLogin===false && viewOtp!==true">Te damos la Bienvenida<br>a Quiet ring</ion-title>
-      <ion-title *ngIf="this.viewLogin===true && viewOtp!==true">Ingresa tu número de <br>télefono</ion-title>
+      <ion-title *ngIf="this.viewLogin===true && viewOtp!==true">Ingresa tu número <br>de télefono{{viewLogin}}</ion-title>
       <ion-title *ngIf="viewOtp===true" >Verificando el número</ion-title>
     </ion-toolbar>
   </ion-header>
@@ -25,7 +25,7 @@
       <p style="margin-bottom: 20px;">¿Cuál es tú número?</p>
     </div>
     <form class="container-form" action="">
-      <!-- Selector de país -->
+      <!** Selector de país **>
       <ion-list [inset]="true" class="contry">
         <ion-item button detail="true" (click)="goToCountrySelector()">
           <ion-label>País</ion-label>
@@ -36,7 +36,7 @@
         </ion-item>
       </ion-list>
 
-      <!-- Campo unificado para indicativo + número de teléfono -->
+      <!** Campo unificado para indicativo + número de teléfono **>
       <div class="container-input">
 
         <ion-input
@@ -69,13 +69,13 @@
     <div class="text">
       <p>Esperando para detectar automaticamente el SMS enviado.</p>
     </div>
-    <!-- <div class="input-otp">
+    <!** <div class="input-otp">
       <ion-input class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline"></ion-input>
       <ion-input class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline"></ion-input>
       <ion-input class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline"></ion-input>
       <ion-input class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline"></ion-input>
       <ion-input (ionInput)="onInputChange($event)" class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline"></ion-input>
-    </div> -->
+    </div> **>
     <div class="input-otp">
       <ion-input
         *ngFor="let input of inputs; let i = index"
@@ -114,87 +114,80 @@
       (selectionCancel)="modal.dismiss()"
     ></app-typeahead>
   </ng-template>
-</ion-modal>
+</ion-modal> -->
 
-<!-- 
-<ion-header class="ion-padding ion-safe-area">
-  <ion-title class="custom-title ion-text-center">
-    <span *ngIf="this.viewLogin===false && viewOtp!==true" style="white-space: normal;">
-      Te damos la Bienvenida<br>a Quiet ring
-    </span>
-    <span *ngIf="this.viewLogin===true && viewOtp!==true" style="white-space: normal;">
-      Ingresa tu número de <br>télefono
-    </span>
-    <br>
-    <span *ngIf="viewOtp===true" style="white-space: normal;">
-      Verificando el número
-    </span>
-  </ion-title>
+<!-- ********************* -->
+
+<ion-header class="ion-padding custom-ion-header custom-padding-header" style="padding-bottom: 0;">
+  <ion-toolbar>
+    <ion-title *ngIf="this.viewLogin===false && viewOtp!==true" class="custom-title" style="padding-left: 0; padding-right: 0;">
+      <span style="white-space: normal;">Te damos la Bienvenida<br>a Quiet ring</span>
+    </ion-title>
+    <ion-title *ngIf="this.viewLogin===true && viewOtp!==true" class="custom-title">
+      <span style="white-space: normal;">Ingresa tu número <br>de télefono</span>
+    </ion-title>
+    <ion-title *ngIf="viewOtp===true" class="custom-title">
+      <span style="white-space: normal;">Verificando el número</span>
+    </ion-title>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="false" class="ion-padding">
-  <div class="container-condition" *ngIf="viewLogin===false && viewOtp!==true">
-    <div class="img-welcome">
-      <img src="../../assets/logo-welcome.svg" alt="">
-    </div>
-    <div class="container-text ">
-      <span>Lee nuestras políticas de privacidad toca "Aceptar y continuar" para aceptar las condiciones del servicio.</span>
-    </div>
-    <div class="container-botton">
-      <ion-button class="bottom-condition" expand="block" (click)="condition()">ACEPTAR Y CONTINUAR</ion-button>
-    </div>
+<ion-content class="ion-padding">
+  <div *ngIf="this.viewLogin===false && viewOtp!==true"  class="img-welcome">
+    <img src="../../assets/logo-welcome_2.svg" alt="">
   </div>
 
+  <div *ngIf="this.viewLogin===true && viewOtp!==true" >
+    <p class="custom-paragraph">
+      Quietring necesitará verificar tu número de télefono.
+    </p>
+    <p class="custom-paragraph">
+      ¿Cuál es tú número?
+    </p>
+    <ion-item lines="none">
+      <ion-input 
+        readonly
+        [value]="selectedCountry?.name || ''"
+        placeholder="Seleccione un país"
+        (click)="openCountryModal()"
+        label="País" 
+        label-placement="floating" 
+        fill="outline" 
+        class="custom-input"
+      ></ion-input>
+    </ion-item>
+    <ion-item lines="none" style="padding-top: 1rem;">
+      <ion-input 
+        readonly
+        [value]="dialCode"
+        placeholder="Ej: +1"
+        (click)="openCountryModal()"
+        label="Indicativo" 
+        label-placement="floating" 
+        fill="outline" 
+        class="custom-input"
+        style="width: calc(135px + 1rem); margin-right: 1rem;"
+      ></ion-input>
+      <ion-input
+        placeholder="Digite su número de teléfono"
+        label="Número de tel" 
+        label-placement="floating" 
+        fill="outline" 
+        class="custom-input"
+        type="tel" 
+        [(ngModel)]="phoneNumber"
+        name="phoneNumber"
+        required
+      ></ion-input>
 
-  <div class="container-registro" [hidden]="!viewLogin">
-    <div class="text">
-      <p>Quietring necesitará verificar tu número de télefono.</p>
-      <p style="margin-bottom: 20px;">¿Cuál es tú número?</p>
-    </div>
-    <form class="container-form" action="">
-      <ion-list [inset]="true" class="contry">
-        <ion-item button detail="true" (click)="goToCountrySelector()">
-          <ion-label>País</ion-label>
-          <div slot="end" *ngIf="selectedCountry">
-            <ion-text>{{ selectedCountry.name }}</ion-text>
-          </div>
-          <ion-text *ngIf="!selectedCountry" slot="end">Seleccionar país</ion-text>
-        </ion-item>
-      </ion-list>
-
-      <div class="container-input">
-
-        <ion-input
-              label="Indicativo" 
-              labelPlacement="stacked"
-              
-              [value]="dialCode"
-              readonly
-              placeholder="Ej: +1"
-            ></ion-input>
-            
-        <ion-input 
-              type="tel" 
-              [(ngModel)]="phoneNumber"
-              name="phoneNumber"
-              label="Número de tel" 
-              labelPlacement="stacked"
-              placeholder="Digite su número de teléfono"
-              required
-            ></ion-input>
-      </div>
-    </form>
-    <div class="container-bottom">
-      <ion-button class="bottom-login" expand="block" (click)="callOtp()">SIGUIENTE</ion-button>
-      <p>Debes tener al menos 16 años de edad para registrarte. Más información sobre cómo trabaja Whatsapp con las empresas de Quietring.</p>
-    </div>
+    </ion-item>
   </div>
 
   <div class="otp" *ngIf="viewOtp===true" >
-    <div class="text">
-      <p>Esperando para detectar automaticamente el SMS enviado.</p>
-    </div>
-    <div class="input-otp">
+    <p class="custom-paragraph" style="width: 80%; padding: 30px 0 40px;">
+      Esperando para detectar automaticamente el SMS enviado.
+    </p>
+    <div class="input-otp ion-padding-bottom">
       <ion-input
         *ngFor="let input of inputs; let i = index"
         #otpInput
@@ -209,35 +202,35 @@
       </ion-input>
     </div>
 
-    <div class="text-bottom">
-      <p>Ingresa el código que enviamos por SMS al {{mobile}}</p>
-    </div>
-    <div class="text-intent">
-      <div style="display: flex; width: 100%; margin-bottom: 5px;">
-        <p>¿No recibiste el SMS?</p>
-        <a class="text-enlace" href=""> Vuelve a enviar el código</a>
-      </div>
-      <a class="text-enlace" href=""> Más Opciones</a>
-    </div>
+    <p class="custom-paragraph" style="margin-bottom: 50px;">
+      Ingresa el código que enviamos por SMS al {{mobile}}
+    </p>
+    <p class="custom-paragraph">
+      ¿No recibiste el SMS? <a href=""> Vuelve a enviar el código</a>
+    </p>
+    <p class="custom-paragraph">
+      <a href=""> Más Opciones</a>
+    </p>
   </div>
+  
 </ion-content>
 
-<ion-footer class="ion-padding ion-safe-area">
-  <ion-button expand="block" fill="solid" class="custom-btn btn-solid" (click)="condition()">
-    ACEPTAR Y CONTINUAR
-  </ion-button>
-</ion-footer>
+<ion-footer class="ion-padding" style="box-shadow: none;">
+  <ng-container *ngIf="this.viewLogin===false && viewOtp!==true">
+    <p class="custom-paragraph">
+      Lee nuestras políticas de privacidad toca "Aceptar y continuar" para aceptar las condiciones del servicio.
+    </p>
+    <ion-button expand="block" fill="solid" class="custom-btn btn-solid" (click)="condition()">
+      Aceptar y continuar
+    </ion-button>
+  </ng-container>
 
-<ion-modal trigger="select-fruits" #modal  >
-  <ng-template >
-    <app-typeahead
-      class="ion-page"
-      title="Contries"
-      [items]="fruits"
-      [selectedItems]="selectedFruits"
-      (selectionChange)="fruitSelectionChanged($event)"
-      (selectionCancel)="modal.dismiss()"
-    ></app-typeahead>
-  </ng-template>
-</ion-modal>
--->
+  <ng-container *ngIf="this.viewLogin===true && viewOtp!==true">
+    <ion-button expand="block" fill="solid" class="custom-btn btn-solid" (click)="callOtp()">
+      Siguiente
+    </ion-button>
+    <p class="custom-paragraph ion-padding-top">
+      Debes tener al menos 18 años de edad para registrarte. Más información sobre cómo trabaja Quietring.
+    </p>
+  </ng-container>
+</ion-footer>

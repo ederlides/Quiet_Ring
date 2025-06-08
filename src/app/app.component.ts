@@ -11,9 +11,4 @@ register();
 })
 export class AppComponent {
   constructor() {}
-  swiperConfig = {
-    pagination: { clickable: true },
-    navigation: true,
-    loop: true
-  };
 }

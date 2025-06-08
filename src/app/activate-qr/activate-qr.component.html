@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="custom-ion-header">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button slot="start" fill="clear" class="custom-back-button" *ngIf="!showCodeInput" defaultHref="/login"></ion-back-button>
@@ -50,13 +50,13 @@
     </div>
   </div>
 
-  <!-- <ion-header>
+  <!-- <ion-header class="custom-ion-header">
   <ion-toolbar>
     <ion-title>Escáner</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
   <ion-button expand="full" (click)="scanBarcode()">Escanear código</ion-button>
   <ion-button expand="full" color="danger" (click)="cancelScan()">Cancelar escaneo</ion-button>
 

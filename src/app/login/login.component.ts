@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
-import { IonInput } from '@ionic/angular';
+import { IonInput, ModalController } from '@ionic/angular';
 import { IonContent, IonItem, IonLabel, IonList, IonModal, NavController, IonSelect, IonicModule } from '@ionic/angular';
 import { ApiService } from '../service/api.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TypeaheadComponent } from '../typeahead/typeahead.component';
+import { CountrySelectorComponent } from '../country-selector/country-selector.component';
 
 interface Country {
   name: string;
@@ -37,7 +38,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private navCtrl: NavController,
     public apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private modalCtrl: ModalController,
   ) { }
   
   @ViewChild('modal', { static: true }) modal!: IonModal;
@@ -206,5 +208,24 @@ export class LoginComponent implements OnInit {
     if (data.status == 200) {
       console.log(data.processResponse);
     }
+  }
+
+  modalCountryOptions = {
+    header: 'Seleccione un país',
+    cssClass: 'modal-confirm-delete',
+  };
+
+  async openCountryModal() {
+    const modal = await this.modalCtrl.create({
+      component: CountrySelectorComponent,
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data?.country) {
+      this.selectedCountry = data.country;
+    }
+    this.dialCode = this.selectedCountry?.dialCode || '';
   }
 }
