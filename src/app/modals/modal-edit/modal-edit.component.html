@@ -3,7 +3,7 @@
     <ion-title class="ion-text-center custom-title">{{ data.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding content-centered">
+<ion-content class="ion-padding" style="--padding-bottom: 0;">
   <ion-input 
     label="Editar" 
     label-placement="floating" 
@@ -12,22 +12,25 @@
     class="custom-input"
     [value]="data?.value"
   ></ion-input>
-  <div class="button-group">
-    <!-- <ion-button fill="outline" class="btn-cancel" expand="block" (click)="cancel()">No</ion-button>
-    <ion-button class="btn-confirm" expand="block" (click)="confirm()">Sí</ion-button> -->
-    <ion-button 
-      fill="outline" 
-      class="custom-btn btn-outline"
-      (click)="cancel()" 
-    >
-      Cancelar
-    </ion-button>
-    <ion-button 
-      fill="solid" 
-      class="custom-btn btn-solid"
-      (click)="confirm()"
-    >
-      Guardar
-    </ion-button>
-  </div>
 </ion-content>
+
+<ion-footer class="custom-ion-footer ion-padding" style="padding-top: 0;">
+  <!-- <ion-toolbar> -->
+    <div class="button-group">
+      <ion-button 
+        fill="outline" 
+        class="custom-btn btn-outline"
+        (click)="cancel()" 
+      >
+        Cancelar
+      </ion-button>
+      <ion-button 
+        fill="solid" 
+        class="custom-btn btn-solid"
+        (click)="confirm()"
+      >
+        Editar
+      </ion-button>
+    </div>
+  <!-- </ion-toolbar> -->
+</ion-footer>

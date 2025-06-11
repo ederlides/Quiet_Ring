@@ -1,12 +1,12 @@
-<ion-header class="custom-ion-header">
+<ion-header class="custom-ion-header custom-padding-header">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button slot="start" fill="clear" class="custom-back-button" *ngIf="!showCodeInput" defaultHref="/login"></ion-back-button>
-      <ion-button *ngIf="showCodeInput" (click)="goBackFromCodeInput()">
-        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title><span style="white-space: normal;">{{ showCodeInput ? 'Activar con código de Activación' : 'Activar código QR' }}</span></ion-title>
+    <ion-back-button slot="start" fill="clear" *ngIf="!showCodeInput" class="custom-back-button" defaultHref="/menu">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-back-button>
+    <ion-back-button slot="start" fill="clear" *ngIf="showCodeInput" class="custom-back-button" (click)="goBackFromCodeInput()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-back-button>
+    <ion-title class="custom-title padding-with-back-button"><span style="white-space: normal;">{{ showCodeInput ? 'Activar con código de Activación' : 'Activar código QR' }}</span></ion-title>
   </ion-toolbar>
 </ion-header>
 

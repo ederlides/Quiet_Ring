@@ -47,20 +47,20 @@ export class MenuComponent implements OnInit {
   ]
 
   calls: Call[] = [
-    { name:'Daniela Rodriguez',call:'Missed',date:'3/12/2024',src:'assets/avatar.svg'},
-    { name:'Juan Pérez',call:'Missed',date:'2/12/2024',src:'assets/avatar.svg'},
-    { name:'María López',call:'Answered',date:'1/12/2024',src:'assets/avatar.svg'},
-    { name:'Carlos Gómez',call:'Missed',date:'30/11/2024',src:'assets/avatar.svg'},
-    { name:'Ana Martínez',call:'Answered',date:'29/11/2024',src:'assets/avatar.svg'},
-    { name:'Pablo Torres',call:'Missed',date:'28/11/2024',src:'assets/avatar.svg'},
-    { name:'Laura Silva',call:'Answered',date:'27/11/2024',src:'assets/avatar.svg'},
-    { name:'Roberto Díaz',call:'Missed',date:'26/11/2024',src:'assets/avatar.svg'},
-    { name:'Sofía Castro',call:'Answered',date:'25/11/2024',src:'assets/avatar.svg'},
-    { name:'Miguel Ríos',call:'Missed',date:'24/11/2024',src:'assets/avatar.svg'},
-    { name:'Elena Vargas',call:'Answered',date:'23/11/2024',src:'assets/avatar.svg'},
-    { name:'Diego Mendoza',call:'Missed',date:'22/11/2024',src:'assets/avatar.svg'},
-    { name:'Carla Ortiz',call:'Answered',date:'21/11/2024',src:'assets/avatar.svg'},
-    { name:'Fernando Ruiz',call:'Missed',date:'20/11/2024',src:'assets/avatar.svg'},
+    { name:'Daniela Rodriguez',call:'Perdida',date:'3/12/2024',src:'assets/avatar.svg'},
+    { name:'Juan Pérez',call:'Perdida',date:'2/12/2024',src:'assets/avatar.svg'},
+    { name:'María López',call:'Contestada',date:'1/12/2024',src:'assets/avatar.svg'},
+    { name:'Carlos Gómez',call:'Perdida',date:'30/11/2024',src:'assets/avatar.svg'},
+    { name:'Ana Martínez',call:'Contestada',date:'29/11/2024',src:'assets/avatar.svg'},
+    { name:'Pablo Torres',call:'Perdida',date:'28/11/2024',src:'assets/avatar.svg'},
+    { name:'Laura Silva',call:'Contestada',date:'27/11/2024',src:'assets/avatar.svg'},
+    { name:'Roberto Díaz',call:'Perdida',date:'26/11/2024',src:'assets/avatar.svg'},
+    { name:'Sofía Castro',call:'Contestada',date:'25/11/2024',src:'assets/avatar.svg'},
+    { name:'Miguel Ríos',call:'Perdida',date:'24/11/2024',src:'assets/avatar.svg'},
+    { name:'Elena Vargas',call:'Contestada',date:'23/11/2024',src:'assets/avatar.svg'},
+    { name:'Diego Mendoza',call:'Perdida',date:'22/11/2024',src:'assets/avatar.svg'},
+    { name:'Carla Ortiz',call:'Contestada',date:'21/11/2024',src:'assets/avatar.svg'},
+    { name:'Fernando Ruiz',call:'Perdida',date:'20/11/2024',src:'assets/avatar.svg'},
   ]
 
   order =[
@@ -185,7 +185,9 @@ realHeight: any;
       component: ModalEditComponent,
       componentProps: {
         data: {
+          title: 'Editar timbre',
           id: item.id,
+          value: item.name,
         }
         
       },

@@ -100,7 +100,7 @@
                   <h1>{{ item.name }}</h1>
                   <p>
                     <ion-icon
-                      src="assets/icon/call-declied.svg"
+                      [src]="item.call == 'Perdida' ? 'assets/icon/call-declined.svg' : 'assets/icon/call-answer.svg'"
                     ></ion-icon>
                     {{ item.call }}
                   </p>

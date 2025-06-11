@@ -13,7 +13,7 @@ import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
   templateUrl: './create-doorbell.component.html',
   styleUrls: ['./create-doorbell.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, AddMembersComponent],
+  imports: [IonicModule, CommonModule, FormsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CreateDoorbellComponent implements OnInit {

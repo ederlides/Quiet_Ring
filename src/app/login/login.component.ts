@@ -1,117 +1,100 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef, inject } from '@angular/core';
 import { IonInput, ModalController } from '@ionic/angular';
-import { IonContent, IonItem, IonLabel, IonList, IonModal, NavController, IonSelect, IonicModule } from '@ionic/angular';
-import { ApiService } from '../service/api.service';
+import { IonModal, NavController, IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { TypeaheadComponent } from '../typeahead/typeahead.component';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { CountrySelectorComponent } from '../country-selector/country-selector.component';
-
-interface Country {
-  name: string;
-  code: string;
-  flag: string;
-  dialCode: string;
-}
+import { OtpRequest, OtpService } from '../core/services/otp-service/otp.service';
+import { ICountry } from '../core/interfaces/country';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, TypeaheadComponent]
+  imports: [IonicModule, CommonModule, FormsModule, FormsModule, ReactiveFormsModule]
 })
 export class LoginComponent implements OnInit {
+  private builder = inject(UntypedFormBuilder);
+  private navCtrl = inject(NavController);
+  private router = inject(Router);
+  private modalCtrl = inject(ModalController);
+  private otpService = inject(OtpService);
+
+  form: UntypedFormGroup;
+
   viewLogin = false;
   viewOtp = false;
 
-  inputs = Array(5);
+  inputs = Array(6);
   
-  selectedCountry: Country | null = null;
-  countryName: string = '';
-  dialCode: string = '';
-  phoneNumber: string = '';
+  selectedCountry: ICountry | null = null;
+  // countryName: string = '';
+  // dialCode: string = '';
+  // cellPhoneNumber: string = '';
 
+  mobile: string = '';
+
+  @ViewChild('modal', { static: true }) modal!: IonModal;
   @ViewChildren('otpInput') otpInputs!: QueryList<IonInput>;
   
   constructor(
-    private navCtrl: NavController,
-    public apiService: ApiService,
-    private router: Router,
-    private modalCtrl: ModalController,
+    // private navCtrl: NavController,
+    // private router: Router,
+    // private modalCtrl: ModalController,
+    // private otpService: OtpService,
   ) { }
   
-  @ViewChild('modal', { static: true }) modal!: IonModal;
-
-  selectedFruitsText = '';
-  selectedFruits: string[] = [];
-  mobile: string = '';
-
-  fruits: any[] = [
-    { text: 'Colombia', value: '+57' },
-    { text: 'Perú', value: '+58' },
-  ];
-  
   ngOnInit() {
-    console.log('Inicializando componente login');
-    
-    // Verificar el estado de login
+    this.createFormCro()
     const loginState = localStorage.getItem('loginState');
     if (loginState === 'phoneInput') {
-      // Si venimos de seleccionar un país, mostrar la vista de ingreso de teléfono
       this.viewLogin = true;
     }
     
-    // Verificar si hay un país seleccionado en localStorage
     const savedCountry = localStorage.getItem('selectedCountry');
-    console.log('País guardado:', savedCountry);
     
     if (savedCountry) {
       try {
         this.selectedCountry = JSON.parse(savedCountry);
         if (this.selectedCountry) {
-          console.log('País seleccionado:', this.selectedCountry);
-          // Actualizar el nombre del país y el indicativo
-          this.countryName = this.selectedCountry.name;
-          this.dialCode = this.selectedCountry.dialCode;
-          console.log('Indicativo establecido:', this.dialCode);
+          // this.countryName = this.selectedCountry.name;
+          this.form.get('dialCode')?.setValue(this.selectedCountry.dialCode);
         }
       } catch (error) {
-        console.error('Error al parsear el país seleccionado:', error);
         localStorage.removeItem('selectedCountry');
       }
     }
   }
 
+  createFormCro(): void {
+    this.form = this.builder.group({
+        dialCode: [null],
+        cellPhoneNumber: [null, Validators.required],
+    });
+  }
+
   ionViewDidEnter() {
-    console.log('Vista de login activada');
-    
-    // Verificar el estado de login
     const loginState = localStorage.getItem('loginState');
     if (loginState === 'phoneInput') {
-      // Si venimos de seleccionar un país, mostrar la vista de ingreso de teléfono
       this.viewLogin = true;
     }
     
-    // Verificar nuevamente por si se actualizó el país
     const savedCountry = localStorage.getItem('selectedCountry');
     if (savedCountry) {
       try {
         this.selectedCountry = JSON.parse(savedCountry);
         if (this.selectedCountry) {
-          this.countryName = this.selectedCountry.name;
-          this.dialCode = this.selectedCountry.dialCode;
-          console.log('Indicativo actualizado:', this.dialCode);
+          // this.countryName = this.selectedCountry.name;
+          this.form.get('dialCode')?.setValue(this.selectedCountry.dialCode);
         }
       } catch (error) {
-        console.error('Error al parsear el país seleccionado:', error);
       }
     }
   }
 
   goToCountrySelector() {
-    console.log('Navegando a la selección de países');
     this.router.navigate(['/country-selector']);
   }
 
@@ -121,28 +104,27 @@ export class LoginComponent implements OnInit {
   }
 
   callOtp() {
-    if (!this.phoneNumber) {
-      console.log('Por favor ingrese un número de teléfono');
-      return;
+    const cellPhoneNumber = this.form.get('cellPhoneNumber')?.value.toString()
+
+    if (cellPhoneNumber && cellPhoneNumber.length >= 6) {
+      this.viewOtp = true;
+      this.viewLogin = false;
+      // Limpiar el estado de login ya que pasamos a la siguiente fase
+      localStorage.removeItem('loginState');
+      
+      // this.mobile = this.cellPhoneNumber;
+      
+      // let request = {
+      //   "idProcess": "pruebasIdProcess",
+      //   "device": "Nokia1100",
+      //   "ip": "10.10.10.2",
+      //   "mobile": this.mobile,
+      //   "dialCode": this.dialCode // Enviamos el indicativo como un campo separado
+      // }
+      this.sendOtp()
+    } else {
+      alert('Debe ingresar un numero valido')
     }
-    
-    this.viewOtp = true;
-    this.viewLogin = false;
-    // Limpiar el estado de login ya que pasamos a la siguiente fase
-    localStorage.removeItem('loginState');
-    
-    // Importante: No concatenamos el indicativo con el número de teléfono
-    // Solo usamos el número de teléfono ingresado por el usuario
-    this.mobile = this.phoneNumber;
-    
-    let request = {
-      "idProcess": "pruebasIdProcess",
-      "device": "Nokia1100",
-      "ip": "10.10.10.2",
-      "mobile": this.mobile,
-      "dialCode": this.dialCode // Enviamos el indicativo como un campo separado
-    }
-    this.apiService.getOtp(this, request, this.handlerSuccessGetOtp, this.handlerError);
   }
 
   // onInputChange(event: any) {
@@ -154,66 +136,13 @@ export class LoginComponent implements OnInit {
       const inputsArray = this.otpInputs.toArray();
       inputsArray[index + 1].setFocus(); // Mueve al siguiente input
     }
-    if (index == 4) {
+    if (index == this.otpInputs.length - 1) {
+      const otpCode = this.otpInputs.toArray().map(input => input.value ? input.value.toString() : '').join('');
       this.navCtrl.navigateForward('/menu');
+
+      this.verifyOtp(otpCode);
     }
   }
-
-  private formatData(data: string[]): string {
-    if (data.length === 1) {
-      const fruit = this.fruits.find((fruit) => fruit.value === data[0]);
-      return fruit ? fruit.text : '';
-    }
-    return `${data.length} items`;
-  }
-
-  fruitSelectionChanged(fruits: string[]) {
-    this.selectedFruits = fruits;
-    this.selectedFruitsText = this.formatData(this.selectedFruits);
-    this.modal.dismiss();
-  }
-
-  navigateToNextPage() {
-    this.navCtrl.navigateForward('/menu');
-  }
-
-  openRegister() {
-    this.navCtrl.navigateForward('/menu');
-  }
-
-  handlerSuccessGetOtp(_this, data) {
-    if (data.status == 200) {
-      console.log(data.processResponse)
-      _this.callValidOtp(data.processResponse);
-    }
-  }
-
-  handlerError(_this, result) {
-    if (result.status != 200) {
-      // Manejar error
-    }
-  }
-
-  callValidOtp(otp) {
-    let request = {
-      "idProcess": "pruebasIdProcess",
-      "device": "Nokia1100",
-      "ip": "10.10.10.2",
-      "otp": otp
-    }
-    this.apiService.validOtp(this, request, this.handlerSuccessValidOtp, this.handlerError);
-  }
-
-  handlerSuccessValidOtp(_this, data) {
-    if (data.status == 200) {
-      console.log(data.processResponse);
-    }
-  }
-
-  modalCountryOptions = {
-    header: 'Seleccione un país',
-    cssClass: 'modal-confirm-delete',
-  };
 
   async openCountryModal() {
     const modal = await this.modalCtrl.create({
@@ -226,6 +155,64 @@ export class LoginComponent implements OnInit {
     if (data?.country) {
       this.selectedCountry = data.country;
     }
-    this.dialCode = this.selectedCountry?.dialCode || '';
+    this.form.get('dialCode')?.setValue(this.selectedCountry?.dialCode || '')
+  }
+
+
+
+  
+  otpCode?: string;
+  idProcess: string = '123e4567-e89b-12d3-a456-426655440000';
+
+  sendOtp() {
+    const payload: OtpRequest = {
+      idProcess: this.idProcess,
+      cellPhoneNumber: this.form.get('cellPhoneNumber')?.value,
+      indicative: '+57',
+      operation: 1,
+      deviceInfo: {
+        ip: '10.10.10.1',
+        mobile: 'Nokia1100',
+        mac: '00-11-22-33-44-55'
+      }
+    };
+
+    this.otpService.verifyOtp(payload).subscribe({
+      next: (response) => {
+        console.log('OTP verificado:', response);
+        // Aquí manejas la respuesta exitosa
+      },
+      error: (error) => {
+        console.error('Error en verificación OTP:', error);
+        // Aquí manejas el error, muestra alert o mensaje
+      }
+    });
+  }
+
+  verifyOtp(otpCode: string) {
+    const payload: OtpRequest = {
+      idProcess: this.idProcess,
+      cellPhoneNumber: this.form.get('cellPhoneNumber')?.value,
+      indicative: '+57',
+      operation: 2,
+      otp: otpCode,
+      deviceInfo: {
+        ip: '10.10.10.1',
+        mobile: 'Nokia1100',
+        mac: '00-11-22-33-44-55'
+      }
+    };
+
+    this.otpService.verifyOtp(payload).subscribe({
+      next: (response) => {
+        console.log('OTP verificado:', response);
+        // this.navCtrl.navigateForward('/menu');
+        // Aquí manejas la respuesta exitosa
+      },
+      error: (error) => {
+        console.error('Error en verificación OTP:', error);
+        // Aquí manejas el error, muestra alert o mensaje
+      }
+    });
   }
 }

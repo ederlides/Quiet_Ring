@@ -126,7 +126,7 @@ export class ActivateQrComponent implements OnInit {
     console.log('Linterna:', this.isTorchOn ? 'encendida' : 'apagada');
   }
 
-    onInputChange(event: any, index: number) {
+  onInputChange(event: any, index: number) {
     const value = event.target.value;
     if (value && index < this.codeDigits.length - 1) {
       const inputsArray = this.codeDigits.toArray();

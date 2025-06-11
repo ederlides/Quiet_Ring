@@ -1,13 +1,13 @@
-<ion-header class="custom-ion-header">
+<ion-header class="custom-ion-header custom-padding-header">
   <ion-toolbar>
-    <ion-back-button slot="start" fill="clear" class="custom-back-button" href="/menu">
+    <ion-back-button slot="start" fill="clear" class="custom-back-button" defaultHref="/menu">
       <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
     </ion-back-button>
-    <ion-title class="custom-title"><span style="white-space: normal;">Crear timbre</span></ion-title>
+    <ion-title class="custom-title padding-with-back-button"><span style="white-space: normal;">Crear timbre</span></ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding ion-safe-area">
+<ion-content class="ion-padding" style="--padding-top: 0;">
   <ion-item lines="none">
     <ion-input 
       label="Título" 
@@ -43,10 +43,12 @@
   </ion-list>
 </ion-content>
 
-<ion-footer class="ion-padding">
-  <ion-button expand="block" fill="solid" class="custom-btn btn-solid">
-    GUARDAR TIMBRE
-  </ion-button>
+<ion-footer class="custom-ion-footer ion-padding">
+  <!-- <ion-toolbar> -->
+    <ion-button expand="block" fill="solid" class="custom-btn btn-solid">
+      GUARDAR TIMBRE
+    </ion-button>
+  <!-- </ion-toolbar> -->
 </ion-footer>
 <!-- 
 <ion-button id="open-modal" expand="block">Open Sheet Modal</ion-button>

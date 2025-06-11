@@ -3,10 +3,14 @@
     <ion-title class="ion-text-center custom-title">{{ title }}</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding content-centered">
-  <p class="message">{{ message }}</p>
-  <ion-item class="code-input-container">
-    <div  style="display: flex; align-items: center; justify-content: space-around; width: 100%;">
+<ion-content class="ion-padding" style="--padding-bottom: 0; --padding-top: 0;">
+  <div class="content-centered" style="width: 100%; height: 100%;">
+    <p class="message">{{ message }}</p>
+  </div>
+</ion-content>
+<ion-footer class="custom-ion-footer ion-padding" style="padding-top: 0;">
+  <!-- <ion-toolbar> -->
+    <div class="button-group">
       <ion-button 
         fill="outline" 
         class="custom-btn btn-outline"
@@ -22,9 +26,8 @@
         Si
       </ion-button>
     </div>
-  </ion-item>
-</ion-content>
-
+  <!-- </ion-toolbar> -->
+</ion-footer>
 
 
 <!-- 

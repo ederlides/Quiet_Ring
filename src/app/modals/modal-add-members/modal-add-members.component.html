@@ -1,27 +1,33 @@
-<ion-header class="custom-ion-header">
+<ion-header class="custom-ion-header ion-padding" style="padding-bottom: 0;">
   <ion-toolbar>
     <ion-icon src="../../assets/icon/bell-solid.svg" class="icon-bell"></ion-icon>
     <ion-title class="ion-text-center custom-title">123456</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding content-centered">
-  <p class="message">Comparte este código de invitación único para dar la bienvenida a nuevoa miembros.<br><span style="font-weight: 700;">Código válido solo por 24 horas.</span></p>
-  <div class="button-group">
-    <!-- <ion-button fill="outline" class="btn-cancel" expand="block" (click)="cancel()">No</ion-button>
-    <ion-button class="btn-confirm" expand="block" (click)="confirm()">Sí</ion-button> -->
-    <ion-button 
-      fill="outline" 
-      class="custom-btn btn-outline"
-      (click)="cancel()" 
-    >
-      Cancelar
-    </ion-button>
-    <ion-button 
-      fill="solid" 
-      class="custom-btn btn-solid"
-      (click)="confirm()"
-    >
-      Compartir
-    </ion-button>
+
+<ion-content class="ion-padding" style="--padding-bottom: 0; --padding-top: 0;">
+  <div class="content-centered" style="width: 100%; height: 100%;">
+    <p class="message">Comparte este código de invitación único para dar la bienvenida a nuevoa miembros.<br><span style="font-weight: 700;">Código válido solo por 24 horas.</span></p>
   </div>
 </ion-content>
+
+<ion-footer class="custom-ion-footer ion-padding" style="padding-top: 0;">
+  <!-- <ion-toolbar> -->
+    <div class="button-group">
+      <ion-button 
+        fill="outline" 
+        class="custom-btn btn-outline"
+        (click)="cancel()" 
+      >
+        Cancelar
+      </ion-button>
+      <ion-button 
+        fill="solid" 
+        class="custom-btn btn-solid"
+        (click)="confirm()"
+      >
+        Compartir
+      </ion-button>
+    </div>
+  <!-- </ion-toolbar> -->
+</ion-footer>

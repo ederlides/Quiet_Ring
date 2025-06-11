@@ -137,7 +137,7 @@
     <img src="../../assets/logo-welcome_2.svg" alt="">
   </div>
 
-  <div *ngIf="this.viewLogin===true && viewOtp!==true" >
+  <div *ngIf="this.viewLogin===true && viewOtp!==true" [formGroup]="form">
     <p class="custom-paragraph">
       Quietring necesitará verificar tu número de télefono.
     </p>
@@ -159,7 +159,7 @@
     <ion-item lines="none" style="padding-top: 1rem;">
       <ion-input 
         readonly
-        [value]="dialCode"
+        formControlName="dialCode"
         placeholder="Ej: +1"
         (click)="openCountryModal()"
         label="Indicativo" 
@@ -170,14 +170,15 @@
       ></ion-input>
       <ion-input
         placeholder="Digite su número de teléfono"
-        label="Número de tel" 
+        label="Número de teléfono" 
         label-placement="floating" 
         fill="outline" 
         class="custom-input"
-        type="tel" 
-        [(ngModel)]="phoneNumber"
+        type="number" 
+        formControlName="cellPhoneNumber"
         name="phoneNumber"
         required
+        (keyup.enter)="callOtp()"
       ></ion-input>
 
     </ion-item>
@@ -215,22 +216,24 @@
   
 </ion-content>
 
-<ion-footer class="ion-padding" style="box-shadow: none;">
-  <ng-container *ngIf="this.viewLogin===false && viewOtp!==true">
-    <p class="custom-paragraph">
-      Lee nuestras políticas de privacidad toca "Aceptar y continuar" para aceptar las condiciones del servicio.
-    </p>
-    <ion-button expand="block" fill="solid" class="custom-btn btn-solid" (click)="condition()">
-      Aceptar y continuar
-    </ion-button>
-  </ng-container>
+<ion-footer class="custom-ion-footer ion-padding" style="box-shadow: none;">
+  <!-- <ion-toolbar> -->
+    <ng-container *ngIf="this.viewLogin===false && viewOtp!==true">
+      <p class="custom-paragraph">
+        Lee nuestras políticas de privacidad toca "Aceptar y continuar" para aceptar las condiciones del servicio.
+      </p>
+      <ion-button expand="block" fill="solid" class="custom-btn btn-solid" (click)="condition()">
+        Aceptar y continuar
+      </ion-button>
+    </ng-container>
 
-  <ng-container *ngIf="this.viewLogin===true && viewOtp!==true">
-    <ion-button expand="block" fill="solid" class="custom-btn btn-solid" (click)="callOtp()">
-      Siguiente
-    </ion-button>
-    <p class="custom-paragraph ion-padding-top">
-      Debes tener al menos 18 años de edad para registrarte. Más información sobre cómo trabaja Quietring.
-    </p>
-  </ng-container>
+    <ng-container *ngIf="this.viewLogin===true && viewOtp!==true">
+      <ion-button expand="block" fill="solid" class="custom-btn btn-solid" (click)="callOtp()">
+        Siguiente
+      </ion-button>
+      <p class="custom-paragraph ion-padding-top">
+        Debes tener al menos 18 años de edad para registrarte. Más información sobre cómo trabaja Quietring.
+      </p>
+    </ng-container>
+  <!-- </ion-toolbar> -->
 </ion-footer>

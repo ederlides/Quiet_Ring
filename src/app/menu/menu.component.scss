@@ -402,6 +402,7 @@ ion-img {
   padding-top: 20px;
   .button-add {
     position: absolute;
+    z-index: 1;
     top: -60px;
     left: 0;
     right: 0;

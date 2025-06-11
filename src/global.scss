@@ -91,7 +91,7 @@ ion-avatar img {
 
 .modal-add-members {
   @extend .modal-confirm-delete;
-  --height: 270px;
+  --height: 290px;
 }
 
 // estilo input codigo
@@ -109,27 +109,6 @@ ion-avatar img {
   align-items: center;
   justify-content: center;
   height: 100%;
-}
-
-// estilos de botones
-
-.custom-back-button {
-  --background: #FEF6F4;
-  --border-radius: 5px;
-  --box-shadow: none;
-  --padding-start: 0;
-  --padding-end: 0;
-  --color: #334295;
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-  position: absolute;
-  z-index: 1;
 }
 
 ion-button{
@@ -186,12 +165,57 @@ ion-button{
   }
 }
 
+// estilo del header
+.custom-ion-header {
+  box-shadow: none !important;
+  &.custom-padding-header {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  ion-toolbar {
+    --background: none;
+  }
+}
+
+// estilo del footer
+.custom-ion-footer {
+  box-shadow: none !important;
+  // ion-toolbar {
+  //   --background: none;
+  // }
+}
+
 // título personalizado
 .custom-title {
   font-size: 32px;
   font-weight: 800;
   text-align: center;
   line-height: 1.2;
+  &.padding-with-back-button {
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+  }
+}
+
+// estilos de botones
+.custom-back-button {
+  --background: #FEF6F4;
+  --border-radius: 5px;
+  --box-shadow: none;
+  --padding-start: 0;
+  --padding-end: 0;
+  --color: #334295;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  position: absolute;
+  z-index: 1;
 }
 
 // estilo de contenedor para poner los decorados flotantes
@@ -222,19 +246,15 @@ ion-button{
   height: calc(100% - 20px);
 }
 
-// estilo del header
-.custom-ion-header {
-  box-shadow: none !important;
-  &.custom-padding-header {
-    padding-top: 50px;
-    padding-bottom: 50px;
-  }
-  ion-toolbar {
-    --background: none;
-  }
+// para centrar el contenido
+.content-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
-//estilo del ion list {
+//estilo del ion list 
 .custom-ion-list {
   background-color: transparent;
 }

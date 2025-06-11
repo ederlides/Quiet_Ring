@@ -1,52 +1,16 @@
 .custom-title {
   font-size: 27.5px;
-  margin-top: 30px;
-  padding: 0;
-}
-
-.code-input-container {
-  height: initial;
-  padding: 0.5rem 0rem;
-  --border-color: white;
-}
-
-.content-centered {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-}
-
-.message {
-  margin: auto;
-  font-size: 14px;
-  color: #444;
-  width: 80%;
-}
-
-.custom-btn {
-  width: 100px;
-  margin-left: 0;
-  margin-right: 0;
+  margin-top: 23px;
 }
 
 .button-group {
-//   display: flex;
-//   gap: 10px;
-  margin-top: 10px;
-//   justify-content: center;
+  display: flex;
+  justify-content: space-between;
 }
 
-// .btn-cancel {
-//   --background: #ffffff;
-//   --border-color: #ff8800;
-//   --color: #ff8800;
-//   --border-width: 2px;
-//   width: 100px;
-// }
-
-// .btn-confirm {
-//   --background: #ff8800;
-//   --color: white;
-//   width: 100px;
-// }
+.custom-btn {
+  // width: 130px;
+  width: 48%;
+  padding: 0;
+  margin: 0;
+}
