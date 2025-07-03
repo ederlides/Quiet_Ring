@@ -34,7 +34,7 @@
     height: 80px;
     transform: rotateZ(5deg);
     border: calc(80px * 0.09) solid #334295 !important;
-    filter: blur(0.5px);
+    filter: blur(1px);
   }
   .p2 {
     top: 79%;
@@ -51,7 +51,7 @@
     height: 110px;
     transform: rotateZ(11deg);
     border: calc(110px * 0.09) solid #334295 !important;
-    filter: blur(1px);
+    filter: blur(2px);
   }
   .p4 {
     top: 77%;
