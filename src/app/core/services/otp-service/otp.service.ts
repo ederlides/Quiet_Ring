@@ -12,7 +12,6 @@ export interface OtpRequest {
   idProcess: string;
   cellPhoneNumber: string;
   indicative: string;
-  operation: number;
   otp?: string;
   deviceInfo: DeviceInfo;
 }
@@ -22,11 +21,15 @@ export interface OtpRequest {
 })
 export class OtpService {
 
-  private apiUrl = 'https://3c4e2531-5ce7-48b0-a385-041c26955c74.mock.pstmn.io/';
+  private apiUrl = 'http://localhost:8080/otp';
 
   constructor(private http: HttpClient) { }
 
+  getOtp(payload: OtpRequest): Observable<any> {
+    return this.http.post(this.apiUrl+"/generate", payload);
+  }
+
   verifyOtp(payload: OtpRequest): Observable<any> {
-    return this.http.post(this.apiUrl, payload);
+    return this.http.post(this.apiUrl+"/validate", payload);
   }
 }

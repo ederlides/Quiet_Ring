@@ -1,0 +1,32 @@
+<ion-content class="ion-padding call-content custom-background">
+  <div class="overlay">
+    <div class="top-text">
+      <h2>{{ 'userName' }}</h2>
+      <p>Llamando...</p>
+    </div>
+    <div class="video-container">
+      <video #remote autoplay playsinline class="video-remote"></video>
+      <video #local autoplay muted playsinline class="video-local" (mousedown)="onDragStart($event)"
+        (touchstart)="onDragStart($event)"></video>
+
+    </div>
+    <div class="button-group">
+      <ion-button fill="clear" class="control-button" [class.active]="'cameraOn'" (click)="toggleCamera()">
+        <ion-icon name="videocam-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" class="control-button" [class.active]="'speakerOn'" (click)="toggleSpeaker()">
+        <ion-icon name="volume-high-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" class="control-button" [class.active]="'muted'" (click)="toggleMute()">
+        <ion-icon name="mic-off-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" color="lighter" class="control-button end-button" (click)="endCall()">
+        <ion-icon name="call-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+  </div>
+</ion-content>

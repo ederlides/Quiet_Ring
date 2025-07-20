@@ -1,50 +1,51 @@
-<ion-content class="ion-padding call-content">
-  <div class="background-image">
-    <img [src]="'assets//person-images/person-01.png'" alt="Foto de perfil" />
-  </div>
+<ion-content class="ion-padding call-content custom-background" >
 
-  <div class="overlay">
-    <div class="top-text">
-      <h2>{{ 'userName' }}</h2>
-      <p>Llamando...</p>
+  <div class="container" *ngIf="calling">
+    <div class="notification">
+      <ion-icon name="notifications" class="icon-bell"></ion-icon>
+      <span class="subtitle">Audio de QR Business...</span>
     </div>
-
-    <div class="button-group">
-      <ion-button
-        fill="clear"
-        class="control-button"
-        [class.active]="'cameraOn'"
-        (click)="'toggleCamera()'"
-      >
-        <ion-icon name="videocam-outline"></ion-icon>
-      </ion-button>
-
-      <ion-button
-        fill="clear"
-        class="control-button"
-        [class.active]="'speakerOn'"
-        (click)="'toggleSpeaker()'"
-      >
-        <ion-icon name="volume-high-outline"></ion-icon>
-      </ion-button>
-
-      <ion-button
-        fill="clear"
-        class="control-button"
-        [class.active]="'muted'"
-        (click)="'toggleMute()'"
-      >
-        <ion-icon name="mic-off-outline"></ion-icon>
-      </ion-button>
-
-      <ion-button
-        fill="clear"
-        color="lighter"
-        class="control-button end-button"
-        (click)="'endCall()'"
-      >
-        <ion-icon name="call-outline"></ion-icon>
-      </ion-button>
+    <h1 class="caller-name">Edward Galofre</h1>
+        <video #local autoplay muted playsinline></video>
+    <video #remote autoplay playsinline></video>
+    <!-- Slider -->
+    <div class="slide-button" #slideContainer>
+      <div class="slider" #slider (mousedown)="startSlide($event)" (touchstart)="startSlide($event)">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </div>
+      <span class="slide-text">Contestar</span>
     </div>
   </div>
+
+  <div *ngIf="!calling">
+    <div class="background-image">
+    <video #local autoplay muted playsinline></video>
+    <video #remote autoplay playsinline class="fullscreen-video"></video>
+    </div>
+    <div class="overlay">
+      <div class="top-text">
+        <h2>{{ 'userName' }}</h2>
+        <p>Llamando...</p>
+      </div>
+
+      <div class="button-group">
+        <ion-button fill="clear" class="control-button" [class.active]="'cameraOn'" (click)="'toggleCamera()'">
+          <ion-icon name="videocam-outline"></ion-icon>
+        </ion-button>
+
+        <ion-button fill="clear" class="control-button" [class.active]="'speakerOn'" (click)="'toggleSpeaker()'">
+          <ion-icon name="volume-high-outline"></ion-icon>
+        </ion-button>
+
+        <ion-button fill="clear" class="control-button" [class.active]="'muted'" (click)="'toggleMute()'">
+          <ion-icon name="mic-off-outline"></ion-icon>
+        </ion-button>
+
+        <ion-button fill="clear" color="lighter" class="control-button end-button" (click)="'acceptCall()'">
+          <ion-icon name="call-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
 </ion-content>

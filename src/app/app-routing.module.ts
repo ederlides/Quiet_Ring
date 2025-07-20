@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { MenuComponent } from './menu/menu.component';
 import { RegisterComponent } from './register/register.component';
+import { PipComponent } from './pip/pip.component';
 
 // En lugar de importar directamente, definiremos la ruta utilizando loadChildren
 const routes: Routes = [
@@ -70,6 +71,14 @@ const routes: Routes = [
     path: 'order-qr-code',
     loadChildren: () => import('./order-qr-code/order-qr-code.module').then(m => m.OrderQrCodeModule)
   },
+  {
+    path: 'call',
+    loadChildren: () => import('./calling/calling.module').then(m => m.CallingModule)
+  },
+  {
+    path: 'pip',
+    component: PipComponent
+  }
 ];
 
 @NgModule({

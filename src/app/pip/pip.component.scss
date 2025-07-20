@@ -1,0 +1,177 @@
+.call-content {
+    --background: transparent;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+
+    .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .overlay {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .top-text {
+        position: absolute;
+        text-align: center;
+        color: white;
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+        width: 100%;
+        padding: 40px 16px 20px;
+        z-index: 2;
+        overflow: hidden;
+
+        h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        p {
+            margin: 4px 0 0;
+            font-size: 16px;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.4),
+                    rgba(0, 0, 0, 0.1),
+                    transparent);
+            z-index: -1;
+        }
+    }
+
+    .button-group {
+        background: white;
+        padding: 0.5rem 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1rem;
+        margin-bottom: 30px;
+        z-index: 2;
+        position: absolute;
+        bottom: 2vh;
+
+        .control-button {
+            width: 56px;
+            height: 56px;
+            background: #dddddd;
+            border-radius: 50%;
+            color: var(--ion-color-primary-contrast);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+            margin: 0 10px;
+
+            &.active {
+                background: #3880ff;
+                color: white;
+
+                ion-icon {
+                    color: white;
+                }
+            }
+
+            ion-icon {
+                font-size: 24px;
+                color: var(--ion-color-primary-contrast);
+            }
+        }
+
+        .end-button {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: var(--ion-color-danger);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin: 0 10px;
+
+            ion-icon {
+                font-size: 28px;
+            }
+        }
+    }
+
+    .video-container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .video-remote {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* Para rellenar toda la pantalla */
+        z-index: 1;
+    }
+
+    .video-local {
+        position: absolute;
+        width: 50vw;
+        height: auto;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        border-radius: 8px;
+        cursor: grab;
+        touch-action: none;
+    }
+
+
+
+}
+
+.custom-background {
+    --background: #52341e !important;
+    --color: white !important;
+
+    .fullscreen-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        /* para que se escale bien sin deformarse */
+        z-index: 10;
+    }
+}

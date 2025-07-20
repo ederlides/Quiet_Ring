@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   inputs = Array(6);
   
-  selectedCountry: ICountry | null = null;
+  selectedCountry: ICountry ;
   // countryName: string = '';
   // dialCode: string = '';
   // cellPhoneNumber: string = '';
@@ -138,8 +138,6 @@ export class LoginComponent implements OnInit {
     }
     if (index == this.otpInputs.length - 1) {
       const otpCode = this.otpInputs.toArray().map(input => input.value ? input.value.toString() : '').join('');
-      this.navCtrl.navigateForward('/menu');
-
       this.verifyOtp(otpCode);
     }
   }
@@ -157,7 +155,13 @@ export class LoginComponent implements OnInit {
     }
     this.form.get('dialCode')?.setValue(this.selectedCountry?.dialCode || '')
   }
-
+  generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
 
 
   
@@ -166,10 +170,9 @@ export class LoginComponent implements OnInit {
 
   sendOtp() {
     const payload: OtpRequest = {
-      idProcess: this.idProcess,
+      idProcess: this.generateUUID(),
       cellPhoneNumber: this.form.get('cellPhoneNumber')?.value,
-      indicative: '+57',
-      operation: 1,
+      indicative: this.selectedCountry?.dialCode,
       deviceInfo: {
         ip: '10.10.10.1',
         mobile: 'Nokia1100',
@@ -177,7 +180,7 @@ export class LoginComponent implements OnInit {
       }
     };
 
-    this.otpService.verifyOtp(payload).subscribe({
+    this.otpService.getOtp(payload).subscribe({
       next: (response) => {
         console.log('OTP verificado:', response);
         // Aquí manejas la respuesta exitosa
@@ -191,10 +194,9 @@ export class LoginComponent implements OnInit {
 
   verifyOtp(otpCode: string) {
     const payload: OtpRequest = {
-      idProcess: this.idProcess,
+      idProcess: this.generateUUID(),
       cellPhoneNumber: this.form.get('cellPhoneNumber')?.value,
-      indicative: '+57',
-      operation: 2,
+      indicative: this.selectedCountry?.dialCode,
       otp: otpCode,
       deviceInfo: {
         ip: '10.10.10.1',
@@ -205,8 +207,11 @@ export class LoginComponent implements OnInit {
 
     this.otpService.verifyOtp(payload).subscribe({
       next: (response) => {
-        console.log('OTP verificado:', response);
-        // this.navCtrl.navigateForward('/menu');
+        localStorage.setItem("token",response.processResponse.token)
+        localStorage.setItem("indicative",response.processResponse.indicative)
+        localStorage.setItem("cellPhoneNumber",response.processResponse.cellPhoneNumber)
+        localStorage.setItem("room",response.processResponse.room)
+         this.navCtrl.navigateForward('/menu');
         // Aquí manejas la respuesta exitosa
       },
       error: (error) => {
