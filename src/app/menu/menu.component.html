@@ -12,7 +12,7 @@
           <ion-item *ngFor="let item of items" lines="none" style="width: calc(100% - 60px); position: relative; --background: transparent;">
             <ion-toggle 
               class="text" 
-              [checked]="item.active"
+              [checked]="item.status"
               (ionChange)="onToggleChange($event, item)"
             >
               {{ item.name }}

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
 import { VerifyMembersComponent } from '../verify-members/verify-members.component';
 import { ToggleCustomEvent } from '@ionic/angular';
 import { WebrtcService } from '../services/webrtc.service';
+import { DeviceInfo, OtpService } from '../core/services/otp-service/otp.service';
 
 // Interfaz para el tipo de objeto de llamada
 interface Call {
@@ -16,6 +17,17 @@ interface Call {
   call: string;
   date: string;
   src: string;
+}
+export interface Ring {
+  ip: string;
+  name: string;
+  img:string;
+  status: string;
+}
+export interface RingRequest {
+  idProcess: string;
+  name: string;
+  deviceInfo: DeviceInfo;
 }
 
 @Component({
@@ -29,14 +41,11 @@ export class MenuComponent implements OnInit {
   // Control de la vista de llamada
   showCallView: boolean = false;
   selectedCall: Call | null = null;
+  private otpService = inject(OtpService);
 
 
   items = [
-    { id: 1, name: 'Home', active: true },
-    { id: 2, name: 'Dog', active: true },
-    { id: 3, name: 'Passport', active: false },
-    { id: 4, name: 'Mami Beach Apartment', active: true },
-    { id: 5, name: 'Alameda del Rio', active: false },
+    { id: "", name: '', status: null }
   ];
 
   options = [
@@ -71,7 +80,7 @@ export class MenuComponent implements OnInit {
     { name: 'Quiet Ring Sticker', price: '$4,99 Usd', src: 'assets/qr3.svg' }
   ]
 
-  constructor(private router: Router, private modalCtrl: ModalController, private webrtcService:WebrtcService) { }
+  constructor(private router: Router, private modalCtrl: ModalController, private webrtcService: WebrtcService) { }
   viewportWidth: any;
   viewportHeight: any;
   screenWidth: any;
@@ -80,6 +89,7 @@ export class MenuComponent implements OnInit {
   realWidth: any;
   realHeight: any;
   ngOnInit() {
+    this.getRing();
     this.viewportWidth = window.innerWidth;
     this.viewportHeight = window.innerHeight;
 
@@ -249,6 +259,59 @@ export class MenuComponent implements OnInit {
     } else {
       event.target.checked = item.active;
     }
+  }
+
+
+  getRing() {
+    let payload: RingRequest = {
+      idProcess: this.generateUUID(),
+      name: "",
+      deviceInfo: {
+        ip: '10.10.10.1',
+        mobile: 'Nokia1100',
+        mac: '00-11-22-33-44-55'
+      }
+    };
+
+    this.otpService.getRing(payload).subscribe({
+      next: (response) => {
+        this.items=response.processResponse;
+      },
+      error: (error) => {
+        console.error('Error en verificación Timbres:', error);
+        // Aquí manejas el error, muestra alert o mensaje
+      }
+    });
+  }
+
+  createRing() {
+    let payload: RingRequest = {
+      idProcess: this.generateUUID(),
+      name: "",
+      deviceInfo: {
+        ip: '10.10.10.1',
+        mobile: 'Nokia1100',
+        mac: '00-11-22-33-44-55'
+      }
+    };
+
+    this.otpService.createRing(payload).subscribe({
+      next: (response) => {
+        this.getRing();
+      },
+      error: (error) => {
+        console.error('Error en verificación Timbres:', error);
+        // Aquí manejas el error, muestra alert o mensaje
+      }
+    });
+  }
+
+  generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 
 }

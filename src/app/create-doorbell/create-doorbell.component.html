@@ -7,14 +7,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" style="--padding-top: 0;">
-  <ion-item lines="none">
+<ion-content class="ion-padding" style="--padding-top: 0;" >
+  <ion-item lines="none" [formGroup]="form">
     <ion-input 
       label="Título" 
       label-placement="floating" 
       fill="outline" 
       placeholder="Enter text"
       class="custom-input"
+      formControlName="nameRing"
     ></ion-input>
   </ion-item>
   <ion-item lines="none">
@@ -45,7 +46,7 @@
 
 <ion-footer class="custom-ion-footer ion-padding">
   <!-- <ion-toolbar> -->
-    <ion-button expand="block" fill="solid" class="custom-btn btn-solid">
+    <ion-button (click)="createRing()" expand="block" fill="solid" class="custom-btn btn-solid">
       GUARDAR TIMBRE
     </ion-button>
   <!-- </ion-toolbar> -->

@@ -3,9 +3,13 @@ import { Injectable } from '@angular/core';
 import { OtpRequest } from '../core/services/otp-service/otp.service';
 import { Observable } from 'rxjs';
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': localStorage.getItem('token') || ''
+  }),
   withCredentials: true
 };
+
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +31,9 @@ export class ApiService {
       successHandler(_this, result);
     }, error => errorHandler(_this, error));
   }
+
+
+
 
 
 }
