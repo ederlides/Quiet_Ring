@@ -3,14 +3,14 @@
     <ion-title class="ion-text-center custom-title">{{ data.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding" style="--padding-bottom: 0;">
+<ion-content class="ion-padding" style="--padding-bottom: 0;" >
   <ion-input 
     label="Editar" 
     label-placement="floating" 
     fill="outline" 
     placeholder="Enter text"
     class="custom-input"
-    [value]="data?.value"
+    [(ngModel)]="nameRing"
   ></ion-input>
 </ion-content>
 

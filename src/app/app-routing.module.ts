@@ -68,7 +68,7 @@ const routes: Routes = [
     loadChildren: () => import('./join-as-a-member/join-as-a-member.module').then(m => m.JoinAsAMemberModule)
   },
   {
-    path: 'order-qr-code',
+    path: 'order-qr-code/:id',
     loadChildren: () => import('./order-qr-code/order-qr-code.module').then(m => m.OrderQrCodeModule)
   },
   {

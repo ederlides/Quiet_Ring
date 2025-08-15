@@ -20,15 +20,16 @@ import { Router } from '@angular/router';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CreateDoorbellComponent implements OnInit {
- private otpService = inject(OtpService);
+  private otpService = inject(OtpService);
   titulo = 'Casa';
   soloAudio = true;
   form: UntypedFormGroup;
   constructor(private modalCtrl: ModalController, private router: Router) { }
 
   ngOnInit() {
-        this.form = new FormGroup({
-      nameRing: new FormControl('')
+    this.form = new FormGroup({
+      nameRing: new FormControl(''),
+      nameVideo: new FormControl(false)
     });
   }
 
@@ -83,7 +84,11 @@ export class CreateDoorbellComponent implements OnInit {
   createRing() {
     let payload: RingRequest = {
       idProcess: this.generateUUID(),
-      name: this.form.get('nameRing')?.value,
+      ring: {
+        name: this.form.get('nameRing')?.value,
+        video: this.form.get('nameVideo')?.value,
+        status:true,
+      },
       deviceInfo: {
         ip: '10.10.10.1',
         mobile: 'Nokia1100',
@@ -93,7 +98,7 @@ export class CreateDoorbellComponent implements OnInit {
 
     this.otpService.createRing(payload).subscribe({
       next: (response) => {
-         this.router.navigate(['/menu']);
+        this.router.navigate(['/menu']);
       },
       error: (error) => {
         console.error('Error en verificación Timbres:', error);

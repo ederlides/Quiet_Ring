@@ -18,9 +18,9 @@
       formControlName="nameRing"
     ></ion-input>
   </ion-item>
-  <ion-item lines="none">
+  <ion-item lines="none" [formGroup]="form">
     <!-- <ion-label></ion-label> -->
-    <ion-toggle slot="end">Sólo audio</ion-toggle>
+    <ion-toggle slot="end" formControlName="nameVideo">Sólo audio</ion-toggle>
     <ion-label slot="end">Llamada de video y audio</ion-label>
   </ion-item>
   <ion-button expand="block" fill="outline" (click)="openModalAddMembers()" class="custom-btn btn-outline">
