@@ -18,15 +18,19 @@ interface Call {
   date: string;
   src: string;
 }
-export interface Ring {
-  ip: string;
-  name: string;
-  img:string;
-  status: string;
+interface Ring {
+  id?: string;
+  code?: string;
+  userId?: string;
+  imgts?: string;
+  name?: any;
+  video?: any;
+  status?: boolean;
 }
+
 export interface RingRequest {
   idProcess: string;
-  name: string;
+  ring: Ring;
   deviceInfo: DeviceInfo;
 }
 
@@ -37,6 +41,7 @@ export interface RingRequest {
   standalone: true,
   imports: [IonicModule, FormsModule, CommonModule]
 })
+
 export class MenuComponent implements OnInit {
   // Control de la vista de llamada
   showCallView: boolean = false;
@@ -44,9 +49,7 @@ export class MenuComponent implements OnInit {
   private otpService = inject(OtpService);
 
 
-  items = [
-    { id: "", name: '', status: null }
-  ];
+  items: Ring[];
 
   options = [
     { id: 1, name: 'Descargar Código QR', src: 'assets/icon/qr.svg', dir: '/order-qr-code' },
@@ -133,7 +136,7 @@ export class MenuComponent implements OnInit {
   actions(idx: number, item: any): void {
     switch (idx) {
       case 0: // Descargar Código QR
-        this.router.navigate(['/order-qr-code']);
+        this.router.navigate(['/order-qr-code',item.img]);
         break;
       case 1: // Agregar Miembro
         this.openModalAddMembers(item);
@@ -160,7 +163,8 @@ export class MenuComponent implements OnInit {
       component: ModalAddMembersComponent,
       componentProps: {
         title: '',
-        message: ``
+        message: ``,
+        value:item.id
       },
       cssClass: 'modal-add-members',
       showBackdrop: true,
@@ -210,6 +214,8 @@ export class MenuComponent implements OnInit {
     await modal.present();
     const { data, role } = await modal.onDidDismiss();
     if (role === 'confirm') {
+      item.name = data;
+      this.updateRing(item);
     }
   }
 
@@ -219,7 +225,7 @@ export class MenuComponent implements OnInit {
       componentProps: {
         data: {
           title: 'Editar timbre',
-          value: item.name
+          value: item.id
         }
 
       },
@@ -255,39 +261,17 @@ export class MenuComponent implements OnInit {
     const { role } = await modal.onDidDismiss();
 
     if (role === 'confirm') {
-      item.active = newValue;
+      item.status = newValue;
+      this.updateRing(item);
     } else {
-      event.target.checked = item.active;
+      event.target.checked = item.status;
     }
   }
 
-
-  getRing() {
+  updateRing(item) {
     let payload: RingRequest = {
       idProcess: this.generateUUID(),
-      name: "",
-      deviceInfo: {
-        ip: '10.10.10.1',
-        mobile: 'Nokia1100',
-        mac: '00-11-22-33-44-55'
-      }
-    };
-
-    this.otpService.getRing(payload).subscribe({
-      next: (response) => {
-        this.items=response.processResponse;
-      },
-      error: (error) => {
-        console.error('Error en verificación Timbres:', error);
-        // Aquí manejas el error, muestra alert o mensaje
-      }
-    });
-  }
-
-  createRing() {
-    let payload: RingRequest = {
-      idProcess: this.generateUUID(),
-      name: "",
+      ring: item,
       deviceInfo: {
         ip: '10.10.10.1',
         mobile: 'Nokia1100',
@@ -305,6 +289,29 @@ export class MenuComponent implements OnInit {
       }
     });
   }
+
+
+  getRing() {
+    let payload = {
+      idProcess: this.generateUUID(),
+      deviceInfo: {
+        ip: '10.10.10.1',
+        mobile: 'Nokia1100',
+        mac: '00-11-22-33-44-55'
+      }
+    };
+
+    this.otpService.getRing(payload).subscribe({
+      next: (response) => {
+        this.items = response.processResponse;
+      },
+      error: (error) => {
+        console.error('Error en verificación Timbres:', error);
+        // Aquí manejas el error, muestra alert o mensaje
+      }
+    });
+  }
+
 
   generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {

@@ -41,21 +41,70 @@ export class OtpService {
     const token = localStorage.getItem('token') || '';
 
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer '+token,
+      'Authorization': 'Bearer ' + token,
       'Content-Type': 'application/json'
     });
-    return this.http.post(url, payload,  { headers });
+    return this.http.post(url, payload, { headers });
   }
 
-  getRing(payload: RingRequest): Observable<any> {
+  getRing(payload: any): Observable<any> {
     const url = 'http://localhost:8080/ring/';
     const token = localStorage.getItem('token') || '';
 
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer '+token,
+      'Authorization': 'Bearer ' + token,
       'Content-Type': 'application/json'
     });
     return this.http.post<any>(url, payload, { headers });
   }
 
+  generateCode(payload: any): Observable<any> {
+    const url = 'http://localhost:8080/member/generate';
+    const token = localStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<any>(url, payload, { headers });
+  }
+
+  addMember(payload: any): Observable<any> {
+    const url = 'http://localhost:8080/member/';
+    const token = localStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<any>(url, payload, { headers });
+  }
+
+  listMember(payload: any): Observable<any> {
+    const url = 'http://localhost:8080/member/list';
+    const token = localStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<any>(url, payload, { headers });
+  }
+
+  updateMember(payload: any): Observable<any> {
+    const url = 'http://localhost:8080/member/update';
+    const token = localStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<any>(url, payload, { headers });
+  }
+
+  getQr(payload: any): Observable<any> {
+    const url = 'http://localhost:8080/qr/';
+    const token = localStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<any>(url, payload, { headers });
+  }
 }

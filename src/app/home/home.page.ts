@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { WebrtcService } from '../services/webrtc.service';
 import { IonicModule, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -10,11 +10,11 @@ import { FormsModule } from '@angular/forms';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-    imports: [IonicModule, CommonModule, FormsModule],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [IonicModule, CommonModule, FormsModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class HomePage {
-
+  private navCtrl = inject(NavController);
   phase: number = 0;
   showButton = false;
   activeIndex: number = -1;
@@ -47,6 +47,7 @@ export class HomePage {
   constructor(private router: Router) { }
 
   ngOnInit() {
+    this.validLoadData();
     setTimeout(() => {
       this.phase = 1;
       setTimeout(() => {
@@ -54,9 +55,9 @@ export class HomePage {
         this.activeIndex = 0;
         setTimeout(() => {
           const swiperEl = this.swiperRef.nativeElement;
-            
+
           const paginationEl = swiperEl.shadowRoot?.querySelector('.swiper-pagination');
-      
+
           if (paginationEl) {
             Object.assign(paginationEl.style, {
               background: '#FEF6F4',
@@ -97,10 +98,19 @@ export class HomePage {
     const swiperEl = document.querySelector('swiper-container') as any;
     swiperEl.swiper.slideNext();
   }
-  
+
   slidePrev() {
     const swiperEl = document.querySelector('swiper-container') as any;
     swiperEl.swiper.slidePrev();
+  }
+
+  validLoadData() {
+    if (localStorage.getItem("token") &&
+      localStorage.getItem("indicative") &&
+      localStorage.getItem("cellPhoneNumber") &&
+      localStorage.getItem("room")) {
+      this.navCtrl.navigateForward('/menu')
+    }
   }
 
 }
