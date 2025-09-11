@@ -186,7 +186,7 @@ export class LoginComponent implements OnInit {
         // Aquí manejas la respuesta exitosa
       },
       error: (error) => {
-        console.error('Error en verificación OTP:', error);
+        console.log("Error en verificación OTP:", JSON.stringify(error));
         // Aquí manejas el error, muestra alert o mensaje
       }
     });

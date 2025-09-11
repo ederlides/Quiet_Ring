@@ -83,7 +83,7 @@ export class MenuComponent implements OnInit {
     { name: 'Quiet Ring Sticker', price: '$4,99 Usd', src: 'assets/qr3.svg' }
   ]
 
-  constructor(private router: Router, private modalCtrl: ModalController, private webrtcService: WebrtcService) { }
+  constructor(private router: Router, private modalCtrl: ModalController, public webrtcService: WebrtcService) { }
   viewportWidth: any;
   viewportHeight: any;
   screenWidth: any;

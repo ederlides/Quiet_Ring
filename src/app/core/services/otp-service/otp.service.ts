@@ -24,20 +24,21 @@ export interface OtpRequest {
 })
 export class OtpService {
 
-  private apiUrl = 'http://localhost:8080/otp';
+  private apiUrl = 'https://app.quietring.us:8443/api-quiet-ring';
 
+  //private apiUrl = 'http://localhost:8080';
   constructor(private http: HttpClient) { }
 
   getOtp(payload: OtpRequest): Observable<any> {
-    return this.http.post(this.apiUrl + "/generate", payload);
+    return this.http.post(this.apiUrl + "/otp/generate", payload);
   }
 
   verifyOtp(payload: OtpRequest): Observable<any> {
-    return this.http.post(this.apiUrl + "/validate", payload);
+    return this.http.post(this.apiUrl + "/otp/validate", payload);
   }
 
   createRing(payload): Observable<any> {
-    let url = 'http://localhost:8080/ring/create';
+    let url = this.apiUrl+"/ring/create";
     const token = localStorage.getItem('token') || '';
 
     const headers = new HttpHeaders({
@@ -48,7 +49,7 @@ export class OtpService {
   }
 
   getRing(payload: any): Observable<any> {
-    const url = 'http://localhost:8080/ring/';
+    const url = this.apiUrl+"/ring/";
     const token = localStorage.getItem('token') || '';
 
     const headers = new HttpHeaders({
@@ -59,7 +60,7 @@ export class OtpService {
   }
 
   generateCode(payload: any): Observable<any> {
-    const url = 'http://localhost:8080/member/generate';
+    const url = this.apiUrl+"/member/generate";
     const token = localStorage.getItem('token') || '';
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + token,
@@ -69,7 +70,7 @@ export class OtpService {
   }
 
   addMember(payload: any): Observable<any> {
-    const url = 'http://localhost:8080/member/';
+    const url = this.apiUrl+"/member/";
     const token = localStorage.getItem('token') || '';
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + token,
@@ -79,7 +80,7 @@ export class OtpService {
   }
 
   listMember(payload: any): Observable<any> {
-    const url = 'http://localhost:8080/member/list';
+    const url = this.apiUrl+"/member/list";
     const token = localStorage.getItem('token') || '';
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + token,
@@ -89,7 +90,7 @@ export class OtpService {
   }
 
   updateMember(payload: any): Observable<any> {
-    const url = 'http://localhost:8080/member/update';
+    const url = this.apiUrl+"/member/update";
     const token = localStorage.getItem('token') || '';
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + token,
@@ -99,7 +100,7 @@ export class OtpService {
   }
 
   getQr(payload: any): Observable<any> {
-    const url = 'http://localhost:8080/qr/';
+    const url = this.apiUrl+"/qr/";
     const token = localStorage.getItem('token') || '';
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + token,

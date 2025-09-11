@@ -21,7 +21,7 @@ private offset = { x: 0, y: 0 };
 
   cameraOn = true;
   speakerOn = true;
-  muted = false;
+  muted = true;
 
   constructor(public webrtc: WebrtcService, private router: Router) {}
 

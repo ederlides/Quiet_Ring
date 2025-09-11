@@ -6,12 +6,13 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class WebrtcService {
+  public camera: any;
   private socket: Socket;
   private roomId = localStorage.getItem('room');
 
   private peerConnection: RTCPeerConnection | null = null;
   private localStream: MediaStream | null = null;
-
+  availableMicrophones: MediaDeviceInfo[] = [];
   private rtcConfig: RTCConfiguration = {
     iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
   };
@@ -26,7 +27,7 @@ export class WebrtcService {
   remoteVideoElement: HTMLVideoElement | null = null;
 
   constructor(private router: Router) {
-    this.socket = io('http://localhost:3000');
+    this.socket = io('https://app.quietring.us:3000');
 
     this.socket.on('offer', async offer => {
       this.incomingOffer = offer;
@@ -55,13 +56,74 @@ export class WebrtcService {
     this.localVideoElement = local;
     this.remoteVideoElement = remote;
   }
-
   async initLocal() {
-    this.localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-    if (this.localVideoElement) {
-      this.localVideoElement.srcObject = this.localStream;
+    try {
+      // 🔁 Detener stream anterior si existe
+      if (this.localStream) {
+        this.localStream.getTracks().forEach(track => track.stop());
+        this.localStream = null;
+        await new Promise(resolve => setTimeout(resolve, 300));
+      }
+
+      // 📋 Obtener lista de dispositivos
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const hasCamera = devices.some(d => d.kind === 'videoinput');
+      const microfonos = devices.filter(d => d.kind === 'audioinput');
+
+      if (!hasCamera) throw new Error('No se detectó una cámara.');
+      if (microfonos.length === 0) throw new Error('No se detectó un micrófono.');
+
+      this.availableMicrophones = microfonos;
+
+      // ✅ SOLUCIÓN: Obtener streams separados
+      const [videoStream, audioStream] = await Promise.all([
+        navigator.mediaDevices.getUserMedia({ video: true }),
+        navigator.mediaDevices.getUserMedia({ audio: true })
+      ]);
+
+
+
+      // 🧩 Combinar pistas en un solo MediaStream
+      const combinedStream = new MediaStream([
+        ...videoStream.getVideoTracks(),
+        ...audioStream.getAudioTracks()
+      ]);
+
+      this.localStream = combinedStream;
+
+      // 🎥 Asignar stream al video local
+      if (this.localVideoElement) {
+        this.localVideoElement.srcObject = this.localStream;
+        this.localVideoElement.muted = true; // Evita eco
+      }
+      console.log('Audio tracks:', this.localStream.getAudioTracks());
+
+      this.localStream.getAudioTracks().forEach((track, index) => {
+        console.log(`Track #${index} - Label: ${track.label}, Enabled: ${track.enabled}, Muted: ${track.muted}`);
+      });
+
+      // 🧪 Logs para verificar audio
+      const audioTracks = this.localStream.getAudioTracks();
+      console.log("🎧 Audio Tracks:", audioTracks);
+      audioTracks.forEach(track =>
+        console.log(`Track label: ${track.label}, enabled: ${track.enabled}`)
+      );
+
+    } catch (err: any) {
+      console.error('🛑 Error al inicializar cámara/micrófono:', err.name, err.message);
+
+      if (err.name === 'NotReadableError') {
+        this.camera = '⚠️ Cámara o micrófono en uso por otra aplicación.';
+      } else if (err.name === 'NotAllowedError') {
+        this.camera = '❌ Permiso denegado para usar cámara o micrófono.';
+      } else {
+        this.camera = `Error inesperado: ${err.name} - ${err.message}`;
+      }
     }
   }
+
+
+
 
   async createPeerConnection() {
     this.peerConnection = new RTCPeerConnection(this.rtcConfig);

@@ -19,14 +19,14 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   getOtp(_this, data, successHandler, errorHandler) {
-    let url = 'http://localhost:8080/otp/generate';
+    let url = 'http://144.202.16.218:8080/api-quiet-ring/otp/generate';
     this.http.post(url, data, httpOptions).subscribe(result => {
       successHandler(_this, result);
     }, error => errorHandler(_this, error));
   }
 
   validOtp(_this, data, successHandler, errorHandler) {
-    let url = 'http://localhost:8080/otp/validate';
+    let url = 'http://144.202.16.218:8080/api-quiet-ring/otp/validate';
     this.http.post(url, data, httpOptions).subscribe(result => {
       successHandler(_this, result);
     }, error => errorHandler(_this, error));

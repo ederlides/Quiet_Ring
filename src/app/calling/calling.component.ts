@@ -17,16 +17,14 @@ import { Router } from '@angular/router';
 export class CallingComponent implements OnInit {
 
 
-  constructor(private webrtc: WebrtcService, private router: Router) { }
+  constructor(public webrtc: WebrtcService, private router: Router) { }
+
   calling: boolean = true;
   @ViewChild('slider', { static: false }) slider: ElementRef;
   @ViewChild('slideContainer', { static: false }) slideContainer: ElementRef;
-  @ViewChild('local') local: ElementRef;
-  @ViewChild('remote') remote: ElementRef;
 
   isIncomingCall = false;
   incomingOffer: RTCSessionDescriptionInit;
-  audio = new Audio();
 
   isPeerConnectionReady = false;
   pendingCandidates: RTCIceCandidate[] = [];
@@ -36,10 +34,6 @@ export class CallingComponent implements OnInit {
 
 
   ngOnInit() {
-
-    this.audio.src = 'assets/Quiet Ring Tone.mp3';
-    this.audio.loop = true;
-    this.audio.play();
   }
 
   startSlide(event: MouseEvent | TouchEvent) {
@@ -75,8 +69,6 @@ export class CallingComponent implements OnInit {
 
     const finalLeft = parseInt(slider.style.left || '0', 10);
     if (finalLeft + slider.offsetWidth >= containerRect.width - 10) {
-      this.audio.pause();
-      this.audio.currentTime = 0;
       this.router.navigate(['/pip']);
     }
 
