@@ -33,8 +33,8 @@
           </ion-item>
         </ion-list>
         <div class="container-input">
-          <ion-input disabled class="indicativo" type="tel" label="{{ selectedFruits }}" labelPlacement="floating"  fill="outline"></ion-input>
-          <ion-input class="tel" type="tel" label="Número de tel" labelPlacement="floating"  fill="outline"></ion-input>
+          <ion-input disabled class="indicativo" type="tel" label="Código país" labelPlacement="floating" fill="outline" [value]="selectedFruitsText"></ion-input>
+          <ion-input class="tel" type="tel" label="Número de tel" labelPlacement="floating" fill="outline" [(ngModel)]="mobile" name="mobile" [ngModelOptions]="{standalone: true}"></ion-input>
         </div>
   
       </form>
@@ -50,11 +50,12 @@
         <p>Esperando para detectar automaticamente el SMS enviad.</p>
       </div>
       <div class="input-otp">
-        <ion-input class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline"></ion-input>
-        <ion-input class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline"></ion-input>
-        <ion-input class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline"></ion-input>
-        <ion-input class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline"></ion-input>
-        <ion-input (ionInput)="onInputChange($event)" class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline"></ion-input>
+        <ion-input #otp1 class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline" (ionInput)="onOtpInput($event, 1)"></ion-input>
+        <ion-input #otp2 class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline" (ionInput)="onOtpInput($event, 2)"></ion-input>
+        <ion-input #otp3 class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline" (ionInput)="onOtpInput($event, 3)"></ion-input>
+        <ion-input #otp4 class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline" (ionInput)="onOtpInput($event, 4)"></ion-input>
+        <ion-input #otp5 class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline" (ionInput)="onOtpInput($event, 5)"></ion-input>
+        <ion-input #otp6 class="otp-number" pattern="[0-9]" maxlength="1" placeholder="-" type="number" fill="outline" (ionInput)="onOtpInput($event, 6)"></ion-input>
       </div>
       <div class="text-bottom">
         <p>Ingresa el código que enviamos por SMS al 3012178360</p>

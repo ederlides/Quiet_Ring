@@ -3,7 +3,29 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  
+  // 🌐 API Configuration
+  apiUrl: 'http://localhost:8080',
+  apiEndpoints: {
+    otpGenerate: '/otp/generate',
+    otpValidate: '/otp/valid'
+  },
+  
+  // 📡 WebRTC Configuration
+  webrtc: {
+    serverUrl: 'http://localhost:8081',
+    transports: ['websocket'],
+    credentials: true,
+    stunServer: 'stun:stun.l.google.com:19302'
+  },
+  
+  // 🏗️ App Configuration
+  app: {
+    name: 'Quiet Ring',
+    version: '1.0.0',
+    debugMode: true
+  }
 };
 
 /*

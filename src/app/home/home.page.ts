@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { WebrtcService } from '../services/webrtc.service';
+import { WebrtcImprovedService } from '../services/webrtc-improved.service';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 

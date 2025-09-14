@@ -1,21 +1,25 @@
 import { ElementRef, Injectable } from '@angular/core';
 import {io} from 'socket.io-client';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebrtcService {
   private peerConnection: RTCPeerConnection;
-  private socket = io('http://144.202.33.14:8081', {
-    transports: ['websocket'], // 🔥 Evita "polling", usa solo WebSocket
-    withCredentials: true, // 🔥 Permite credenciales (si es necesario)
+  private socket = io(environment.webrtc.serverUrl, {
+    transports: environment.webrtc.transports,
+    withCredentials: environment.webrtc.credentials,
   });
   private localStream: MediaStream ;
   remoteVideo!: ElementRef<HTMLVideoElement>;
 
   constructor() {
+    console.log('📡 WebRTC Server URL:', environment.webrtc.serverUrl);
+    console.log('🧊 STUN Server:', environment.webrtc.stunServer);
+    
     this.peerConnection = new RTCPeerConnection({
-      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+      iceServers: [{ urls: environment.webrtc.stunServer }]
     });
 
     // Manejar llegada de pistas de video/audio

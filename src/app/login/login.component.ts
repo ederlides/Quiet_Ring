@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonContent, IonicModule, IonItem, IonLabel, IonList, IonModal, NavController } from '@ionic/angular';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { IonContent, IonicModule, IonItem, IonLabel, IonList, IonModal, NavController, IonInput } from '@ionic/angular';
 import { TypeaheadComponent } from '../typeahead/typeahead.component';
 import { ApiService } from '../service/api.service';
 import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [IonicModule, TypeaheadComponent,NgIf]
+  imports: [IonicModule, TypeaheadComponent, NgIf, FormsModule]
 })
 export class LoginComponent implements OnInit {
   viewLogin=false;
@@ -20,7 +21,16 @@ export class LoginComponent implements OnInit {
 
   selectedFruitsText = '';
   selectedFruits: string[] = [];
-  mobile: String;
+  mobile: string = '';
+  
+  // OTP properties
+  otpValues: string[] = ['', '', '', '', '', ''];
+  @ViewChild('otp1', { static: false }) otp1!: IonInput;
+  @ViewChild('otp2', { static: false }) otp2!: IonInput;
+  @ViewChild('otp3', { static: false }) otp3!: IonInput;
+  @ViewChild('otp4', { static: false }) otp4!: IonInput;
+  @ViewChild('otp5', { static: false }) otp5!: IonInput;
+  @ViewChild('otp6', { static: false }) otp6!: IonInput;
 
   fruits: any[] = [
     { text: 'Colombia', value: '+57' },
@@ -38,20 +48,100 @@ export class LoginComponent implements OnInit {
   }
 
   callOtp() {
+    console.log('🔍 Valor de mobile:', this.mobile);
+    console.log('🔍 Tipo de mobile:', typeof this.mobile);
+    
+    // Validar que se haya ingresado un número
+    if (!this.mobile || this.mobile.trim() === '') {
+      console.error('❌ Número de teléfono requerido');
+      alert('Por favor ingresa un número de teléfono');
+      return;
+    }
+
     this.viewOtp=true;
     this.viewLogin=false;
+    
+    // Obtener código de país (sin el +)
+    const countryCode = this.selectedFruits.length > 0 ? this.selectedFruits[0].replace('+', '') : '57';
+    
     let request = {
       "idProcess": "pruebasIdProcess",
-      "device": "Nokia1100",
-      "ip": "10.10.10.2",
-      "mobile": this.mobile
+      "cellPhoneNumber": this.mobile,
+      "indicative": `+${countryCode}`,
+      "deviceInfo": {
+        "ip": "10.10.10.2",
+        "mobile": "Nokia1100",
+        "mac": "00:11:22:33:44:55"
+      }
     }
-    this.apiService.getOtp(this, request,this.handlerSuccessGetOtp, this.handlerError )
+    
+    console.log('📱 Enviando solicitud OTP (nuevo formato):', request);
+    this.apiService.getOtp(this, request, this.handlerSuccessGetOtp, this.handlerError)
   }
 
 
-  onInputChange(event: any) {
-    this.navCtrl.navigateForward('/menu');
+  onOtpInput(event: any, position: number) {
+    const value = event.target.value;
+    
+    // Solo permitir números
+    if (!/^\d*$/.test(value)) {
+      event.target.value = '';
+      return;
+    }
+    
+    // Actualizar el valor en el array
+    this.otpValues[position - 1] = value;
+    
+    // Si se ingresó un dígito, mover al siguiente campo
+    if (value.length === 1 && position < 6) {
+      this.focusNextInput(position + 1);
+    }
+    
+    // Si se borró un dígito, mover al campo anterior
+    if (value.length === 0 && position > 1) {
+      this.focusPreviousInput(position - 1);
+    }
+    
+    // Verificar si se completó el OTP
+    if (this.isOtpComplete()) {
+      this.validateOtp();
+    }
+  }
+  
+  focusNextInput(nextPosition: number) {
+    setTimeout(() => {
+      switch (nextPosition) {
+        case 2: this.otp2.setFocus(); break;
+        case 3: this.otp3.setFocus(); break;
+        case 4: this.otp4.setFocus(); break;
+        case 5: this.otp5.setFocus(); break;
+        case 6: this.otp6.setFocus(); break;
+      }
+    }, 50);
+  }
+  
+  focusPreviousInput(prevPosition: number) {
+    setTimeout(() => {
+      switch (prevPosition) {
+        case 1: this.otp1.setFocus(); break;
+        case 2: this.otp2.setFocus(); break;
+        case 3: this.otp3.setFocus(); break;
+        case 4: this.otp4.setFocus(); break;
+        case 5: this.otp5.setFocus(); break;
+      }
+    }, 50);
+  }
+  
+  isOtpComplete(): boolean {
+    return this.otpValues.every(value => value !== '');
+  }
+  
+  validateOtp() {
+    const otpCode = this.otpValues.join('');
+    console.log('🔐 OTP completo:', otpCode);
+    
+    // Llamar al método de validación
+    this.callValidOtp(otpCode);
   }
 
 
@@ -117,18 +207,30 @@ export class LoginComponent implements OnInit {
   }
 
   callValidOtp(otp){
+    // Obtener código de país (sin el +)
+    const countryCode = this.selectedFruits.length > 0 ? this.selectedFruits[0].replace('+', '') : '57';
+    
     let request = {
       "idProcess": "pruebasIdProcess",
-      "device": "Nokia1100",
-      "ip": "10.10.10.2",
-      "otp": otp
+      "cellPhoneNumber": this.mobile,
+      "indicative": `+${countryCode}`,
+      "otp": otp,
+      "deviceInfo": {
+        "ip": "10.10.10.2",
+        "mobile": "Nokia1100",
+        "mac": "00:11:22:33:44:55"
+      }
     }
+    
+    console.log('📱 Enviando validación OTP (nuevo formato):', request);
     this.apiService.validOtp(this, request,this.handlerSuccessValidOtp, this.handlerError )
   }
 
   handlerSuccessValidOtp(_this, data){
     if (data.status == 200) {
-      console.log(data.processResponse)
+      console.log('✅ OTP validado exitosamente:', data.processResponse);
+      // Navegar al menú cuando la validación sea exitosa
+      _this.navCtrl.navigateForward('/menu');
     }
   }
 
