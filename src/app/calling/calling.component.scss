@@ -214,3 +214,57 @@
     }
   }
 }
+
+// Indicadores de estado
+.connection-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  margin-bottom: 16px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  
+  ion-icon {
+    margin-right: 8px;
+    font-size: 16px;
+  }
+  
+  .status-text {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  margin-bottom: 16px;
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  border-radius: 8px;
+  color: #dc3545;
+  
+  ion-icon {
+    margin-right: 8px;
+    font-size: 18px;
+  }
+  
+  span {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.call-status {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+  
+  ion-badge {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}

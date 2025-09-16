@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Router } from '@angular/router';
 import { PermissionsService } from './permissions.service';
 import { environment } from '../../environments/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CallState, WebSocketState } from '../interfaces/call-state.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class WebrtcService {
+export class WebrtcService implements OnDestroy {
   public camera: any;
   private socket: Socket;
   private roomId = localStorage.getItem('room');
@@ -15,10 +17,39 @@ export class WebrtcService {
   private peerConnection: RTCPeerConnection | null = null;
   private localStream: MediaStream | null = null;
   availableMicrophones: MediaDeviceInfo[] = [];
+  
+  // Configuración WebRTC mejorada
   private rtcConfig: RTCConfiguration = {
-    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+    iceServers: [
+      { urls: 'stun:stun.l.google.com:19302' },
+      { urls: 'stun:stun1.l.google.com:19302' },
+      { urls: 'stun:stun2.l.google.com:19302' }
+    ],
+    iceCandidatePoolSize: 10
   };
 
+  // Estados centralizados
+  private callState = new BehaviorSubject<CallState>({
+    isIncomingCall: false,
+    isPeerConnectionReady: false,
+    connectionState: 'disconnected',
+    callStatus: 'idle',
+    error: null
+  });
+
+  private webSocketState = new BehaviorSubject<WebSocketState>({
+    isConnected: false,
+    isConnecting: false,
+    reconnectAttempts: 0,
+    lastError: null
+  });
+
+  // Configuración de reconexión
+  private maxReconnectAttempts = 5;
+  private reconnectDelay = 1000;
+  private reconnectAttempts = 0;
+
+  // Estados legacy (para compatibilidad)
   isIncomingCall = false;
   incomingOffer: RTCSessionDescriptionInit | null = null;
   isPeerConnectionReady = false;
@@ -32,12 +63,92 @@ export class WebrtcService {
     private router: Router,
     private permissionsService: PermissionsService
   ) {
-    this.socket = io(environment.api.socketUrl);
+    this.initializeSocket();
+  }
 
+  /**
+   * Inicializa la conexión WebSocket con manejo robusto de errores
+   */
+  private initializeSocket() {
+    console.log('🔌 Inicializando conexión WebSocket...');
+    
+    this.socket = io(environment.api.socketUrl, {
+      autoConnect: true,
+      reconnection: true,
+      reconnectionAttempts: this.maxReconnectAttempts,
+      reconnectionDelay: this.reconnectDelay,
+      timeout: 10000,
+      forceNew: true
+    });
+
+    // Eventos de conexión
+    this.socket.on('connect', () => {
+      console.log('✅ WebSocket conectado exitosamente');
+      this.updateWebSocketState({
+        isConnected: true,
+        isConnecting: false,
+        reconnectAttempts: 0,
+        lastError: null
+      });
+      this.updateCallState({ connectionState: 'connected' });
+      this.joinRoom();
+    });
+
+    this.socket.on('disconnect', (reason) => {
+      console.log('❌ WebSocket desconectado:', reason);
+      this.updateWebSocketState({
+        isConnected: false,
+        isConnecting: false,
+        lastError: reason
+      });
+      this.updateCallState({ connectionState: 'disconnected' });
+    });
+
+    this.socket.on('connect_error', (error) => {
+      console.error('❌ Error de conexión WebSocket:', error);
+      this.updateWebSocketState({
+        isConnected: false,
+        isConnecting: false,
+        lastError: error.message
+      });
+      this.updateCallState({ 
+        connectionState: 'disconnected',
+        error: `Error de conexión: ${error.message}`
+      });
+    });
+
+    this.socket.on('reconnect_attempt', (attempt) => {
+      console.log(`🔄 Reintentando conexión WebSocket (${attempt}/${this.maxReconnectAttempts})`);
+      this.updateWebSocketState({
+        isConnecting: true,
+        reconnectAttempts: attempt
+      });
+      this.updateCallState({ connectionState: 'connecting' });
+    });
+
+    this.socket.on('reconnect_failed', () => {
+      console.error('❌ Falló la reconexión WebSocket después de todos los intentos');
+      this.updateWebSocketState({
+        isConnected: false,
+        isConnecting: false,
+        lastError: 'Reconexión fallida'
+      });
+      this.updateCallState({ 
+        connectionState: 'disconnected',
+        error: 'No se pudo reconectar al servidor'
+      });
+    });
+
+    // Eventos de WebRTC
     this.socket.on('offer', async offer => {
+      console.log('📞 Llamada entrante recibida');
       this.incomingOffer = offer;
       this.isIncomingCall = true;
-      this.router.navigate(['/call']); // Redirige al componente receptor
+      this.updateCallState({ 
+        isIncomingCall: true,
+        callStatus: 'ringing'
+      });
+      this.router.navigate(['/call']);
     });
 
     this.socket.on('ice-candidate', async c => {
@@ -51,15 +162,155 @@ export class WebrtcService {
     this.socket.on('answer', async answer => {
       if (this.peerConnection) {
         await this.peerConnection.setRemoteDescription(answer);
+        this.updateCallState({ callStatus: 'connected' });
       }
     });
+  }
 
-    this.socket.emit('join', this.roomId);
+  /**
+   * Se une a la sala después de validar autenticación
+   */
+  private joinRoom() {
+    if (!this.validateAuthentication()) {
+      return;
+    }
+    
+    if (this.roomId) {
+      console.log('🚪 Uniéndose a la sala:', this.roomId);
+      this.socket.emit('join', this.roomId);
+    } else {
+      console.error('❌ No hay roomId disponible');
+      this.updateCallState({ error: 'No hay sala disponible' });
+    }
+  }
+
+  /**
+   * Valida que el usuario esté autenticado
+   */
+  private validateAuthentication(): boolean {
+    const token = localStorage.getItem('token');
+    const roomId = localStorage.getItem('room');
+    
+    if (!token || !roomId) {
+      console.error('❌ Usuario no autenticado');
+      this.updateCallState({ error: 'Usuario no autenticado' });
+      this.router.navigate(['/login']);
+      return false;
+    }
+    
+    return true;
   }
 
   setVideoElements(local: HTMLVideoElement, remote: HTMLVideoElement) {
     this.localVideoElement = local;
     this.remoteVideoElement = remote;
+  }
+
+  /**
+   * Actualiza el estado de la llamada
+   */
+  private updateCallState(updates: Partial<CallState>) {
+    const currentState = this.callState.value;
+    this.callState.next({ ...currentState, ...updates });
+    
+    // Sincronizar estados legacy
+    this.isIncomingCall = this.callState.value.isIncomingCall;
+    this.isPeerConnectionReady = this.callState.value.isPeerConnectionReady;
+  }
+
+  /**
+   * Actualiza el estado del WebSocket
+   */
+  private updateWebSocketState(updates: Partial<WebSocketState>) {
+    const currentState = this.webSocketState.value;
+    this.webSocketState.next({ ...currentState, ...updates });
+  }
+
+  /**
+   * Obtiene el estado actual de la llamada
+   */
+  getCallState$(): Observable<CallState> {
+    return this.callState.asObservable();
+  }
+
+  /**
+   * Obtiene el estado actual del WebSocket
+   */
+  getWebSocketState$(): Observable<WebSocketState> {
+    return this.webSocketState.asObservable();
+  }
+
+  /**
+   * Ejecuta una operación con timeout
+   */
+  private async withTimeout<T>(
+    promise: Promise<T>, 
+    timeoutMs: number, 
+    errorMessage: string
+  ): Promise<T> {
+    const timeout = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error(errorMessage)), timeoutMs);
+    });
+
+    return Promise.race([promise, timeout]);
+  }
+
+  /**
+   * Maneja errores de llamada
+   */
+  private handleCallError(error: any) {
+    console.error('❌ Error en llamada:', error);
+    this.updateCallState({ 
+      error: error.message || 'Error desconocido en la llamada',
+      callStatus: 'ended'
+    });
+  }
+
+  /**
+   * Cleanup de recursos
+   */
+  ngOnDestroy() {
+    this.cleanup();
+  }
+
+  private cleanup() {
+    console.log('🧹 Limpiando recursos...');
+    
+    // Cerrar WebSocket
+    if (this.socket) {
+      this.socket.disconnect();
+    }
+
+    // Cerrar PeerConnection
+    if (this.peerConnection) {
+      this.peerConnection.close();
+      this.peerConnection = null;
+    }
+
+    // Detener streams
+    if (this.localStream) {
+      this.localStream.getTracks().forEach(track => track.stop());
+      this.localStream = null;
+    }
+
+    // Limpiar elementos de video
+    if (this.localVideoElement) {
+      this.localVideoElement.srcObject = null;
+    }
+    if (this.remoteVideoElement) {
+      this.remoteVideoElement.srcObject = null;
+    }
+
+    // Resetear estados
+    this.updateCallState({
+      isIncomingCall: false,
+      isPeerConnectionReady: false,
+      callStatus: 'idle',
+      error: null
+    });
+
+    this.pendingCandidates = [];
+    this.incomingOffer = null;
   }
 
   /**
@@ -300,6 +551,16 @@ export class WebrtcService {
     try {
       console.log('📞 Aceptando llamada entrante...');
       
+      // Validar conexión WebSocket
+      if (!this.webSocketState.value.isConnected) {
+        throw new Error('WebSocket no conectado');
+      }
+
+      // Validar autenticación
+      if (!this.validateAuthentication()) {
+        throw new Error('Usuario no autenticado');
+      }
+      
       // 🔐 Verificar permisos antes de aceptar la llamada
       const permissionCheck = await this.verifyCallPermissions();
       if (!permissionCheck.success) {
@@ -310,28 +571,62 @@ export class WebrtcService {
         }
       }
 
-      await this.initLocal();
-      await this.createPeerConnection();
+      this.updateCallState({ callStatus: 'calling' });
+
+      // Inicializar medios con timeout
+      await this.withTimeout(
+        this.initLocal(),
+        10000,
+        'Timeout al inicializar medios locales'
+      );
+
+      // Crear PeerConnection con timeout
+      await this.withTimeout(
+        this.createPeerConnection(),
+        5000,
+        'Timeout al crear PeerConnection'
+      );
 
       if (this.incomingOffer && this.peerConnection) {
-        await this.peerConnection.setRemoteDescription(new RTCSessionDescription(this.incomingOffer));
-        const answer = await this.peerConnection.createAnswer();
-        await this.peerConnection.setLocalDescription(answer);
+        await this.withTimeout(
+          this.peerConnection.setRemoteDescription(new RTCSessionDescription(this.incomingOffer)),
+          5000,
+          'Timeout al establecer descripción remota'
+        );
+
+        const answer = await this.withTimeout(
+          this.peerConnection.createAnswer(),
+          5000,
+          'Timeout al crear respuesta'
+        );
+
+        await this.withTimeout(
+          this.peerConnection.setLocalDescription(answer),
+          5000,
+          'Timeout al establecer descripción local'
+        );
+
         this.socket.emit('answer', answer, this.roomId);
 
         this.isPeerConnectionReady = true;
+        this.updateCallState({ isPeerConnectionReady: true });
 
+        // Procesar candidatos pendientes
         for (const c of this.pendingCandidates) {
           await this.addIce(c);
         }
         this.pendingCandidates = [];
         
+        this.updateCallState({ 
+          callStatus: 'connected',
+          isIncomingCall: false 
+        });
+        
         console.log('✅ Llamada aceptada exitosamente');
       }
-      this.isIncomingCall = false;
     } catch (error) {
       console.error('❌ Error al aceptar llamada:', error);
-      this.isIncomingCall = false;
+      this.handleCallError(error);
       throw error;
     }
   }
@@ -339,6 +634,16 @@ export class WebrtcService {
   async callPeer() {
     try {
       console.log('📞 Iniciando llamada saliente...');
+      
+      // Validar conexión WebSocket
+      if (!this.webSocketState.value.isConnected) {
+        throw new Error('WebSocket no conectado');
+      }
+
+      // Validar autenticación
+      if (!this.validateAuthentication()) {
+        throw new Error('Usuario no autenticado');
+      }
       
       // 🔐 Verificar permisos antes de iniciar la llamada
       const permissionCheck = await this.verifyCallPermissions();
@@ -350,19 +655,44 @@ export class WebrtcService {
         }
       }
 
-      await this.initLocal();
-      await this.createPeerConnection();
+      this.updateCallState({ callStatus: 'calling' });
+
+      // Inicializar medios con timeout
+      await this.withTimeout(
+        this.initLocal(),
+        10000,
+        'Timeout al inicializar medios locales'
+      );
+
+      // Crear PeerConnection con timeout
+      await this.withTimeout(
+        this.createPeerConnection(),
+        5000,
+        'Timeout al crear PeerConnection'
+      );
 
       if (this.peerConnection) {
-        const offer = await this.peerConnection.createOffer();
-        await this.peerConnection.setLocalDescription(offer);
+        const offer = await this.withTimeout(
+          this.peerConnection.createOffer(),
+          5000,
+          'Timeout al crear oferta'
+        );
+
+        await this.withTimeout(
+          this.peerConnection.setLocalDescription(offer),
+          5000,
+          'Timeout al establecer descripción local'
+        );
+
         this.socket.emit('offer', offer, this.roomId);
         this.isPeerConnectionReady = true;
+        this.updateCallState({ isPeerConnectionReady: true });
         
         console.log('✅ Llamada iniciada exitosamente');
       }
     } catch (error) {
       console.error('❌ Error al iniciar llamada:', error);
+      this.handleCallError(error);
       throw error;
     }
   }
@@ -376,6 +706,10 @@ export class WebrtcService {
   }
 
   endCall() {
+    console.log('📞 Finalizando llamada...');
+    
+    this.updateCallState({ callStatus: 'ended' });
+    
     if (this.peerConnection) {
       this.peerConnection.close();
       this.peerConnection = null;
@@ -394,8 +728,16 @@ export class WebrtcService {
       this.localVideoElement.srcObject = null;
     }
 
-    this.isIncomingCall = false;
-    this.isPeerConnectionReady = false;
+    this.updateCallState({
+      isIncomingCall: false,
+      isPeerConnectionReady: false,
+      callStatus: 'idle',
+      error: null
+    });
+    
     this.pendingCandidates = [];
+    this.incomingOffer = null;
+    
+    console.log('✅ Llamada finalizada');
   }
 }

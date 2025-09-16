@@ -1,11 +1,36 @@
 <ion-content class="ion-padding call-content custom-background">
 
+  <!-- Indicador de estado de conexión -->
+  <div class="connection-status" *ngIf="webSocketState">
+    <ion-icon 
+      [name]="webSocketState.isConnected ? 'wifi' : 'wifi-off'" 
+      [color]="webSocketState.isConnected ? 'success' : 'danger'">
+    </ion-icon>
+    <span class="status-text">
+      {{ webSocketState.isConnected ? 'Conectado' : 'Desconectado' }}
+    </span>
+  </div>
+
+  <!-- Indicador de error -->
+  <div class="error-message" *ngIf="callState?.error">
+    <ion-icon name="warning" color="danger"></ion-icon>
+    <span>{{ callState.error }}</span>
+  </div>
+
   <div class="container" *ngIf="calling">
     <div class="notification">
       <ion-icon name="notifications" class="icon-bell"></ion-icon>
       <span class="subtitle">Audio de QR Business...</span>
     </div>
     <h1 class="caller-name">Edward Galofre</h1>
+    
+    <!-- Estado de la llamada -->
+    <div class="call-status" *ngIf="callState">
+      <ion-badge [color]="getCallStatusColor(callState.callStatus)">
+        {{ getCallStatusText(callState.callStatus) }}
+      </ion-badge>
+    </div>
+    
     <!-- Slider -->
     <div class="slide-button" #slideContainer>
       <div class="slider" #slider (mousedown)="startSlide($event)" (touchstart)="startSlide($event)">
