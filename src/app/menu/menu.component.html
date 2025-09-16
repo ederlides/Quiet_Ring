@@ -7,7 +7,7 @@
           <ion-title class="custom-title"><span style="white-space: normal;">Timbres</span></ion-title>
         </ion-toolbar>
       </ion-header>
-      <ion-content class="container-content">
+      <ion-content class="container-content" [scrollY]="true">
         <ion-list class="custom-ion-list">
           <ion-item *ngFor="let item of items" lines="none" style="width: calc(100% - 60px); position: relative; --background: transparent;">
             <ion-toggle 
@@ -191,7 +191,7 @@
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
-        <ion-content class="container-content-setting" style="height: 100vh">
+        <ion-content class="container-content-setting" [scrollY]="true" style="height: 100vh">
           <!-- <div class="container"> -->
           <ion-list class="spaciong-list">
             <ion-item button lines="none" (click)="goToActivateQR()">
@@ -312,7 +312,7 @@
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
-        <ion-content class="container-content-setting">
+        <ion-content class="container-content-setting" [scrollY]="true">
           <ion-list class="custom-ion-list">
             <ion-item button lines="none" style="--background: transparent;">
               <ion-icon

@@ -3,7 +3,27 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  api: {
+    baseUrl: 'http://144.202.16.218:8080/api-quiet-ring',
+    socketUrl: 'https://app.quietring.us:3000',
+    otp: {
+      generate: 'http://144.202.16.218:8080/api-quiet-ring/otp/generate',
+      validate: 'http://144.202.16.218:8080/api-quiet-ring/otp/validate'
+    }
+  },
+  external: {
+    flagCdn: 'https://flagcdn.com/w40',
+    fonts: {
+      google: 'https://fonts.googleapis.com',
+      googleStatic: 'https://fonts.gstatic.com'
+    }
+  },
+  app: {
+    name: 'Quiet Ring',
+    version: '1.0.0',
+    activateUrl: 'https://quietring.com/activate'
+  }
 };
 
 /*

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { RingRequest } from 'src/app/menu/menu.component';
 
 export interface DeviceInfo {
@@ -24,9 +25,7 @@ export interface OtpRequest {
 })
 export class OtpService {
 
-  private apiUrl = 'https://app.quietring.us:8443/api-quiet-ring';
-
-  //private apiUrl = 'http://localhost:8080';
+  private apiUrl = environment.api.baseUrl;
   constructor(private http: HttpClient) { }
 
   getOtp(payload: OtpRequest): Observable<any> {

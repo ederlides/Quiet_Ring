@@ -4,6 +4,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { allCountries } from 'country-telephone-data';
+import { environment } from '../../environments/environment';
 
 interface Country {
   name: string;
@@ -33,7 +34,7 @@ export class CountrySelectorComponent implements OnInit {
     this.countries = allCountries.map(c => ({
       name: c.name,
       code: c.iso2,
-      flag: `https://flagcdn.com/w40/${c.iso2.toLowerCase()}.png`,
+      flag: `${environment.external.flagCdn}/${c.iso2.toLowerCase()}.png`,
       dialCode: `+${c.dialCode}`
     }));
     

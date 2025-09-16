@@ -1,6 +1,11 @@
 .ion-padding {
 
   ion-tab[tab=home]{
+    .container-content {
+      height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
     ion-toggle{
       font-weight: 400;
     }
@@ -67,7 +72,8 @@
   }
 
   .container-contet-call {
-    height: 70vh;
+    height: calc(100vh - 120px);
+    overflow-y: auto;
 
     .table-call {
       width: calc(100% - 15px);
@@ -83,8 +89,9 @@
       }
 
       .table {
-        height: calc(70vh - 35px);
+        height: calc(100vh - 155px);
         box-shadow: 4px 4px 22.76px 0px #A0A0A040;
+        overflow-y: auto;
 
         h1 {
           font-weight: 400;
@@ -118,12 +125,14 @@
     }
 
     .container-content-order {
-      height: calc(85vh - 5.5rem);
+      height: calc(100vh - 120px);
+      overflow-y: auto;
 
       ion-card{
         cursor: pointer;
         overflow: hidden;
         box-shadow: 1px 2px 22.76px 0px #A0A0A040;
+        margin: 8px 0;
       }
 
       h1{
@@ -156,7 +165,8 @@
     }
 
     .container-content-setting {
-      height: 70vh;
+      height: calc(100vh - 120px);
+      overflow-y: auto;
 
       ion-item{
         .ion-margin-vertical{
@@ -472,4 +482,55 @@ ion-img {
   top: 57%;
   left: -46%;
   opacity: 0.025;
+}
+
+// Estilos adicionales para mejorar el scroll
+.overlays {
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.circles {
+  position: fixed;
+  background-color: #EA592D;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+// Mejorar el comportamiento del scroll en todas las secciones
+ion-content {
+  --overflow: hidden;
+}
+
+ion-content[scrollY="true"] {
+  --overflow: auto;
+}
+
+// Asegurar que el contenido no se desborde
+.container-content,
+.container-contet-call,
+.container-content-order,
+.container-content-setting {
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+// Mejorar la apariencia del scroll
+ion-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+ion-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+ion-content::-webkit-scrollbar-thumb {
+  background: rgba(234, 89, 45, 0.3);
+  border-radius: 2px;
+}
+
+ion-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(234, 89, 45, 0.5);
 }

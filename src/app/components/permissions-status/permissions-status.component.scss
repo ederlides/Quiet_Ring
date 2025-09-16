@@ -1,0 +1,148 @@
+.permissions-card {
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+
+  ion-spinner {
+    margin-bottom: 12px;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    font-size: 14px;
+  }
+}
+
+.error-item {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.permissions-list {
+  margin-bottom: 16px;
+
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background: var(--ion-color-light);
+  }
+
+  ion-icon {
+    font-size: 24px;
+  }
+
+  ion-label {
+    h3 {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    p {
+      color: var(--ion-color-medium);
+      font-size: 12px;
+    }
+  }
+}
+
+.permission-status {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  .status-chip {
+    font-weight: 600;
+    
+    ion-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  ion-button {
+    --border-radius: 8px;
+    height: 48px;
+    font-weight: 600;
+
+    ion-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.info-section {
+  padding: 12px;
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  border-left: 4px solid var(--ion-color-primary);
+
+  ion-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+
+    ion-icon {
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// Responsive design
+@media (min-width: 768px) {
+  .permissions-card {
+    max-width: 600px;
+    margin: 16px auto;
+  }
+
+  .action-buttons {
+    flex-direction: row;
+    justify-content: space-between;
+
+    ion-button {
+      flex: 1;
+      margin: 0 8px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .permissions-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .permissions-list ion-item {
+    background: var(--ion-color-dark);
+  }
+
+  .info-section {
+    background: var(--ion-color-dark);
+  }
+}

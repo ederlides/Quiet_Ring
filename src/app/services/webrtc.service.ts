@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Router } from '@angular/router';
+import { PermissionsService } from './permissions.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +28,11 @@ export class WebrtcService {
   localVideoElement: HTMLVideoElement | null = null;
   remoteVideoElement: HTMLVideoElement | null = null;
 
-  constructor(private router: Router) {
-    this.socket = io('https://app.quietring.us:3000');
+  constructor(
+    private router: Router,
+    private permissionsService: PermissionsService
+  ) {
+    this.socket = io(environment.api.socketUrl);
 
     this.socket.on('offer', async offer => {
       this.incomingOffer = offer;
@@ -56,32 +61,148 @@ export class WebrtcService {
     this.localVideoElement = local;
     this.remoteVideoElement = remote;
   }
+
+  /**
+   * Verifica si la aplicación tiene todos los permisos necesarios para realizar llamadas
+   */
+  async verifyCallPermissions(): Promise<{
+    success: boolean;
+    message: string;
+    permissions: {
+      audio: boolean;
+      camera: boolean;
+    };
+  }> {
+    try {
+      console.log('🔍 Verificando permisos para llamadas...');
+      
+      const permissions = await this.permissionsService.checkAllCallPermissions();
+      
+      if (permissions.allGranted) {
+        return {
+          success: true,
+          message: 'Todos los permisos están concedidos',
+          permissions
+        };
+      } else {
+        const missingPermissions: string[] = [];
+        if (!permissions.audio) missingPermissions.push('audio');
+        if (!permissions.camera) missingPermissions.push('cámara');
+        
+        return {
+          success: false,
+          message: `Permisos faltantes: ${missingPermissions.join(', ')}`,
+          permissions
+        };
+      }
+    } catch (error) {
+      console.error('Error verificando permisos:', error);
+      return {
+        success: false,
+        message: 'Error al verificar permisos',
+        permissions: { audio: false, camera: false }
+      };
+    }
+  }
+
+  /**
+   * Solicita todos los permisos necesarios para realizar llamadas
+   */
+  async requestCallPermissions(): Promise<{
+    success: boolean;
+    message: string;
+    permissions: {
+      audio: boolean;
+      camera: boolean;
+    };
+  }> {
+    try {
+      console.log('📋 Solicitando permisos para llamadas...');
+      
+      const permissions = await this.permissionsService.requestAllCallPermissions();
+      
+      if (permissions.allGranted) {
+        return {
+          success: true,
+          message: 'Todos los permisos han sido concedidos',
+          permissions
+        };
+      } else {
+        const missingPermissions: string[] = [];
+        if (!permissions.audio) missingPermissions.push('audio');
+        if (!permissions.camera) missingPermissions.push('cámara');
+        
+        return {
+          success: false,
+          message: `Permisos denegados: ${missingPermissions.join(', ')}`,
+          permissions
+        };
+      }
+    } catch (error) {
+      console.error('Error solicitando permisos:', error);
+      return {
+        success: false,
+        message: 'Error al solicitar permisos',
+        permissions: { audio: false, camera: false }
+      };
+    }
+  }
   async initLocal() {
     try {
+      console.log('🎬 Iniciando configuración de medios locales...');
+
       // 🔁 Detener stream anterior si existe
       if (this.localStream) {
+        console.log('🔄 Deteniendo stream anterior...');
         this.localStream.getTracks().forEach(track => track.stop());
         this.localStream = null;
         await new Promise(resolve => setTimeout(resolve, 300));
       }
 
+      // 🔐 VERIFICAR PERMISOS PRIMERO
+      console.log('🔐 Verificando permisos...');
+      const hasPermissions = await this.permissionsService.requestMicrophoneAccess();
+      if (!hasPermissions) {
+        throw new Error('Permisos de micrófono denegados o no disponibles');
+      }
+
       // 📋 Obtener lista de dispositivos
+      console.log('📋 Enumerando dispositivos disponibles...');
       const devices = await navigator.mediaDevices.enumerateDevices();
       const hasCamera = devices.some(d => d.kind === 'videoinput');
       const microfonos = devices.filter(d => d.kind === 'audioinput');
+
+      console.log(`📹 Cámara disponible: ${hasCamera}`);
+      console.log(`🎤 Micrófonos disponibles: ${microfonos.length}`);
 
       if (!hasCamera) throw new Error('No se detectó una cámara.');
       if (microfonos.length === 0) throw new Error('No se detectó un micrófono.');
 
       this.availableMicrophones = microfonos;
 
-      // ✅ SOLUCIÓN: Obtener streams separados
+      // ✅ Obtener streams con configuración mejorada
+      console.log('🎥 Obteniendo streams de medios...');
       const [videoStream, audioStream] = await Promise.all([
-        navigator.mediaDevices.getUserMedia({ video: true }),
-        navigator.mediaDevices.getUserMedia({ audio: true })
+        navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+            facingMode: 'user',
+            frameRate: { ideal: 30, max: 30 }
+          } 
+        }),
+        navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+            sampleRate: 44100,
+            channelCount: 1
+          } 
+        })
       ]);
 
-
+      console.log('✅ Streams obtenidos exitosamente');
 
       // 🧩 Combinar pistas en un solo MediaStream
       const combinedStream = new MediaStream([
@@ -95,19 +216,34 @@ export class WebrtcService {
       if (this.localVideoElement) {
         this.localVideoElement.srcObject = this.localStream;
         this.localVideoElement.muted = true; // Evita eco
+        console.log('🎥 Stream asignado al elemento de video local');
       }
-      console.log('Audio tracks:', this.localStream.getAudioTracks());
 
-      this.localStream.getAudioTracks().forEach((track, index) => {
-        console.log(`Track #${index} - Label: ${track.label}, Enabled: ${track.enabled}, Muted: ${track.muted}`);
+      // 🧪 Logs detallados para debugging
+      const audioTracks = this.localStream.getAudioTracks();
+      const videoTracks = this.localStream.getVideoTracks();
+      
+      console.log('🎧 Audio Tracks:', audioTracks.length);
+      console.log('📹 Video Tracks:', videoTracks.length);
+
+      audioTracks.forEach((track, index) => {
+        console.log(`🎤 Audio Track #${index}:`);
+        console.log(`   - Label: ${track.label}`);
+        console.log(`   - Enabled: ${track.enabled}`);
+        console.log(`   - Muted: ${track.muted}`);
+        console.log(`   - Ready State: ${track.readyState}`);
+        console.log(`   - Settings:`, track.getSettings());
       });
 
-      // 🧪 Logs para verificar audio
-      const audioTracks = this.localStream.getAudioTracks();
-      console.log("🎧 Audio Tracks:", audioTracks);
-      audioTracks.forEach(track =>
-        console.log(`Track label: ${track.label}, enabled: ${track.enabled}`)
-      );
+      videoTracks.forEach((track, index) => {
+        console.log(`📹 Video Track #${index}:`);
+        console.log(`   - Label: ${track.label}`);
+        console.log(`   - Enabled: ${track.enabled}`);
+        console.log(`   - Ready State: ${track.readyState}`);
+        console.log(`   - Settings:`, track.getSettings());
+      });
+
+      console.log('✅ Inicialización de medios locales completada exitosamente');
 
     } catch (err: any) {
       console.error('🛑 Error al inicializar cámara/micrófono:', err.name, err.message);
@@ -116,9 +252,20 @@ export class WebrtcService {
         this.camera = '⚠️ Cámara o micrófono en uso por otra aplicación.';
       } else if (err.name === 'NotAllowedError') {
         this.camera = '❌ Permiso denegado para usar cámara o micrófono.';
+      } else if (err.name === 'NotFoundError') {
+        this.camera = '❌ No se encontró cámara o micrófono en el dispositivo.';
+      } else if (err.name === 'OverconstrainedError') {
+        this.camera = '⚠️ Configuración de cámara/micrófono no soportada.';
+      } else if (err.name === 'SecurityError') {
+        this.camera = '🔒 Error de seguridad al acceder a cámara/micrófono.';
+      } else if (err.name === 'TypeError') {
+        this.camera = '⚠️ Error de tipo al acceder a medios.';
       } else {
-        this.camera = `Error inesperado: ${err.name} - ${err.message}`;
+        this.camera = `❌ Error inesperado: ${err.name} - ${err.message}`;
       }
+
+      // Re-lanzar el error para que sea manejado por el componente
+      throw err;
     }
   }
 
@@ -150,34 +297,73 @@ export class WebrtcService {
   }
 
   async acceptCall() {
-    await this.initLocal();
-    await this.createPeerConnection();
-
-    if (this.incomingOffer && this.peerConnection) {
-      await this.peerConnection.setRemoteDescription(new RTCSessionDescription(this.incomingOffer));
-      const answer = await this.peerConnection.createAnswer();
-      await this.peerConnection.setLocalDescription(answer);
-      this.socket.emit('answer', answer, this.roomId);
-
-      this.isPeerConnectionReady = true;
-
-      for (const c of this.pendingCandidates) {
-        await this.addIce(c);
+    try {
+      console.log('📞 Aceptando llamada entrante...');
+      
+      // 🔐 Verificar permisos antes de aceptar la llamada
+      const permissionCheck = await this.verifyCallPermissions();
+      if (!permissionCheck.success) {
+        console.warn('⚠️ Permisos faltantes, solicitando...');
+        const permissionRequest = await this.requestCallPermissions();
+        if (!permissionRequest.success) {
+          throw new Error(`No se pueden aceptar llamadas: ${permissionRequest.message}`);
+        }
       }
-      this.pendingCandidates = [];
+
+      await this.initLocal();
+      await this.createPeerConnection();
+
+      if (this.incomingOffer && this.peerConnection) {
+        await this.peerConnection.setRemoteDescription(new RTCSessionDescription(this.incomingOffer));
+        const answer = await this.peerConnection.createAnswer();
+        await this.peerConnection.setLocalDescription(answer);
+        this.socket.emit('answer', answer, this.roomId);
+
+        this.isPeerConnectionReady = true;
+
+        for (const c of this.pendingCandidates) {
+          await this.addIce(c);
+        }
+        this.pendingCandidates = [];
+        
+        console.log('✅ Llamada aceptada exitosamente');
+      }
+      this.isIncomingCall = false;
+    } catch (error) {
+      console.error('❌ Error al aceptar llamada:', error);
+      this.isIncomingCall = false;
+      throw error;
     }
-    this.isIncomingCall = false;
   }
 
   async callPeer() {
-    await this.initLocal();
-    await this.createPeerConnection();
+    try {
+      console.log('📞 Iniciando llamada saliente...');
+      
+      // 🔐 Verificar permisos antes de iniciar la llamada
+      const permissionCheck = await this.verifyCallPermissions();
+      if (!permissionCheck.success) {
+        console.warn('⚠️ Permisos faltantes, solicitando...');
+        const permissionRequest = await this.requestCallPermissions();
+        if (!permissionRequest.success) {
+          throw new Error(`No se pueden realizar llamadas: ${permissionRequest.message}`);
+        }
+      }
 
-    if (this.peerConnection) {
-      const offer = await this.peerConnection.createOffer();
-      await this.peerConnection.setLocalDescription(offer);
-      this.socket.emit('offer', offer, this.roomId);
-      this.isPeerConnectionReady = true;
+      await this.initLocal();
+      await this.createPeerConnection();
+
+      if (this.peerConnection) {
+        const offer = await this.peerConnection.createOffer();
+        await this.peerConnection.setLocalDescription(offer);
+        this.socket.emit('offer', offer, this.roomId);
+        this.isPeerConnectionReady = true;
+        
+        console.log('✅ Llamada iniciada exitosamente');
+      }
+    } catch (error) {
+      console.error('❌ Error al iniciar llamada:', error);
+      throw error;
     }
   }
 

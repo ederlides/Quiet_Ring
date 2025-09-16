@@ -1,0 +1,107 @@
+<ion-card class="permissions-card">
+  <ion-card-header>
+    <ion-card-title>
+      <ion-icon name="shield-checkmark-outline" color="primary"></ion-icon>
+      Estado de Permisos
+    </ion-card-title>
+    <ion-card-subtitle>Verifica los permisos necesarios para llamadas</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <!-- Indicador de carga -->
+    <div *ngIf="isLoading" class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Verificando permisos...</p>
+    </div>
+
+    <!-- Error message -->
+    <ion-item *ngIf="errorMessage" color="danger" class="error-item">
+      <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h3>Error</h3>
+        <p>{{ errorMessage }}</p>
+      </ion-label>
+    </ion-item>
+
+    <!-- Estado de permisos -->
+    <div *ngIf="!isLoading" class="permissions-list">
+      <!-- Permiso de Audio -->
+      <ion-item>
+        <ion-icon 
+          [name]="getPermissionIcon('audio')" 
+          [color]="getPermissionColor('audio')" 
+          slot="start">
+        </ion-icon>
+        <ion-label>
+          <h3>{{ getPermissionText('audio') }}</h3>
+          <p>Necesario para llamadas de audio</p>
+        </ion-label>
+      </ion-item>
+
+      <!-- Permiso de Cámara -->
+      <ion-item>
+        <ion-icon 
+          [name]="getPermissionIcon('camera')" 
+          [color]="getPermissionColor('camera')" 
+          slot="start">
+        </ion-icon>
+        <ion-label>
+          <h3>{{ getPermissionText('camera') }}</h3>
+          <p>Necesario para llamadas de video</p>
+        </ion-label>
+      </ion-item>
+    </div>
+
+    <!-- Estado general -->
+    <div *ngIf="!isLoading" class="permission-status">
+      <ion-chip 
+        [color]="permissions.allGranted ? 'success' : 'warning'"
+        class="status-chip">
+        <ion-icon [name]="permissions.allGranted ? 'checkmark-circle' : 'warning'"></ion-icon>
+        <ion-label>
+          {{ permissions.allGranted ? 'Todos los permisos concedidos' : 'Permisos pendientes' }}
+        </ion-label>
+      </ion-chip>
+    </div>
+
+    <!-- Botones de acción -->
+    <div *ngIf="!isLoading" class="action-buttons">
+      <ion-button 
+        expand="block" 
+        fill="solid" 
+        color="primary"
+        (click)="requestPermissions()"
+        [disabled]="permissions.allGranted">
+        <ion-icon name="shield-outline" slot="start"></ion-icon>
+        Solicitar Permisos
+      </ion-button>
+
+      <ion-button 
+        expand="block" 
+        fill="outline" 
+        color="medium"
+        (click)="checkPermissions()">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        Verificar Estado
+      </ion-button>
+
+      <ion-button 
+        expand="block" 
+        fill="clear" 
+        color="medium"
+        (click)="openAppSettings()"
+        *ngIf="!permissions.allGranted">
+        <ion-icon name="settings-outline" slot="start"></ion-icon>
+        Configuración Manual
+      </ion-button>
+    </div>
+
+    <!-- Información adicional -->
+    <div *ngIf="!permissions.allGranted && !isLoading" class="info-section">
+      <ion-note>
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Si los permisos fueron denegados, puedes concederlos manualmente desde la configuración de la aplicación.
+      </ion-note>
+    </div>
+  </ion-card-content>
+</ion-card>

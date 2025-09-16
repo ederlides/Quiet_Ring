@@ -18,9 +18,30 @@ const config: CapacitorConfig = {
   plugins: {
     Keyboard: {
       resize: "body" // o "ionic"
+    },
+    // 🎧 Configuración para permisos de audio y llamadas
+    Permissions: {
+      audio: {
+        microphone: true,
+        modifyAudioSettings: true
+      },
+      camera: {
+        capture: true
+      }
+    },
+    // 📱 Configuración para notificaciones y llamadas
+    LocalNotifications: {
+      smallIcon: "ic_stat_icon_config_sample",
+      iconColor: "#488AFF",
+      sound: "beep.wav"
     }
+  },
+  // 🔧 Configuración adicional para Android
+  android: {
+    allowMixedContent: true,
+    captureInput: true,
+    webContentsDebuggingEnabled: true
   }
 };
-
 
 export default config;
