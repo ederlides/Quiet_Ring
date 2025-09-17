@@ -131,6 +131,17 @@
         width: 100vw;
         height: 100vh;
         overflow: hidden;
+        
+        // Elemento de audio separado (oculto)
+        .audio-remote {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
     }
 
     .video-remote {

@@ -5,10 +5,37 @@
       <p>{{this.webrtc.camera}}</p>
     </div>
     <div class="video-container">
-      <video #remote autoplay playsinline class="video-remote" ></video>
-      <video #local autoplay playsinline class="video-local" muted (mousedown)="onDragStart($event)"
-        (touchstart)="onDragStart($event)"></video>
-
+      <!-- Video remoto con configuración de audio optimizada -->
+      <video #remote 
+             autoplay 
+             playsinline 
+             class="video-remote"
+             volume="1.0"
+             controls="false"
+             preload="auto">
+      </video>
+      
+      <!-- Video local con configuración optimizada -->
+      <video #local 
+             autoplay 
+             playsinline 
+             class="video-local" 
+             muted 
+             volume="1.0"
+             controls="false"
+             preload="auto"
+             (mousedown)="onDragStart($event)"
+             (touchstart)="onDragStart($event)">
+      </video>
+      
+      <!-- Elemento de audio separado para mejor control -->
+      <audio #remoteAudio 
+             autoplay 
+             playsinline 
+             class="audio-remote"
+             volume="1.0"
+             preload="auto">
+      </audio>
     </div>
     <div class="button-group">
       <ion-button fill="clear" class="control-button"  (click)="toggleCamera()">
@@ -16,11 +43,16 @@
       </ion-button>
 
       <ion-button fill="clear" class="control-button"  (click)="toggleSpeaker()">
-        <ion-icon name="volume-high-outline"></ion-icon>
+        <ion-icon [name]="isSpeakerOn ? 'volume-high-outline' : 'volume-mute-outline'"></ion-icon>
       </ion-button>
 
       <ion-button fill="clear" class="control-button"  (click)="toggleMute()">
-        <ion-icon name="mic-off-outline"></ion-icon>
+        <ion-icon [name]="isMuted ? 'mic-off-outline' : 'mic-outline'"></ion-icon>
+      </ion-button>
+      
+      <!-- Control de volumen -->
+      <ion-button fill="clear" class="control-button" (click)="adjustVolume()">
+        <ion-icon name="volume-medium-outline"></ion-icon>
       </ion-button>
 
       <ion-button fill="clear" color="lighter" class="control-button end-button" (click)="endCall()">

@@ -5,11 +5,11 @@
 export const environment = {
   production: false,
   api: {
-    baseUrl: 'http://144.202.16.218:8080/api-quiet-ring',
+    baseUrl: 'http://localhost:8080',
     socketUrl: 'https://app.quietring.us:3000',
     otp: {
-      generate: 'http://144.202.16.218:8080/api-quiet-ring/otp/generate',
-      validate: 'http://144.202.16.218:8080/api-quiet-ring/otp/validate'
+      generate: 'http://127.0.0.1:8080/api-quiet-ring/otp/generate',
+      validate: 'http://127.0.0.1:8080/api-quiet-ring/otp/validate'
     }
   },
   external: {

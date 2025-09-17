@@ -1,7 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { io, Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { Router } from '@angular/router';
 import { PermissionsService } from './permissions.service';
+import { MobileOptimizationService } from './mobile-optimization.service';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CallState, WebSocketState } from '../interfaces/call-state.interface';
@@ -11,21 +12,29 @@ import { CallState, WebSocketState } from '../interfaces/call-state.interface';
 })
 export class WebrtcService implements OnDestroy {
   public camera: any;
-  private socket: Socket;
+  private socket: any;
   private roomId = localStorage.getItem('room');
 
   private peerConnection: RTCPeerConnection | null = null;
   private localStream: MediaStream | null = null;
   availableMicrophones: MediaDeviceInfo[] = [];
   
-  // Configuración WebRTC mejorada
+  // Configuración WebRTC optimizada para dispositivos móviles
   private rtcConfig: RTCConfiguration = {
     iceServers: [
       { urls: 'stun:stun.l.google.com:19302' },
       { urls: 'stun:stun1.l.google.com:19302' },
-      { urls: 'stun:stun2.l.google.com:19302' }
+      { urls: 'stun:stun2.l.google.com:19302' },
+      { urls: 'stun:stun3.l.google.com:19302' },
+      { urls: 'stun:stun4.l.google.com:19302' }
     ],
-    iceCandidatePoolSize: 10
+    iceCandidatePoolSize: 10,
+    // 🎯 Optimizaciones para móviles
+    bundlePolicy: 'max-bundle',
+    rtcpMuxPolicy: 'require',
+    iceTransportPolicy: 'all',
+    // 🔧 Configuración de codecs optimizada
+    // sdpSemantics: 'unified-plan' // Removido por compatibilidad
   };
 
   // Estados centralizados
@@ -61,7 +70,8 @@ export class WebrtcService implements OnDestroy {
 
   constructor(
     private router: Router,
-    private permissionsService: PermissionsService
+    private permissionsService: PermissionsService,
+    private mobileOptimization: MobileOptimizationService
   ) {
     this.initializeSocket();
   }
@@ -141,29 +151,74 @@ export class WebrtcService implements OnDestroy {
 
     // Eventos de WebRTC
     this.socket.on('offer', async offer => {
-      console.log('📞 Llamada entrante recibida');
+      console.log('📞 Llamada entrante recibida:', offer);
       this.incomingOffer = offer;
       this.isIncomingCall = true;
       this.updateCallState({ 
         isIncomingCall: true,
         callStatus: 'ringing'
       });
+      
+      // Limpiar candidatos pendientes de llamadas anteriores
+      this.pendingCandidates = [];
+      
       this.router.navigate(['/call']);
     });
 
     this.socket.on('ice-candidate', async c => {
+      console.log('🧊 ICE candidate recibido:', c);
       if (this.isPeerConnectionReady && this.peerConnection) {
+        try {
         await this.addIce(c);
+          console.log('✅ ICE candidate agregado exitosamente');
+        } catch (error) {
+          console.error('❌ Error agregando ICE candidate:', error);
+        }
       } else {
+        console.log('⏳ ICE candidate guardado como pendiente');
         this.pendingCandidates.push(c);
       }
     });
 
     this.socket.on('answer', async answer => {
+      console.log('📞 Respuesta recibida:', answer);
       if (this.peerConnection) {
-        await this.peerConnection.setRemoteDescription(answer);
-        this.updateCallState({ callStatus: 'connected' });
+        try {
+          await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+          this.updateCallState({ callStatus: 'connected' });
+          console.log('✅ Respuesta establecida exitosamente');
+          
+          // Procesar candidatos pendientes después de establecer la respuesta
+          for (const candidate of this.pendingCandidates) {
+            try {
+              await this.addIce(candidate);
+              console.log('✅ Candidato pendiente procesado');
+            } catch (error) {
+              console.error('❌ Error procesando candidato pendiente:', error);
+            }
+          }
+          this.pendingCandidates = [];
+        } catch (error) {
+          console.error('❌ Error estableciendo respuesta:', error);
+          this.handleCallError(error);
+        }
       }
+    });
+
+    // Evento para cuando la llamada es rechazada o cancelada
+    this.socket.on('call-ended', () => {
+      console.log('📞 Llamada terminada por el otro usuario');
+      this.updateCallState({ 
+        callStatus: 'ended',
+        isIncomingCall: false 
+      });
+      this.endCall();
+    });
+
+    // Evento para cuando hay un error en la llamada
+    this.socket.on('call-error', (error) => {
+      console.error('❌ Error en la llamada:', error);
+      this.handleCallError(new Error(error));
     });
   }
 
@@ -177,7 +232,7 @@ export class WebrtcService implements OnDestroy {
     
     if (this.roomId) {
       console.log('🚪 Uniéndose a la sala:', this.roomId);
-      this.socket.emit('join', this.roomId);
+    this.socket.emit('join', this.roomId);
     } else {
       console.error('❌ No hay roomId disponible');
       this.updateCallState({ error: 'No hay sala disponible' });
@@ -204,6 +259,9 @@ export class WebrtcService implements OnDestroy {
   setVideoElements(local: HTMLVideoElement, remote: HTMLVideoElement) {
     this.localVideoElement = local;
     this.remoteVideoElement = remote;
+    
+    // Aplicar optimizaciones específicas para móviles
+    this.applyMobileOptimizations();
   }
 
   /**
@@ -238,6 +296,156 @@ export class WebrtcService implements OnDestroy {
    */
   getWebSocketState$(): Observable<WebSocketState> {
     return this.webSocketState.asObservable();
+  }
+
+  /**
+   * Verifica el estado de la conexión WebRTC
+   */
+  getConnectionState(): string {
+    if (!this.peerConnection) {
+      return 'No inicializada';
+    }
+    return this.peerConnection.connectionState;
+  }
+
+  /**
+   * Verifica si hay un stream remoto activo
+   */
+  hasRemoteStream(): boolean {
+    return this.remoteVideoElement?.srcObject !== null;
+  }
+
+  /**
+   * Verifica si hay un stream local activo
+   */
+  hasLocalStream(): boolean {
+    return this.localStream !== null && this.localStream.active;
+  }
+
+  /**
+   * Verifica el estado del audio en la llamada
+   */
+  getAudioStatus(): {
+    hasAudio: boolean;
+    audioTracks: number;
+    activeAudioTracks: number;
+    audioEnabled: boolean;
+  } {
+    if (!this.localStream) {
+      return {
+        hasAudio: false,
+        audioTracks: 0,
+        activeAudioTracks: 0,
+        audioEnabled: false
+      };
+    }
+
+    const audioTracks = this.localStream.getAudioTracks();
+    const activeAudioTracks = audioTracks.filter(track => 
+      track.enabled && track.readyState === 'live'
+    );
+
+    return {
+      hasAudio: audioTracks.length > 0,
+      audioTracks: audioTracks.length,
+      activeAudioTracks: activeAudioTracks.length,
+      audioEnabled: activeAudioTracks.length > 0
+    };
+  }
+
+  /**
+   * Habilita o deshabilita el audio
+   */
+  toggleAudio(enabled: boolean): void {
+    if (this.localStream) {
+      const audioTracks = this.localStream.getAudioTracks();
+      audioTracks.forEach(track => {
+        track.enabled = enabled;
+        console.log(`🎤 Audio track ${enabled ? 'habilitado' : 'deshabilitado'}:`, track.label);
+      });
+    }
+  }
+
+  /**
+   * Verifica si el audio está siendo transmitido
+   */
+  isAudioTransmitting(): boolean {
+    const status = this.getAudioStatus();
+    return status.hasAudio && status.audioEnabled && status.activeAudioTracks > 0;
+  }
+
+  /**
+   * Detecta si es un dispositivo móvil
+   */
+  private isMobileDevice(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  /**
+   * Obtiene la configuración optimizada según el dispositivo
+   */
+  private getOptimizedConstraints(): MediaStreamConstraints {
+    const isMobile = this.isMobileDevice();
+    
+    if (isMobile) {
+      return {
+        video: { 
+          width: { ideal: 640, max: 1280 },
+          height: { ideal: 480, max: 720 },
+          facingMode: 'user',
+          frameRate: { ideal: 24, max: 30 },
+          aspectRatio: { ideal: 16/9 }
+        },
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+          sampleRate: 48000,
+          channelCount: 1,
+          // googEchoCancellation: true, // Removido por compatibilidad
+          // googAutoGainControl: true,   // Removido por compatibilidad
+          // googNoiseSuppression: true   // Removido por compatibilidad
+        }
+      };
+    } else {
+      return {
+        video: { 
+          width: { ideal: 1280, max: 1920 },
+          height: { ideal: 720, max: 1080 },
+          facingMode: 'user',
+          frameRate: { ideal: 30, max: 30 },
+          aspectRatio: { ideal: 16/9 }
+        },
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+          sampleRate: 48000,
+          channelCount: 1
+        }
+      };
+    }
+  }
+
+  /**
+   * Aplica optimizaciones específicas para móviles
+   */
+  private applyMobileOptimizations(): void {
+    if (this.isMobileDevice()) {
+      console.log('📱 Aplicando optimizaciones para dispositivos móviles...');
+      
+      // Optimizar elementos de video para móviles
+      if (this.localVideoElement) {
+        this.localVideoElement.playsInline = true;
+        this.localVideoElement.muted = true;
+        this.localVideoElement.setAttribute('webkit-playsinline', 'true');
+      }
+      
+      if (this.remoteVideoElement) {
+        this.remoteVideoElement.playsInline = true;
+        this.remoteVideoElement.setAttribute('webkit-playsinline', 'true');
+      }
+    }
   }
 
   /**
@@ -431,35 +639,12 @@ export class WebrtcService implements OnDestroy {
 
       this.availableMicrophones = microfonos;
 
-      // ✅ Obtener streams con configuración mejorada
-      console.log('🎥 Obteniendo streams de medios...');
-      const [videoStream, audioStream] = await Promise.all([
-        navigator.mediaDevices.getUserMedia({ 
-          video: { 
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-            facingMode: 'user',
-            frameRate: { ideal: 30, max: 30 }
-          } 
-        }),
-        navigator.mediaDevices.getUserMedia({ 
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true,
-            sampleRate: 44100,
-            channelCount: 1
-          } 
-        })
-      ]);
+      // ✅ Obtener stream combinado con configuración optimizada según el dispositivo
+      console.log('🎥 Obteniendo stream de medios combinado...');
+      const constraints = this.getOptimizedConstraints();
+      const combinedStream = await navigator.mediaDevices.getUserMedia(constraints);
 
-      console.log('✅ Streams obtenidos exitosamente');
-
-      // 🧩 Combinar pistas en un solo MediaStream
-      const combinedStream = new MediaStream([
-        ...videoStream.getVideoTracks(),
-        ...audioStream.getAudioTracks()
-      ]);
+      console.log('✅ Stream combinado obtenido exitosamente');
 
       this.localStream = combinedStream;
 
@@ -477,6 +662,18 @@ export class WebrtcService implements OnDestroy {
       console.log('🎧 Audio Tracks:', audioTracks.length);
       console.log('📹 Video Tracks:', videoTracks.length);
 
+      // 🔍 Validación crítica de audio
+      if (audioTracks.length === 0) {
+        throw new Error('No se obtuvieron tracks de audio del stream');
+      }
+
+      const activeAudioTracks = audioTracks.filter(track => track.enabled && track.readyState === 'live');
+      if (activeAudioTracks.length === 0) {
+        throw new Error('No hay tracks de audio activos');
+      }
+
+      console.log(`✅ Audio tracks activos: ${activeAudioTracks.length}/${audioTracks.length}`);
+
       audioTracks.forEach((track, index) => {
         console.log(`🎤 Audio Track #${index}:`);
         console.log(`   - Label: ${track.label}`);
@@ -484,6 +681,11 @@ export class WebrtcService implements OnDestroy {
         console.log(`   - Muted: ${track.muted}`);
         console.log(`   - Ready State: ${track.readyState}`);
         console.log(`   - Settings:`, track.getSettings());
+        
+        // Validar que el track esté funcionando
+        if (track.readyState !== 'live') {
+          console.warn(`⚠️ Audio track #${index} no está en estado 'live'`);
+        }
       });
 
       videoTracks.forEach((track, index) => {
@@ -533,23 +735,59 @@ export class WebrtcService implements OnDestroy {
     };
 
     this.peerConnection.ontrack = e => {
+      console.log('📡 Track remoto recibido:', e.track.kind);
       if (this.remoteVideoElement) {
         const stream = this.remoteVideoElement.srcObject as MediaStream || new MediaStream();
         stream.addTrack(e.track);
         this.remoteVideoElement.srcObject = stream;
+        
+        // Configurar audio optimizado para el video
+        this.remoteVideoElement.volume = 1.0;
+        this.remoteVideoElement.muted = false;
+        
+        // Log específico para audio
+        if (e.track.kind === 'audio') {
+          console.log('🎧 Audio track remoto agregado exitosamente');
+          console.log('   - Label:', e.track.label);
+          console.log('   - Enabled:', e.track.enabled);
+          console.log('   - Ready State:', e.track.readyState);
+          
+          // Configurar audio específico
+          this.remoteVideoElement.volume = 1.0;
+          this.remoteVideoElement.muted = false;
+          
+          // Forzar reproducción de audio
+          this.remoteVideoElement.play().catch(err => {
+            console.warn('⚠️ Error reproduciendo audio:', err);
+          });
+        }
       }
     };
 
     if (this.localStream) {
-      this.localStream.getTracks().forEach(track => {
+      console.log('🔗 Agregando tracks locales al PeerConnection...');
+      const audioTracks = this.localStream.getAudioTracks();
+      const videoTracks = this.localStream.getVideoTracks();
+      
+      console.log(`🎧 Agregando ${audioTracks.length} audio tracks`);
+      console.log(`📹 Agregando ${videoTracks.length} video tracks`);
+      
+      this.localStream.getTracks().forEach((track, index) => {
+        console.log(`🔗 Agregando track #${index} (${track.kind}):`, track.label);
         this.peerConnection?.addTrack(track, this.localStream!);
       });
+      
+      console.log('✅ Todos los tracks agregados al PeerConnection');
     }
   }
 
   async acceptCall() {
     try {
       console.log('📞 Aceptando llamada entrante...');
+      
+      // Aplicar optimizaciones móviles
+      await this.mobileOptimization.optimizeForVideoCall();
+      await this.mobileOptimization.provideCallFeedback('incoming');
       
       // Validar conexión WebSocket
       if (!this.webSocketState.value.isConnected) {
@@ -588,32 +826,49 @@ export class WebrtcService implements OnDestroy {
       );
 
       if (this.incomingOffer && this.peerConnection) {
+        console.log('📞 Procesando oferta entrante...');
+        
+        // Establecer descripción remota
         await this.withTimeout(
           this.peerConnection.setRemoteDescription(new RTCSessionDescription(this.incomingOffer)),
           5000,
           'Timeout al establecer descripción remota'
         );
+        console.log('✅ Descripción remota establecida');
 
+        // Crear respuesta
         const answer = await this.withTimeout(
           this.peerConnection.createAnswer(),
           5000,
           'Timeout al crear respuesta'
         );
+        console.log('✅ Respuesta creada');
 
+        // Establecer descripción local
         await this.withTimeout(
           this.peerConnection.setLocalDescription(answer),
           5000,
           'Timeout al establecer descripción local'
         );
+        console.log('✅ Descripción local establecida');
 
+        // Enviar respuesta al oferente
         this.socket.emit('answer', answer, this.roomId);
+        console.log('📤 Respuesta enviada al oferente');
 
+        // Marcar como listo ANTES de procesar candidatos
         this.isPeerConnectionReady = true;
         this.updateCallState({ isPeerConnectionReady: true });
 
-        // Procesar candidatos pendientes
+        // Procesar candidatos pendientes con mejor manejo de errores
+        console.log(`🔄 Procesando ${this.pendingCandidates.length} candidatos pendientes...`);
         for (const c of this.pendingCandidates) {
+          try {
           await this.addIce(c);
+            console.log('✅ Candidato pendiente procesado');
+          } catch (error) {
+            console.error('❌ Error procesando candidato pendiente:', error);
+          }
         }
         this.pendingCandidates = [];
         
@@ -622,7 +877,12 @@ export class WebrtcService implements OnDestroy {
           isIncomingCall: false 
         });
         
+        // Feedback táctil para llamada aceptada
+        await this.mobileOptimization.provideCallFeedback('accepted');
+        
         console.log('✅ Llamada aceptada exitosamente');
+      } else {
+        throw new Error('No hay oferta entrante o PeerConnection no disponible');
       }
     } catch (error) {
       console.error('❌ Error al aceptar llamada:', error);
@@ -699,14 +959,38 @@ export class WebrtcService implements OnDestroy {
 
   async addIce(candidate: RTCIceCandidate) {
     try {
-      await this.peerConnection?.addIceCandidate(candidate);
+      if (!this.peerConnection) {
+        console.warn('⚠️ PeerConnection no disponible para agregar ICE candidate');
+        return;
+      }
+      
+      if (this.peerConnection.remoteDescription === null) {
+        console.warn('⚠️ RemoteDescription no establecida, guardando candidato como pendiente');
+        this.pendingCandidates.push(candidate);
+        return;
+      }
+      
+      await this.peerConnection.addIceCandidate(candidate);
+      console.log('✅ ICE candidate agregado exitosamente');
     } catch (err) {
-      console.error('Error adding ICE candidate', err);
+      console.error('❌ Error agregando ICE candidate:', err);
+      // No re-lanzar el error para evitar interrumpir el flujo
     }
   }
 
   endCall() {
     console.log('📞 Finalizando llamada...');
+    
+    // Feedback táctil para llamada terminada
+    this.mobileOptimization.provideCallFeedback('ended');
+    
+    // Restaurar estado normal del dispositivo
+    this.mobileOptimization.restoreNormalState();
+    
+    // Notificar al otro usuario que la llamada terminó
+    if (this.socket && this.roomId) {
+      this.socket.emit('call-ended', this.roomId);
+    }
     
     this.updateCallState({ callStatus: 'ended' });
     

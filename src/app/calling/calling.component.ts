@@ -59,7 +59,7 @@ export class CallingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Limpiar subscripciones
+    // Limpiar suscripciones
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
@@ -156,7 +156,26 @@ export class CallingComponent implements OnInit, OnDestroy {
     document.removeEventListener('touchend', upListener);
   }
 
+  /**
+   * Obtiene el estado del audio
+   */
+  getAudioStatus() {
+    return this.webrtc.getAudioStatus();
+  }
 
+  /**
+   * Verifica si el audio está transmitiendo
+   */
+  isAudioTransmitting() {
+    return this.webrtc.isAudioTransmitting();
+  }
 
+  /**
+   * Alterna el estado del audio
+   */
+  toggleAudio() {
+    const currentStatus = this.getAudioStatus();
+    this.webrtc.toggleAudio(!currentStatus.audioEnabled);
+  }
 
 }

@@ -24,12 +24,28 @@
     </div>
     <h1 class="caller-name">Edward Galofre</h1>
     
-    <!-- Estado de la llamada -->
-    <div class="call-status" *ngIf="callState">
-      <ion-badge [color]="getCallStatusColor(callState.callStatus)">
-        {{ getCallStatusText(callState.callStatus) }}
-      </ion-badge>
-    </div>
+          <!-- Estado de la llamada -->
+          <div class="call-status" *ngIf="callState">
+            <ion-badge [color]="getCallStatusColor(callState.callStatus)">
+              {{ getCallStatusText(callState.callStatus) }}
+            </ion-badge>
+          </div>
+
+          <!-- Estado del audio -->
+          <div class="audio-status" *ngIf="callState?.callStatus === 'connected'">
+            <ion-button 
+              fill="clear" 
+              size="small" 
+              (click)="toggleAudio()"
+              [color]="isAudioTransmitting() ? 'success' : 'danger'">
+              <ion-icon 
+                [name]="isAudioTransmitting() ? 'mic' : 'mic-off'">
+              </ion-icon>
+              <span class="audio-text">
+                {{ isAudioTransmitting() ? 'Audio ON' : 'Audio OFF' }}
+              </span>
+            </ion-button>
+          </div>
     
     <!-- Slider -->
     <div class="slide-button" #slideContainer>
