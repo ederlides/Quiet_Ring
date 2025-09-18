@@ -475,6 +475,104 @@ export class WebrtcService implements OnDestroy {
   }
 
   /**
+   * Diagnóstica problemas de audio
+   */
+  async diagnoseAudioIssues(): Promise<{
+    hasPermissions: boolean;
+    hasAudioTracks: boolean;
+    audioTracksEnabled: boolean;
+    audioTracksLive: boolean;
+    peerConnectionReady: boolean;
+    remoteAudioConfigured: boolean;
+    issues: string[];
+  }> {
+    const issues: string[] = [];
+    
+    try {
+      // 1. Verificar permisos
+      const hasPermissions = await this.permissionsService.checkAudioPermissions();
+      if (!hasPermissions) {
+        issues.push('❌ Permisos de audio denegados');
+      }
+      
+      // 2. Verificar audio tracks locales
+      const hasAudioTracks = this.localStream && this.localStream.getAudioTracks().length > 0;
+      if (!hasAudioTracks) {
+        issues.push('❌ No hay audio tracks en el stream local');
+      }
+      
+      // 3. Verificar si los tracks están habilitados
+      let audioTracksEnabled = false;
+      let audioTracksLive = false;
+      
+      if (hasAudioTracks) {
+        const audioTracks = this.localStream!.getAudioTracks();
+        audioTracksEnabled = audioTracks.some(track => track.enabled);
+        audioTracksLive = audioTracks.some(track => track.readyState === 'live');
+        
+        if (!audioTracksEnabled) {
+          issues.push('❌ Audio tracks están deshabilitados');
+        }
+        if (!audioTracksLive) {
+          issues.push('❌ Audio tracks no están en estado "live"');
+        }
+      }
+      
+      // 4. Verificar PeerConnection
+      const peerConnectionReady = !!(this.peerConnection && this.isPeerConnectionReady);
+      if (!peerConnectionReady) {
+        issues.push('❌ PeerConnection no está listo');
+      }
+      
+      // 5. Verificar configuración de audio remoto
+      const remoteAudioConfigured = !!(this.remoteVideoElement && 
+        this.remoteVideoElement.volume > 0 && 
+        !this.remoteVideoElement.muted);
+      if (!remoteAudioConfigured) {
+        issues.push('❌ Audio remoto no configurado correctamente');
+      }
+      
+      console.log('🔍 Diagnóstico de audio completado:');
+      console.log(`   - Permisos: ${hasPermissions ? '✅' : '❌'}`);
+      console.log(`   - Audio tracks: ${hasAudioTracks ? '✅' : '❌'}`);
+      console.log(`   - Tracks habilitados: ${audioTracksEnabled ? '✅' : '❌'}`);
+      console.log(`   - Tracks en vivo: ${audioTracksLive ? '✅' : '❌'}`);
+      console.log(`   - PeerConnection: ${peerConnectionReady ? '✅' : '❌'}`);
+      console.log(`   - Audio remoto: ${remoteAudioConfigured ? '✅' : '❌'}`);
+      
+      if (issues.length > 0) {
+        console.log('🚨 Problemas encontrados:', issues);
+      } else {
+        console.log('✅ No se encontraron problemas de audio');
+      }
+      
+      return {
+        hasPermissions,
+        hasAudioTracks: !!hasAudioTracks,
+        audioTracksEnabled,
+        audioTracksLive,
+        peerConnectionReady,
+        remoteAudioConfigured,
+        issues
+      };
+      
+    } catch (error) {
+      console.error('❌ Error en diagnóstico de audio:', error);
+      issues.push(`❌ Error en diagnóstico: ${error}`);
+      
+      return {
+        hasPermissions: false,
+        hasAudioTracks: false,
+        audioTracksEnabled: false,
+        audioTracksLive: false,
+        peerConnectionReady: false,
+        remoteAudioConfigured: false,
+        issues
+      };
+    }
+  }
+
+  /**
    * Cleanup de recursos
    */
   ngOnDestroy() {

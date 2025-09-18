@@ -50,14 +50,19 @@
         <ion-icon [name]="isMuted ? 'mic-off-outline' : 'mic-outline'"></ion-icon>
       </ion-button>
       
-      <!-- Control de volumen -->
-      <ion-button fill="clear" class="control-button" (click)="adjustVolume()">
-        <ion-icon name="volume-medium-outline"></ion-icon>
-      </ion-button>
+        <!-- Control de volumen -->
+        <ion-button fill="clear" class="control-button" (click)="adjustVolume()">
+          <ion-icon name="volume-medium-outline"></ion-icon>
+        </ion-button>
 
-      <ion-button fill="clear" color="lighter" class="control-button end-button" (click)="endCall()">
-        <ion-icon name="call-outline"></ion-icon>
-      </ion-button>
+        <!-- Diagnóstico de audio -->
+        <ion-button fill="clear" class="control-button" (click)="diagnoseAudio()">
+          <ion-icon name="bug-outline"></ion-icon>
+        </ion-button>
+
+        <ion-button fill="clear" color="lighter" class="control-button end-button" (click)="endCall()">
+          <ion-icon name="call-outline"></ion-icon>
+        </ion-button>
     </div>
 
   </div>

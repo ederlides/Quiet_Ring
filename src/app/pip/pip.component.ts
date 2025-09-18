@@ -172,6 +172,46 @@ onDragEnd() {
     console.log(`🔊 Volumen ajustado a: ${Math.round(this.currentVolume * 100)}%`);
   }
 
+  /**
+   * Diagnóstica problemas de audio
+   */
+  async diagnoseAudio() {
+    console.log('🔍 Iniciando diagnóstico de audio...');
+    
+    try {
+      const diagnosis = await this.webrtc.diagnoseAudioIssues();
+      
+      // Mostrar resultados en consola
+      console.log('📊 Resultados del diagnóstico:');
+      console.log('================================');
+      
+      if (diagnosis.issues.length === 0) {
+        console.log('✅ ¡Audio funcionando correctamente!');
+        alert('✅ Audio funcionando correctamente');
+      } else {
+        console.log('🚨 Problemas encontrados:');
+        diagnosis.issues.forEach(issue => console.log(`   ${issue}`));
+        
+        // Mostrar alerta con problemas
+        const issuesText = diagnosis.issues.join('\n');
+        alert(`🚨 Problemas de audio encontrados:\n\n${issuesText}`);
+      }
+      
+      // Información adicional
+      console.log('\n📋 Información detallada:');
+      console.log(`   - Permisos de audio: ${diagnosis.hasPermissions ? '✅' : '❌'}`);
+      console.log(`   - Audio tracks disponibles: ${diagnosis.hasAudioTracks ? '✅' : '❌'}`);
+      console.log(`   - Tracks habilitados: ${diagnosis.audioTracksEnabled ? '✅' : '❌'}`);
+      console.log(`   - Tracks en vivo: ${diagnosis.audioTracksLive ? '✅' : '❌'}`);
+      console.log(`   - PeerConnection listo: ${diagnosis.peerConnectionReady ? '✅' : '❌'}`);
+      console.log(`   - Audio remoto configurado: ${diagnosis.remoteAudioConfigured ? '✅' : '❌'}`);
+      
+    } catch (error) {
+      console.error('❌ Error en diagnóstico:', error);
+      alert(`❌ Error en diagnóstico: ${error}`);
+    }
+  }
+
   ngOnDestroy() {
     this.endCall();
   }
