@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { WebrtcService } from '../services/webrtc.service';
+import { WebrtcService } from '../core/services/webrtc.service';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

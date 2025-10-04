@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { CountrySelectorComponent } from '../country-selector/country-selector.component';
-import { OtpRequest, OtpService } from '../core/services/otp-service/otp.service';
-import { ICountry } from '../core/interfaces/country';
+import { OtpRequest, OtpService } from '../core/services/otp.service';
+import { ICountry } from '../core/interfaces/interface-country';
 
 @Component({
   selector: 'app-login',
@@ -105,8 +105,11 @@ export class LoginComponent implements OnInit {
 
   callOtp() {
     const cellPhoneNumber = this.form.get('cellPhoneNumber')?.value.toString()
+    const dialCode = this.form.get('dialCode')?.getRawValue();
 
-    if (cellPhoneNumber && cellPhoneNumber.length >= 6) {
+    if (dialCode == undefined || dialCode == null || dialCode == '') {
+      alert('debe seleccionar un país')
+    } else if (cellPhoneNumber && cellPhoneNumber.length >= 5) {
       this.viewOtp = true;
       this.viewLogin = false;
       // Limpiar el estado de login ya que pasamos a la siguiente fase
@@ -216,6 +219,7 @@ export class LoginComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error en verificación OTP:', error);
+        alert('Error, intente nuevamente')
         // Aquí manejas el error, muestra alert o mensaje
       }
     });

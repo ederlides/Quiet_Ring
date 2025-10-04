@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
-import { WebrtcService } from '../services/webrtc.service';
+import { WebrtcService } from '../core/services/webrtc.service';
 import { IonicModule, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';

@@ -3,7 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { OtpService } from '../core/services/otp-service/otp.service';
+import { OtpService } from '../core/services/otp.service';
 import { ActivatedRoute } from '@angular/router';
 
 

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
-import { OtpService } from '../core/services/otp-service/otp.service';
+import { OtpService } from '../core/services/otp.service';
 import { MemberRequest } from '../modals/modal-add-members/modal-add-members.component';
 
 @Component({
@@ -50,7 +50,8 @@ export class JoinAsAMemberComponent implements OnInit {
 
     this.otpService.addMember(payload).subscribe({
       next: (response) => {
-        this.router.navigate(['/menu']);
+        // this.router.navigate(['/menu']);
+        this.router.navigateByUrl('/menu', { replaceUrl: true });
       },
       error: (error) => {
         console.error('Error de Vinculación:', error);

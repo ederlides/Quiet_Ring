@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { OtpRequest } from '../core/services/otp-service/otp.service';
+import { OtpRequest } from '../core/services/otp.service';
 import { Observable } from 'rxjs';
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,6 +17,7 @@ const httpOptions = {
 export class ApiService {
 
   constructor(private http: HttpClient) { }
+  
 
   getOtp(_this, data, successHandler, errorHandler) {
     let url = 'http://144.202.16.218:8080/api-quiet-ring/otp/generate';

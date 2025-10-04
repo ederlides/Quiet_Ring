@@ -129,6 +129,15 @@
     <ion-title *ngIf="viewOtp===true" class="custom-title">
       <span style="white-space: normal;">Verificando el número</span>
     </ion-title>
+    <ion-back-button 
+      *ngIf="viewOtp===true" 
+      slot="start" 
+      fill="clear" 
+      class="custom-back-button" 
+      (click)="condition(); viewOtp = false"
+    >
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-back-button>
   </ion-toolbar>
 </ion-header>
 
@@ -207,10 +216,10 @@
       Ingresa el código que enviamos por SMS al {{mobile}}
     </p>
     <p class="custom-paragraph">
-      ¿No recibiste el SMS? <a href=""> Vuelve a enviar el código</a>
+      ¿No recibiste el SMS? <a href="#" (click)="'sendOtp()'"> Vuelve a enviar el código</a>
     </p>
     <p class="custom-paragraph">
-      <a href=""> Más Opciones</a>
+      <a href="#"> Más Opciones</a>
     </p>
   </div>
   
