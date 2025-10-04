@@ -50,8 +50,8 @@ export class JoinAsAMemberComponent implements OnInit {
 
     this.otpService.addMember(payload).subscribe({
       next: (response) => {
-        // this.router.navigate(['/menu']);
-        this.router.navigateByUrl('/menu', { replaceUrl: true });
+        this.router.navigate(['/menu']);
+        // this.router.navigateByUrl('/menu', { replaceUrl: true });
       },
       error: (error) => {
         console.error('Error de Vinculación:', error);

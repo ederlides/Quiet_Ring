@@ -105,11 +105,14 @@ export class HomePage {
   }
 
   validLoadData() {
-    if (localStorage.getItem("token") &&
-      localStorage.getItem("indicative") &&
-      localStorage.getItem("cellPhoneNumber") &&
-      localStorage.getItem("room")) {
-      this.navCtrl.navigateForward('/menu')
+    if (
+        localStorage.getItem("token") &&
+        localStorage.getItem("indicative") &&
+        localStorage.getItem("cellPhoneNumber") &&
+        localStorage.getItem("room")
+    ){
+      // this.navCtrl.navigateForward('/menu')
+      this.router.navigateByUrl('/menu', { replaceUrl: true });
     }
   }
 
