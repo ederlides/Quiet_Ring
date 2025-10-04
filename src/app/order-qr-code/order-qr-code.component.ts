@@ -1,11 +1,13 @@
-import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { OtpService } from '../core/services/otp.service';
 import { ActivatedRoute } from '@angular/router';
-
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Capacitor } from '@capacitor/core';
+import { FileOpener } from '@capacitor-community/file-opener';
 
 @Component({
   selector: 'app-order-qr-code',
@@ -17,9 +19,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OrderQrCodeComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) { }
   private otpService = inject(OtpService);
-  img;
+  img: any;
+
+  constructor(private route: ActivatedRoute) { }
+
   ngOnInit() {
     this.img = this.route.snapshot.paramMap.get('id');
   }
@@ -34,10 +38,10 @@ export class OrderQrCodeComponent implements OnInit {
     swiperEl.swiper.slidePrev();
   }
 
-  getQr() {
-    let payload = {
+  async getQr() {
+    const payload = {
       idProcess: this.generateUUID(),
-      qr:this.img,
+      qr: this.img,
       template: 1,
       deviceInfo: {
         ip: '10.10.10.1',
@@ -45,25 +49,48 @@ export class OrderQrCodeComponent implements OnInit {
         mac: '00-11-22-33-44-55'
       }
     };
-   const reader = new FileReader();
+
     this.otpService.getQr(payload).subscribe({
-      next: (response) => {
-        this.downloadPDF(response.processResponse);
+      next: async (response) => {
+        await this.downloadPDF(response.processResponse);
       },
       error: (error) => {
         console.error('Error en verificación Timbres:', error);
-        // Aquí manejas el error, muestra alert o mensaje
       }
     });
   }
 
-  downloadPDF(base64: string): void {
-    const link = document.createElement('a');
-    link.href = 'data:application/pdf;base64,' + base64;
-    link.download = 'resultado.pdf';
-    link.click();
-  }
+  async downloadPDF(base64: string): Promise<void> {
+    console.log('Inicio downloadPDF');
 
+    const fileName = `resultado_${Date.now()}.pdf`;
+
+    try {
+      console.log('Intentando guardar archivo...');
+      const savedFile = await Filesystem.writeFile({
+        path: fileName,
+        data: base64,
+        directory: Directory.Cache // ✅ temporal
+      });
+      console.log('Archivo guardado:', savedFile);
+
+      const uriResult = await Filesystem.getUri({
+        directory: Directory.Cache, // ✅ temporal
+        path: fileName,
+      });
+      console.log('URI del archivo:', uriResult.uri);
+
+      // Abrir el PDF con la app nativa
+      await FileOpener.open({
+        filePath: uriResult.uri,
+        contentType: 'application/pdf'
+      });
+      console.log('PDF abierto con FileOpener');
+      
+    } catch (error) {
+      console.error('Error al guardar/abrir PDF:', error);
+    }
+  }
 
   generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {

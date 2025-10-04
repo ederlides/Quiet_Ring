@@ -168,6 +168,10 @@ ion-button{
 // estilo del header
 .custom-ion-header {
   box-shadow: none !important;
+  background: white;
+  &.background-none {
+    background: initial;
+  }
   &.custom-padding-header {
     padding-top: 50px;
     padding-bottom: 50px;
