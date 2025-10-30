@@ -11,6 +11,7 @@ import { ToggleCustomEvent } from '@ionic/angular';
 import { WebrtcService } from '../core/services/webrtc.service';
 import { DeviceInfo, OtpService } from '../core/services/otp.service';
 import { ICall } from '../core/interfaces/interface-call';
+import { ToastService } from '../core/services/toast.service';
 
 // Interfaz para el tipo de objeto de llamada
 interface Ring {
@@ -80,7 +81,12 @@ export class MenuComponent implements OnInit {
     { name: 'Quiet Ring Sticker', price: '$4,99 Usd', src: 'assets/qr3.svg' }
   ]
 
-  constructor(private router: Router, private modalCtrl: ModalController, public webrtcService: WebrtcService) { }
+  constructor(
+    private router: Router,
+    private modalCtrl: ModalController,
+    public webrtcService: WebrtcService,
+    private toast: ToastService,
+  ) { }
   viewportWidth: any;
   viewportHeight: any;
   screenWidth: any;
@@ -319,6 +325,7 @@ export class MenuComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error en verificación Timbres:', error);
+        this.toast.show('Ocurrió un error inesperado', 'error');
         // Aquí manejas el error, muestra alert o mensaje
       }
     });
