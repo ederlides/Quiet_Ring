@@ -8,23 +8,24 @@
   </ion-buttons>
   <ion-title>Elige el país</ion-title>
 </ion-toolbar> -->
-<ion-header class="custom-ion-header">
+<ion-header class="ion-padding custom-ion-header custom-padding-header" style="padding-bottom: 0;">
   <ion-toolbar>
     <ion-button slot="start" fill="clear" class="custom-back-button" (click)="dismiss()">
       <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-title class="custom-title"><span style="white-space: normal;">Elige el país</span></ion-title>
+    <ion-searchbar 
+      [(ngModel)]="searchTerm"
+      (ionInput)="filterCountries()"
+      placeholder="Buscar país o código"
+      animated
+      debounce="300"
+      style=""
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-searchbar 
-    [(ngModel)]="searchTerm"
-    (ionInput)="filterCountries()"
-    placeholder="Buscar país o código"
-    animated
-    debounce="300"
-  ></ion-searchbar>
 
   <ion-list>
     <ion-item *ngFor="let country of filteredCountries" (click)="selectCountry(country)" button detail="true">
