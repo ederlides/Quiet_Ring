@@ -15,6 +15,7 @@
     </ion-button>
     <ion-title class="custom-title"><span style="white-space: normal;">Elige el país</span></ion-title>
     <ion-searchbar 
+      #searchBar
       [(ngModel)]="searchTerm"
       (ionInput)="filterCountries()"
       placeholder="Buscar país o código"

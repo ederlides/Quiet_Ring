@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { IonicModule, IonSearchbar, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { allCountries } from 'country-telephone-data';
@@ -24,6 +24,8 @@ export class CountrySelectorComponent implements OnInit {
   filteredCountries: Country[] = [];
   searchTerm: string = '';
 
+  @ViewChild('searchBar', { static: false }) searchBar!: IonSearchbar;
+
   constructor(private router: Router, private modalCtrl: ModalController) {}
 
   ngOnInit() {
@@ -42,6 +44,12 @@ export class CountrySelectorComponent implements OnInit {
     
     this.filteredCountries = [...this.countries];
     console.log(`Se cargaron ${this.countries.length} países`);
+  }
+
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.searchBar.setFocus();
+    }, 300);
   }
 
   filterCountries() {
