@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { WebrtcService } from '../services/webrtc.service';
-import { IonicModule } from '@ionic/angular';
+import { WebrtcService } from '../core/services/webrtc.service';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Route, Router } from '@angular/router';
@@ -23,7 +23,11 @@ private offset = { x: 0, y: 0 };
   speakerOn = true;
   muted = true;
 
-  constructor(public webrtc: WebrtcService, private router: Router) {}
+  constructor(
+    public webrtc: WebrtcService,
+    private router: Router,
+    private modalCtrl: ModalController
+  ) {}
 
   ngAfterViewInit() {
     this.webrtc.setVideoElements(this.localVideoRef.nativeElement, this.remoteVideoRef.nativeElement);
@@ -79,7 +83,8 @@ onDragEnd() {
 
   endCall() {
     this.webrtc.endCall();
-    this.router.navigate(['/menu']);
+    // this.router.navigate(['/menu']);
+    this.close();
   }
 
   toggleCamera() {
@@ -104,5 +109,9 @@ onDragEnd() {
 
   ngOnDestroy() {
     this.endCall();
+  }
+
+  close() {
+    this.modalCtrl.dismiss({ result: 'closed' });
   }
 }

@@ -8,10 +8,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpClientModule, provideHttpClient } from '@angular/common/http'; 
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http'; 
 import { CountrySelectorModule } from './country-selector/country-selector.module';
 import { LoginModule } from './login/login.module';
 import { ActivateQrModule } from './activate-qr/activate-qr.module';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,7 +30,8 @@ import { ActivateQrModule } from './activate-qr/activate-qr.module';
     
   ],
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     provideHttpClient()
   ],
   bootstrap: [AppComponent],

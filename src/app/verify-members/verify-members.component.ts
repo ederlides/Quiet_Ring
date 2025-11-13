@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
-import { OtpService } from '../core/services/otp-service/otp.service';
+import { OtpService } from '../core/services/otp.service';
+// import { OtpService } from '../core/services/opt.service';
 import { MemberRequest } from '../modals/modal-add-members/modal-add-members.component';
 import { ModalConfirmDeleteComponent } from '../modals/modal-confirm-delete/modal-confirm-delete.component';
 

@@ -1,8 +1,8 @@
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" *ngIf="!showCallView">
   <ion-tabs>
     <ion-tab tab="home" style="padding-bottom: 75px;">
       <!-- <div id="home-page"> -->
-      <ion-header class="custom-ion-header custom-padding-header">
+      <ion-header class="custom-ion-header custom-padding-header background-none">
         <ion-toolbar>
           <ion-title class="custom-title"><span style="white-space: normal;">Timbres</span></ion-title>
         </ion-toolbar>
@@ -59,7 +59,7 @@
       <!-- </div> -->
     </ion-tab>
 
-    <ion-tab tab="radio" style="padding-bottom: 75px;">
+    <ion-tab tab="radio" style="">
       <!-- <div id="radio-page"> -->
       <ion-header class="custom-ion-header custom-padding-header" style="padding-bottom: 0;">
         <ion-toolbar>
@@ -74,8 +74,10 @@
         </ion-toolbar>
         <ion-toolbar>
           <ion-buttons>
-            <ion-button size="small" fill="outline">Todas</ion-button>
-            <ion-button size="small" fill="outline">Perdidas</ion-button>
+            <ion-button size="small" (click)="setFilter('todas')" fill="outline">Todas</ion-button>
+            <ion-button size="small" (click)="setFilter('realizada')" fill="outline">Realizada</ion-button>
+            <ion-button size="small" (click)="setFilter('contestada')" fill="outline">Contestada</ion-button>
+            <ion-button size="small" (click)="setFilter('perdida')" fill="outline">Perdida</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -85,8 +87,8 @@
         <div class="table-call">
           <div class="text-title">Recientes</div>
           <div class="table">
-            <ion-list>
-              <ion-item *ngFor="let item of calls" (click)="showCall(item)">
+            <ion-list style="padding-bottom: 100px;">
+              <ion-item *ngFor="let item of filteredCalls" (click)="showCall(item)">
                 <ion-avatar aria-hidden="true" slot="start">
                   <img alt="" [src]="item.src" />
                 </ion-avatar>
@@ -100,9 +102,9 @@
                   <h1>{{ item.name }}</h1>
                   <p>
                     <ion-icon
-                      [src]="item.call == 'Perdida' ? 'assets/icon/call-declined.svg' : 'assets/icon/call-answer.svg'"
+                      [src]="item.type == 'perdida' ? 'assets/icon/call-declined.svg' : 'assets/icon/call-answer.svg'"
                     ></ion-icon>
-                    {{ item.call }}
+                    {{ item.type }}
                   </p>
                 </ion-label>
               </ion-item>
@@ -110,64 +112,6 @@
           </div>
         </div>
       </ion-content>
-      
-      <!-- Vista de llamada activa (visible cuando showCallView es true) -->
-      <ion-content class="calling-content" *ngIf="showCallView">
-        <div class="calling-container">
-          <ion-header class="custom-ion-header">
-            <ion-toolbar>
-              <ion-buttons slot="start">
-                <ion-button (click)="hideCall()" class="back-button">
-                  <ion-icon name="chevron-back-outline"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-              <ion-title class="ion-text-center">
-                Llamando...
-              </ion-title>
-              <ion-buttons slot="end">
-                <ion-button class="profile-button">
-                  <ion-icon name="person-circle-outline"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-            </ion-toolbar>
-          </ion-header>
-          
-          <div class="calling-body">
-            <div class="caller-image-container">
-              <div class="caller-image-outer">
-                <div class="caller-image-inner">
-                  <ion-avatar class="caller-avatar">
-                    <img [src]="selectedCall?.src" alt="Caller Image">
-                  </ion-avatar>
-                </div>
-              </div>
-            </div>
-            
-            <div class="caller-info">
-              <h2>{{ selectedCall?.name }}</h2>
-            </div>
-            
-            <div class="calling-actions">
-              <ion-button fill="clear" class="action-button mute-button" shape="circle">
-                <ion-icon name="mic-off-outline"></ion-icon>
-              </ion-button>
-              
-              <ion-button fill="clear" class="action-button sound-button" shape="circle">
-                <ion-icon name="volume-high-outline"></ion-icon>
-              </ion-button>
-              
-              <ion-button fill="clear" class="action-button videocall-button" shape="circle">
-                <ion-icon name="videocam-outline"></ion-icon>
-              </ion-button>
-              
-              <ion-button fill="clear" class="action-button end-call-button" shape="circle">
-                <ion-icon name="call-outline"></ion-icon>
-              </ion-button>
-            </div>
-          </div>
-        </div>
-      </ion-content>
-      <!-- </div> -->
     </ion-tab>
 
     <ion-tab tab="add" style="padding-bottom: 75px;">
@@ -366,15 +310,17 @@
 
     <div class="container-menu">
       <div class="container-background-menu">
-        <img src="assets/banner-menu.svg" alt="banner menu" class="background-menu"/>
+        <img src="assets/banner-menu-left.svg" alt="banner menu" class="background-menu" style="width: calc(50% - 35px);"/>
+        <img src="assets/banner-menu-mid.svg" alt="banner menu" class="background-menu" style="width: 70px; height: 73%;"/>
+        <img src="assets/banner-menu-left.svg" alt="banner menu" class="background-menu" style="width: calc(50% - 35px); transform: rotatey(180deg);"/>
       </div>
       <div class="container-buttons-menu">
-        <ion-tab-button  (click)="getRing()" tab="home">
+        <ion-tab-button  (click)="getRing()" tab="home" style="background: transparent;">
           <ion-icon src="assets/icon/qr-1.svg"></ion-icon>
           <ion-label>Timbres</ion-label>
         </ion-tab-button>
   
-        <ion-tab-button tab="radio">
+        <ion-tab-button tab="radio" style="background: transparent;">
           <ion-icon src="assets/icon/call.svg"></ion-icon>
           <ion-label>Llamadas</ion-label>
         </ion-tab-button>
@@ -387,16 +333,74 @@
           </div>
         </ion-tab-button>
   
-        <ion-tab-button tab="library">
+        <ion-tab-button tab="library" style="background: transparent;">
           <ion-icon src="assets/icon/carrito.svg"></ion-icon>
           <ion-label>Ordenar</ion-label>
         </ion-tab-button>
   
-        <ion-tab-button tab="search">
+        <ion-tab-button tab="search" style="background: transparent;">
           <ion-icon src="assets/icon/setting.svg"></ion-icon>
           <ion-label>Ajustes</ion-label>
         </ion-tab-button>
       </div>
     </div>
   </ion-tabs>
+</ion-content>
+<ion-content class="ion-padding" *ngIf="showCallView">
+  <!-- <app-calling (showCallView)="showCallView = $event"></app-calling> -->
+
+  <!-- Vista de llamada activa (visible cuando showCallView es true) -->
+  <div class="calling-container">
+    <ion-header class="custom-ion-header">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="hideCall()" class="back-button">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">
+          Llamando...
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button class="profile-button">
+            <ion-icon name="person-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    
+    <div class="calling-body">
+      <div class="caller-image-container">
+        <div class="caller-image-outer">
+          <div class="caller-image-inner">
+            <ion-avatar class="caller-avatar">
+              <img [src]="selectedCall?.src" alt="Caller Image">
+            </ion-avatar>
+          </div>
+        </div>
+      </div>
+      
+      <div class="caller-info">
+        <h2>{{ selectedCall?.name }}</h2>
+      </div>
+      
+      <div class="calling-actions">
+        <ion-button fill="clear" class="action-button mute-button" shape="circle">
+          <ion-icon name="mic-off-outline"></ion-icon>
+        </ion-button>
+        
+        <ion-button fill="clear" class="action-button sound-button" shape="circle">
+          <ion-icon name="volume-high-outline"></ion-icon>
+        </ion-button>
+        
+        <ion-button fill="clear" class="action-button videocall-button" shape="circle">
+          <ion-icon name="videocam-outline"></ion-icon>
+        </ion-button>
+        
+        <ion-button fill="clear" class="action-button end-call-button" shape="circle">
+          <ion-icon name="call-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content>

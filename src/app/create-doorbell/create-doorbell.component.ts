@@ -8,7 +8,7 @@ import { AddMembersComponent } from '../add-members/add-members.component';
 import { ModalConfirmDeleteComponent } from '../modals/modal-confirm-delete/modal-confirm-delete.component';
 import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
 import { RingRequest } from '../menu/menu.component';
-import { OtpService } from '../core/services/otp-service/otp.service';
+import { OtpService } from '../core/services/otp.service';
 import { Router } from '@angular/router';
 
 @Component({

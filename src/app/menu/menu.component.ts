@@ -8,16 +8,12 @@ import { ModalConfirmDeleteComponent } from '../modals/modal-confirm-delete/moda
 import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
 import { VerifyMembersComponent } from '../verify-members/verify-members.component';
 import { ToggleCustomEvent } from '@ionic/angular';
-import { WebrtcService } from '../services/webrtc.service';
-import { DeviceInfo, OtpService } from '../core/services/otp-service/otp.service';
+import { WebrtcService } from '../core/services/webrtc.service';
+import { DeviceInfo, OtpService } from '../core/services/otp.service';
+import { ICall } from '../core/interfaces/interface-call';
+import { ToastService } from '../core/services/toast.service';
 
 // Interfaz para el tipo de objeto de llamada
-interface Call {
-  name: string;
-  call: string;
-  date: string;
-  src: string;
-}
 interface Ring {
   id?: string;
   code?: string;
@@ -45,7 +41,7 @@ export interface RingRequest {
 export class MenuComponent implements OnInit {
   // Control de la vista de llamada
   showCallView: boolean = false;
-  selectedCall: Call | null = null;
+  selectedCall: ICall | null = null;
   private otpService = inject(OtpService);
 
 
@@ -60,22 +56,24 @@ export class MenuComponent implements OnInit {
     { id: 6, name: 'Editar Miembro', src: 'assets/icon/person-edit.svg', dir: '' },
   ]
 
-  calls: Call[] = [
-    { name: 'Daniela Rodriguez', call: 'Perdida', date: '3/12/2024', src: 'assets/avatar.svg' },
-    { name: 'Juan Pérez', call: 'Perdida', date: '2/12/2024', src: 'assets/avatar.svg' },
-    { name: 'María López', call: 'Contestada', date: '1/12/2024', src: 'assets/avatar.svg' },
-    { name: 'Carlos Gómez', call: 'Perdida', date: '30/11/2024', src: 'assets/avatar.svg' },
-    { name: 'Ana Martínez', call: 'Contestada', date: '29/11/2024', src: 'assets/avatar.svg' },
-    { name: 'Pablo Torres', call: 'Perdida', date: '28/11/2024', src: 'assets/avatar.svg' },
-    { name: 'Laura Silva', call: 'Contestada', date: '27/11/2024', src: 'assets/avatar.svg' },
-    { name: 'Roberto Díaz', call: 'Perdida', date: '26/11/2024', src: 'assets/avatar.svg' },
-    { name: 'Sofía Castro', call: 'Contestada', date: '25/11/2024', src: 'assets/avatar.svg' },
-    { name: 'Miguel Ríos', call: 'Perdida', date: '24/11/2024', src: 'assets/avatar.svg' },
-    { name: 'Elena Vargas', call: 'Contestada', date: '23/11/2024', src: 'assets/avatar.svg' },
-    { name: 'Diego Mendoza', call: 'Perdida', date: '22/11/2024', src: 'assets/avatar.svg' },
-    { name: 'Carla Ortiz', call: 'Contestada', date: '21/11/2024', src: 'assets/avatar.svg' },
-    { name: 'Fernando Ruiz', call: 'Perdida', date: '20/11/2024', src: 'assets/avatar.svg' },
+  calls: ICall[] = [
+    { id:1, name: 'Daniela Rodriguez', type: 'perdida', date: '3/12/2024', src: 'assets/avatar.svg' },
+    { id:2, name: 'Juan Pérez', type: 'perdida', date: '2/12/2024', src: 'assets/avatar.svg' },
+    { id:3, name: 'María López', type: 'contestada', date: '1/12/2024', src: 'assets/avatar.svg' },
+    { id:4, name: 'Carlos Gómez', type: 'realizada', date: '30/11/2024', src: 'assets/avatar.svg' },
+    { id:5, name: 'Ana Martínez', type: 'contestada', date: '29/11/2024', src: 'assets/avatar.svg' },
+    { id:6, name: 'Pablo Torres', type: 'perdida', date: '28/11/2024', src: 'assets/avatar.svg' },
+    { id:7, name: 'Laura Silva', type: 'contestada', date: '27/11/2024', src: 'assets/avatar.svg' },
+    { id:8, name: 'Roberto Díaz', type: 'perdida', date: '26/11/2024', src: 'assets/avatar.svg' },
+    { id:9, name: 'Sofía Castro', type: 'contestada', date: '25/11/2024', src: 'assets/avatar.svg' },
+    { id:10, name: 'Miguel Ríos', type: 'perdida', date: '24/11/2024', src: 'assets/avatar.svg' },
+    { id:12, name: 'Elena Vargas', type: 'contestada', date: '23/11/2024', src: 'assets/avatar.svg' },
+    { id:13, name: 'Diego Mendoza', type: 'perdida', date: '22/11/2024', src: 'assets/avatar.svg' },
+    { id:14, name: 'Carla Ortiz', type: 'contestada', date: '21/11/2024', src: 'assets/avatar.svg' },
+    { id:15, name: 'Fernando Ruiz', type: 'perdida', date: '20/11/2024', src: 'assets/avatar.svg' },
   ]
+  filteredCalls: ICall[] = [];
+  activeFilter: string = 'todas'; // filtro inicial
 
   order = [
     { name: 'Quiet Ring Laser', price: '$19,99 Usd', src: 'assets/qr1.svg' },
@@ -83,7 +81,12 @@ export class MenuComponent implements OnInit {
     { name: 'Quiet Ring Sticker', price: '$4,99 Usd', src: 'assets/qr3.svg' }
   ]
 
-  constructor(private router: Router, private modalCtrl: ModalController, public webrtcService: WebrtcService) { }
+  constructor(
+    private router: Router,
+    private modalCtrl: ModalController,
+    public webrtcService: WebrtcService,
+    private toast: ToastService,
+  ) { }
   viewportWidth: any;
   viewportHeight: any;
   screenWidth: any;
@@ -103,6 +106,21 @@ export class MenuComponent implements OnInit {
 
     this.realWidth = this.screenWidth * devicePixelRatio;
     this.realHeight = this.screenHeight * devicePixelRatio;
+  
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    if (this.activeFilter === 'todas') {
+      this.filteredCalls = this.calls;
+    } else {
+      this.filteredCalls = this.calls.filter(c => c.type === this.activeFilter);
+    }
+  }  
+
+  setFilter(filter: string) {
+    this.activeFilter = filter;
+    this.applyFilter();
   }
 
   // Método para navegar a la vista de Activar QR
@@ -121,7 +139,7 @@ export class MenuComponent implements OnInit {
   }
 
   // Método para mostrar la pantalla de llamada con el contacto seleccionado
-  showCall(call: Call) {
+  showCall(call: ICall) {
     console.log('Iniciando llamada con:', call.name);
     this.selectedCall = call;
     this.showCallView = true;
@@ -307,6 +325,7 @@ export class MenuComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error en verificación Timbres:', error);
+        this.toast.show('Ocurrió un error inesperado', 'error');
         // Aquí manejas el error, muestra alert o mensaje
       }
     });

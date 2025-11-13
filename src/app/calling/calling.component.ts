@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { WebrtcService } from '../services/webrtc.service';
+import { WebrtcService } from '../core/services/webrtc.service';
 import { Router } from '@angular/router';
+import { PipComponent } from '../pip/pip.component';
 
 @Component({
   selector: 'app-calling',
@@ -17,11 +18,12 @@ import { Router } from '@angular/router';
 export class CallingComponent implements OnInit {
 
 
-  constructor(public webrtc: WebrtcService, private router: Router) { }
+  constructor(private modalCtrl: ModalController, public webrtc: WebrtcService, private router: Router) { }
 
   calling: boolean = true;
   @ViewChild('slider', { static: false }) slider: ElementRef;
   @ViewChild('slideContainer', { static: false }) slideContainer: ElementRef;
+  @Output() showCallView = new EventEmitter<boolean>();
 
   isIncomingCall = false;
   incomingOffer: RTCSessionDescriptionInit;
@@ -69,7 +71,9 @@ export class CallingComponent implements OnInit {
 
     const finalLeft = parseInt(slider.style.left || '0', 10);
     if (finalLeft + slider.offsetWidth >= containerRect.width - 10) {
-      this.router.navigate(['/pip']);
+      // this.router.navigate(['/pip']);
+      this.showCallView.emit(false);
+      this.openModalAddMembers();
     }
 
     // Reset slider
@@ -82,7 +86,17 @@ export class CallingComponent implements OnInit {
     document.removeEventListener('touchend', upListener);
   }
 
-
+  async openModalAddMembers() {
+    const modal = await this.modalCtrl.create({
+      component: PipComponent,
+      componentProps: {
+        someData: 'Hola desde el padre',
+      },
+    });
+    await modal.present();
+    const { data, role } = await modal.onDidDismiss();
+    console.log('Modal cerrado con datos:', data);
+  }
 
 
 }

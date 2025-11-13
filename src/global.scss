@@ -168,6 +168,10 @@ ion-button{
 // estilo del header
 .custom-ion-header {
   box-shadow: none !important;
+  background: white;
+  &.background-none {
+    background: initial;
+  }
   &.custom-padding-header {
     padding-top: 50px;
     padding-bottom: 50px;
@@ -331,6 +335,19 @@ ion-toggle::part(track) {
 
   /* Required for iOS handle to overflow the height of the track */
   overflow: visible;
+}
+
+//
+
+.custom-toast {
+  --border-radius: 14px;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  font-weight: 500;
+  text-align: center;
+  ion-icon {
+    vertical-align: middle;
+    font-size: 20px;
+  }
 }
 
 // ion-tab

@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
-import { WebrtcService } from '../services/webrtc.service';
+import { WebrtcService } from '../core/services/webrtc.service';
 import { IonicModule, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -105,11 +105,14 @@ export class HomePage {
   }
 
   validLoadData() {
-    if (localStorage.getItem("token") &&
-      localStorage.getItem("indicative") &&
-      localStorage.getItem("cellPhoneNumber") &&
-      localStorage.getItem("room")) {
-      this.navCtrl.navigateForward('/menu')
+    if (
+        localStorage.getItem("token") &&
+        localStorage.getItem("indicative") &&
+        localStorage.getItem("cellPhoneNumber") &&
+        localStorage.getItem("room")
+    ){
+      // this.navCtrl.navigateForward('/menu')
+      this.router.navigateByUrl('/menu', { replaceUrl: true });
     }
   }
 

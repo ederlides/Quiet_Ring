@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { DeviceInfo, OtpService } from 'src/app/core/services/otp-service/otp.service';
+import { DeviceInfo, OtpService } from 'src/app/core/services/otp.service';
 
 export interface MemberRequest {
   idProcess: string;
