@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
 import { FileOpener } from '@capacitor-community/file-opener';
+import { Share } from '@capacitor/share'; // 👈 importar Share API
 
 @Component({
   selector: 'app-order-qr-code',
@@ -21,6 +22,7 @@ export class OrderQrCodeComponent implements OnInit {
 
   private otpService = inject(OtpService);
   img: any;
+  private lastSavedPdfUri: string | null = null; // 👈 guardamos el último PDF generado
 
   constructor(private route: ActivatedRoute) { }
 
@@ -80,6 +82,8 @@ export class OrderQrCodeComponent implements OnInit {
       });
       console.log('URI del archivo:', uriResult.uri);
 
+      this.lastSavedPdfUri = uriResult.uri; // 👈 guardamos el archivo para compartir o imprimir luego
+
       // Abrir el PDF con la app nativa
       await FileOpener.open({
         filePath: uriResult.uri,
@@ -89,6 +93,41 @@ export class OrderQrCodeComponent implements OnInit {
       
     } catch (error) {
       console.error('Error al guardar/abrir PDF:', error);
+    }
+  }
+
+  async sharePDF() {
+    if (!this.lastSavedPdfUri) {
+      console.warn('⚠️ No hay PDF para compartir');
+      return;
+    }
+
+    try {
+      await Share.share({
+        title: 'Compartir código QR',
+        text: 'Te envío el PDF del código QR.',
+        url: this.lastSavedPdfUri,
+        dialogTitle: 'Compartir archivo PDF',
+      });
+    } catch (error) {
+      console.error('Error al compartir PDF:', error);
+    }
+  }
+
+  async printPDF() {
+    if (!this.lastSavedPdfUri) {
+      console.warn('⚠️ No hay PDF para imprimir');
+      return;
+    }
+
+    try {
+      // 🔹 En Android e iOS, abrir el PDF permite imprimirlo nativamente desde el visor.
+      await FileOpener.open({
+        filePath: this.lastSavedPdfUri,
+        contentType: 'application/pdf'
+      });
+    } catch (error) {
+      console.error('Error al imprimir PDF:', error);
     }
   }
 
