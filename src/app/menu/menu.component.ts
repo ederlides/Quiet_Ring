@@ -44,6 +44,8 @@ export class MenuComponent implements OnInit {
   selectedCall: ICall | null = null;
   private otpService = inject(OtpService);
 
+  indicative = localStorage.getItem("indicative")
+  cellPhoneNumber = localStorage.getItem("cellPhoneNumber")
 
   items: Ring[];
 
