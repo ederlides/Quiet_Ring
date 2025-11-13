@@ -24,9 +24,9 @@ export interface OtpRequest {
 })
 export class OtpService {
 
-  private apiUrl = 'https://app.quietring.us:8443/api-quiet-ring';
+  //private apiUrl = 'https://app.quietring.us:8443/api-quiet-ring';
 
-  //private apiUrl = 'http://localhost:8080';
+  private apiUrl = 'http://localhost:8080';
   constructor(private http: HttpClient) { }
 
   getOtp(payload: OtpRequest): Observable<any> {
