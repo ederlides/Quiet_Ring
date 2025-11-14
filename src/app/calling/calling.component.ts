@@ -6,6 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { WebrtcService } from '../core/services/webrtc.service';
 import { Router } from '@angular/router';
 import { PipComponent } from '../pip/pip.component';
+import { SoundService } from '../core/services/sound.service';
 
 @Component({
   selector: 'app-calling',
@@ -18,7 +19,12 @@ import { PipComponent } from '../pip/pip.component';
 export class CallingComponent implements OnInit {
 
 
-  constructor(private modalCtrl: ModalController, public webrtc: WebrtcService, private router: Router) { }
+  constructor(
+    private modalCtrl: ModalController, 
+    public webrtc: WebrtcService, 
+    private router: Router,
+    private soundService: SoundService,
+  ) { }
 
   calling: boolean = true;
   @ViewChild('slider', { static: false }) slider: ElementRef;
@@ -36,6 +42,7 @@ export class CallingComponent implements OnInit {
 
 
   ngOnInit() {
+    this.soundService.playRingtone();
   }
 
   startSlide(event: MouseEvent | TouchEvent) {
@@ -72,6 +79,7 @@ export class CallingComponent implements OnInit {
     const finalLeft = parseInt(slider.style.left || '0', 10);
     if (finalLeft + slider.offsetWidth >= containerRect.width - 10) {
       // this.router.navigate(['/pip']);
+      this.soundService.stopRingtone();
       this.showCallView.emit(false);
       this.openModalAddMembers();
     }
