@@ -62,7 +62,7 @@ export class MenuComponent implements OnInit {
     { id:1, name: 'Daniela Rodriguez', type: 'perdida', date: '3/12/2024', src: 'assets/avatar.svg' },
     { id:2, name: 'Juan Pérez', type: 'perdida', date: '2/12/2024', src: 'assets/avatar.svg' },
     { id:3, name: 'María López', type: 'contestada', date: '1/12/2024', src: 'assets/avatar.svg' },
-    { id:4, name: 'Carlos Gómez', type: 'realizada', date: '30/11/2024', src: 'assets/avatar.svg' },
+    { id:4, name: 'Carlos Gómez', type: 'rechazada', date: '30/11/2024', src: 'assets/avatar.svg' },
     { id:5, name: 'Ana Martínez', type: 'contestada', date: '29/11/2024', src: 'assets/avatar.svg' },
     { id:6, name: 'Pablo Torres', type: 'perdida', date: '28/11/2024', src: 'assets/avatar.svg' },
     { id:7, name: 'Laura Silva', type: 'contestada', date: '27/11/2024', src: 'assets/avatar.svg' },
