@@ -12,7 +12,9 @@ export class WebrtcService {
 
   private peerConnection: RTCPeerConnection | null = null;
   private localStream: MediaStream | null = null;
+
   availableMicrophones: MediaDeviceInfo[] = [];
+
   private rtcConfig: RTCConfiguration = {
     iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
   };
@@ -22,7 +24,6 @@ export class WebrtcService {
   isPeerConnectionReady = false;
   pendingCandidates: RTCIceCandidate[] = [];
 
-  // Elementos de video serán seteados desde el componente
   localVideoElement: HTMLVideoElement | null = null;
   remoteVideoElement: HTMLVideoElement | null = null;
 
@@ -32,7 +33,7 @@ export class WebrtcService {
     this.socket.on('offer', async offer => {
       this.incomingOffer = offer;
       this.isIncomingCall = true;
-      this.router.navigate(['/call']); // Redirige al componente receptor
+      this.router.navigate(['/call']);
     });
 
     this.socket.on('ice-candidate', async c => {
@@ -52,78 +53,67 @@ export class WebrtcService {
     this.socket.emit('join', this.roomId);
   }
 
+  public getLocalStream(): MediaStream | null {
+    return this.localStream || null;
+  }
+
+  public enableCamera(enable: boolean) {
+    if (!this.localStream) return;
+    this.localStream.getVideoTracks().forEach(t => t.enabled = enable);
+  }
+
+  public enableMicrophone(enable: boolean) {
+    if (!this.localStream) return;
+    this.localStream.getAudioTracks().forEach(t => t.enabled = enable);
+  }
+
   setVideoElements(local: HTMLVideoElement, remote: HTMLVideoElement) {
     this.localVideoElement = local;
     this.remoteVideoElement = remote;
   }
+
+  // ---------------------------------------------------------------------
+  // 🔧 FIX PRINCIPAL → UNA sola llamada a getUserMedia
+  // ---------------------------------------------------------------------
   async initLocal() {
     try {
-      // 🔁 Detener stream anterior si existe
+      // Detener stream previo
       if (this.localStream) {
-        this.localStream.getTracks().forEach(track => track.stop());
+        this.localStream.getTracks().forEach(t => t.stop());
         this.localStream = null;
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise(r => setTimeout(r, 150));
       }
 
-      // 📋 Obtener lista de dispositivos
+      // Detectar dispositivos
       const devices = await navigator.mediaDevices.enumerateDevices();
-      const hasCamera = devices.some(d => d.kind === 'videoinput');
-      const microfonos = devices.filter(d => d.kind === 'audioinput');
+      this.availableMicrophones = devices.filter(d => d.kind === 'audioinput');
 
-      if (!hasCamera) throw new Error('No se detectó una cámara.');
-      if (microfonos.length === 0) throw new Error('No se detectó un micrófono.');
-
-      this.availableMicrophones = microfonos;
-
-      // ✅ SOLUCIÓN: Obtener streams separados
-      const [videoStream, audioStream] = await Promise.all([
-        navigator.mediaDevices.getUserMedia({ video: true }),
-        navigator.mediaDevices.getUserMedia({ audio: true })
-      ]);
-
-
-
-      // 🧩 Combinar pistas en un solo MediaStream
-      const combinedStream = new MediaStream([
-        ...videoStream.getVideoTracks(),
-        ...audioStream.getAudioTracks()
-      ]);
-
-      this.localStream = combinedStream;
-
-      // 🎥 Asignar stream al video local
-      if (this.localVideoElement) {
-        this.localVideoElement.srcObject = this.localStream;
-        this.localVideoElement.muted = true; // Evita eco
-      }
-      console.log('Audio tracks:', this.localStream.getAudioTracks());
-
-      this.localStream.getAudioTracks().forEach((track, index) => {
-        console.log(`Track #${index} - Label: ${track.label}, Enabled: ${track.enabled}, Muted: ${track.muted}`);
+      // 📌 Obtener audio + video simultáneamente (esto evita NotReadableError)
+      this.localStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' },
+        audio: true
       });
 
-      // 🧪 Logs para verificar audio
-      const audioTracks = this.localStream.getAudioTracks();
-      console.log("🎧 Audio Tracks:", audioTracks);
-      audioTracks.forEach(track =>
-        console.log(`Track label: ${track.label}, enabled: ${track.enabled}`)
-      );
+      if (this.localVideoElement) {
+        this.localVideoElement.srcObject = this.localStream;
+        this.localVideoElement.muted = true;
+      }
+
+      console.log("🎥 Video OK");
+      console.log("🎤 Audio tracks:", this.localStream.getAudioTracks());
 
     } catch (err: any) {
-      console.error('🛑 Error al inicializar cámara/micrófono:', err.name, err.message);
+      console.error("🛑 Error al inicializar:", err.name, err.message);
 
-      if (err.name === 'NotReadableError') {
-        this.camera = '⚠️ Cámara o micrófono en uso por otra aplicación.';
-      } else if (err.name === 'NotAllowedError') {
-        this.camera = '❌ Permiso denegado para usar cámara o micrófono.';
+      if (err.name === "NotReadableError") {
+        this.camera = "⚠️ Cámara o micrófono en uso por otra aplicación.";
+      } else if (err.name === "NotAllowedError") {
+        this.camera = "❌ Permiso denegado.";
       } else {
-        this.camera = `Error inesperado: ${err.name} - ${err.message}`;
+        this.camera = `Error: ${err.name} - ${err.message}`;
       }
     }
   }
-
-
-
 
   async createPeerConnection() {
     this.peerConnection = new RTCPeerConnection(this.rtcConfig);
@@ -136,7 +126,8 @@ export class WebrtcService {
 
     this.peerConnection.ontrack = e => {
       if (this.remoteVideoElement) {
-        const stream = this.remoteVideoElement.srcObject as MediaStream || new MediaStream();
+        const stream =
+          (this.remoteVideoElement.srcObject as MediaStream) || new MediaStream();
         stream.addTrack(e.track);
         this.remoteVideoElement.srcObject = stream;
       }
@@ -154,18 +145,20 @@ export class WebrtcService {
     await this.createPeerConnection();
 
     if (this.incomingOffer && this.peerConnection) {
-      await this.peerConnection.setRemoteDescription(new RTCSessionDescription(this.incomingOffer));
+      await this.peerConnection.setRemoteDescription(
+        new RTCSessionDescription(this.incomingOffer)
+      );
+
       const answer = await this.peerConnection.createAnswer();
       await this.peerConnection.setLocalDescription(answer);
       this.socket.emit('answer', answer, this.roomId);
 
       this.isPeerConnectionReady = true;
 
-      for (const c of this.pendingCandidates) {
-        await this.addIce(c);
-      }
+      for (const c of this.pendingCandidates) await this.addIce(c);
       this.pendingCandidates = [];
     }
+
     this.isIncomingCall = false;
   }
 
@@ -185,7 +178,7 @@ export class WebrtcService {
     try {
       await this.peerConnection?.addIceCandidate(candidate);
     } catch (err) {
-      console.error('Error adding ICE candidate', err);
+      console.error("Error adding ICE", err);
     }
   }
 

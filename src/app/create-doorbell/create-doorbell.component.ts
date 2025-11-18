@@ -7,9 +7,9 @@ import { ModalController } from '@ionic/angular';
 import { AddMembersComponent } from '../add-members/add-members.component';
 import { ModalConfirmDeleteComponent } from '../modals/modal-confirm-delete/modal-confirm-delete.component';
 import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
-import { RingRequest } from '../menu/menu.component';
-import { OtpService } from '../core/services/otp.service';
 import { Router } from '@angular/router';
+import { RingRequest } from '../core/interfaces/interface-ring';
+import { RingService } from '../core/services/ring.service';
 
 @Component({
   selector: 'app-create-doorbell',
@@ -20,10 +20,11 @@ import { Router } from '@angular/router';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CreateDoorbellComponent implements OnInit {
-  private otpService = inject(OtpService);
+  private ringService = inject(RingService);
   titulo = 'Casa';
   soloAudio = true;
   form: UntypedFormGroup;
+
   constructor(private modalCtrl: ModalController, private router: Router) { }
 
   ngOnInit() {
@@ -96,7 +97,7 @@ export class CreateDoorbellComponent implements OnInit {
       }
     };
 
-    this.otpService.createRing(payload).subscribe({
+    this.ringService.createRing(payload).subscribe({
       next: (response) => {
         this.router.navigate(['/menu']);
       },

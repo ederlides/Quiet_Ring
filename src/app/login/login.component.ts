@@ -4,10 +4,11 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { CountrySelectorComponent } from '../country-selector/country-selector.component';
-import { OtpRequest, OtpService } from '../core/services/otp.service';
+import { OtpService } from '../core/services/otp.service';
 import { ICountry } from '../core/interfaces/interface-country';
 
 import { ModalConfirmDeleteComponent } from '../modals/modal-confirm-delete/modal-confirm-delete.component';
+import { OtpRequest } from '../core/interfaces/otp-request';
 
 @Component({
   selector: 'app-login',

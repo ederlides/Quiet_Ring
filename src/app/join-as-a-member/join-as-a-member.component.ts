@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { OtpService } from '../core/services/otp.service';
-import { MemberRequest } from '../modals/modal-add-members/modal-add-members.component';
+import { MemberService } from '../core/services/member.service';
 
 @Component({
   selector: 'app-join-as-a-member',
@@ -21,7 +21,7 @@ export class JoinAsAMemberComponent implements OnInit {
   soloAudio = true;
   @Input() data?: any;
 
-  private otpService = inject(OtpService);
+  private memberService = inject(MemberService);
   code: string;
 
   constructor(private modalCtrl: ModalController, private router: Router) { }
@@ -48,7 +48,7 @@ export class JoinAsAMemberComponent implements OnInit {
       }
     };
 
-    this.otpService.addMember(payload).subscribe({
+    this.memberService.addMember(payload).subscribe({
       next: (response) => {
         this.router.navigate(['/menu']);
         // this.router.navigateByUrl('/menu', { replaceUrl: true });

@@ -9,6 +9,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
 import { FileOpener } from '@capacitor-community/file-opener';
 import { Share } from '@capacitor/share'; // 👈 importar Share API
+import { QrService } from '../core/services/qr.service';
 
 @Component({
   selector: 'app-order-qr-code',
@@ -20,7 +21,7 @@ import { Share } from '@capacitor/share'; // 👈 importar Share API
 })
 export class OrderQrCodeComponent implements OnInit {
 
-  private otpService = inject(OtpService);
+  private qrService = inject(QrService);
   img: any;
   private lastSavedPdfUri: string | null = null; // 👈 guardamos el último PDF generado
   activeIndex: number = -1;
@@ -64,7 +65,7 @@ export class OrderQrCodeComponent implements OnInit {
       }
     };
 
-    this.otpService.getQr(payload).subscribe({
+    this.qrService.getQr(payload).subscribe({
       next: async (response) => {
         await this.downloadPDF(response.processResponse);
       },
