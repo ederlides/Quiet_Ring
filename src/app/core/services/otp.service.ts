@@ -24,7 +24,8 @@ export interface OtpRequest {
 })
 export class OtpService {
 
-  private apiUrl = 'https://app.quietring.us:8443/api-quiet-ring';
+  // private apiUrl = 'http://app.quietring.us:8080/api-quiet-ring';
+  private apiUrl = 'http://144.202.16.218:8080/api-quiet-ring';
 
   //private apiUrl = 'http://localhost:8080';
   constructor(private http: HttpClient) { }

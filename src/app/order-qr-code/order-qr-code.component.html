@@ -11,12 +11,14 @@
 <ion-content class="ion-padding">
   <div style="width: 100%; height: 500px; position: relative;">
     <swiper-container
+      #swiperQrEl
+      id="mySwiperQr"
       pagination="true"
       navigation="false"
       loop="true"
       style="width: 100%; height: 100%"
-      id="mySwiper"
       style="--swiper-theme-color: #EA592D; width: 100%; height: 500px;"
+      (swiperslidechange)="onSlideChange()"
     >
       <swiper-slide>
         <img [src]="'assets/qr1.svg'" style="width: 320px;" />
@@ -46,21 +48,21 @@
     <ion-grid>
       <ion-row class="ion-justify-content-around ion-align-items-center">
         <ion-col size="3" class="action-button">
-          <ion-button (click)="getQr()" expand="block" shape="round" fill="outline">
+          <ion-button expand="block" shape="round" fill="outline" (click)="getQr(activeIndex)">
             <ion-icon slot="icon-only" name="download-outline"></ion-icon>
           </ion-button>
           <div class="action-label">Descargar</div>
         </ion-col>
 
         <ion-col size="3" class="action-button">
-          <ion-button expand="block" shape="round" fill="outline" (click)="printPDF()">
+          <ion-button expand="block" shape="round" fill="outline" (click)="printPDF(activeIndex)">
             <ion-icon slot="icon-only" name="print-outline"></ion-icon>
           </ion-button>
           <div class="action-label">Imprimir</div>
         </ion-col>
 
         <ion-col size="3" class="action-button">
-          <ion-button expand="block" shape="round" fill="outline" (click)="sharePDF()">
+          <ion-button expand="block" shape="round" fill="outline" (click)="sharePDF(activeIndex)">
             <ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
           </ion-button>
           <div class="action-label">Compartir</div>
