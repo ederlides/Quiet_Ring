@@ -6,8 +6,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { OtpService } from '../core/services/otp.service';
 // import { OtpService } from '../core/services/opt.service';
-import { MemberRequest } from '../modals/modal-add-members/modal-add-members.component';
 import { ModalConfirmDeleteComponent } from '../modals/modal-confirm-delete/modal-confirm-delete.component';
+import { MemberRequest } from '../core/interfaces/interface-member';
+import { MemberService } from '../core/services/member.service';
 
 @Component({
   selector: 'app-verify-members',
@@ -22,7 +23,7 @@ export class VerifyMembersComponent implements OnInit {
   titulo = 'Casa';
   soloAudio = true;
   @Input() data?: any;
-  private otpService = inject(OtpService);
+  private memberService = inject(MemberService);
   member: any;
   constructor(private modalCtrl: ModalController, private router: Router) { }
 
@@ -49,7 +50,7 @@ export class VerifyMembersComponent implements OnInit {
       }
     };
 
-    this.otpService.listMember(payload).subscribe({
+    this.memberService.listMember(payload).subscribe({
       next: (response) => {
         this.member = response?.processResponse;
       },
@@ -99,7 +100,7 @@ export class VerifyMembersComponent implements OnInit {
       }
     };
 
-    this.otpService.updateMember(payload).subscribe({
+    this.memberService.updateMember(payload).subscribe({
       next: (response) => {
         this.listMember();
       },

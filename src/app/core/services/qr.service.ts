@@ -7,17 +7,18 @@ import { OtpRequest } from '../interfaces/otp-request';
 @Injectable({
     providedIn: 'root'
 })
-export class OtpService {
+export class QrService {
 
     private apiUrl = environment.baseUrl;
     constructor(private http: HttpClient) { }
 
-    getOtp(payload: OtpRequest): Observable<any> {
-        return this.http.post(`${this.apiUrl}otp/generate`, payload);
+    getQr(payload: any): Observable<any> {
+        const url = this.apiUrl+"qr/";
+        const token = localStorage.getItem('token') || '';
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        });
+        return this.http.post<any>(url, payload, { headers });
     }
-
-    verifyOtp(payload: OtpRequest): Observable<any> {
-        return this.http.post(`${this.apiUrl}otp/validate`, payload);
-    }
-
 }

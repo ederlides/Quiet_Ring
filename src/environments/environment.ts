@@ -2,8 +2,11 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
-  production: false
+export const environment: any = {
+  production: false,
+  // baseUrl: '#{baseUrl}#',
+  baseUrl: 'http://144.202.16.218:8080/api-quiet-ring/',
+  // baseUrl: 'http://localhost:8080',
 };
 
 /*

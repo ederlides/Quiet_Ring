@@ -75,9 +75,9 @@
         <ion-toolbar>
           <ion-buttons>
             <ion-button size="small" (click)="setFilter('todas')" fill="outline">Todas</ion-button>
-            <ion-button size="small" (click)="setFilter('realizada')" fill="outline">Realizada</ion-button>
             <ion-button size="small" (click)="setFilter('contestada')" fill="outline">Contestada</ion-button>
             <ion-button size="small" (click)="setFilter('perdida')" fill="outline">Perdida</ion-button>
+            <ion-button size="small" (click)="setFilter('rechazada')" fill="outline">Rechazada</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -265,7 +265,7 @@
                 src="assets/icon/perfil.svg"
               ></ion-icon>
               <p class="ion-margin-start ion-margin-vertical">
-                Ederlines Gutierrez
+                {{indicative}} {{ cellPhoneNumber }}
               </p>
             </ion-item>
             <ion-item button lines="none" style="--background: transparent;">
@@ -315,7 +315,7 @@
         <img src="assets/banner-menu-left.svg" alt="banner menu" class="background-menu" style="width: calc(50% - 35px); transform: rotatey(180deg);"/>
       </div>
       <div class="container-buttons-menu">
-        <ion-tab-button  (click)="getRing()" tab="home" style="background: transparent;">
+        <ion-tab-button (click)="getRing()" tab="home" style="background: transparent;">
           <ion-icon src="assets/icon/qr-1.svg"></ion-icon>
           <ion-label>Timbres</ion-label>
         </ion-tab-button>

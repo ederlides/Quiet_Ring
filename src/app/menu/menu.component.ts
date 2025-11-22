@@ -9,26 +9,12 @@ import { ModalEditComponent } from '../modals/modal-edit/modal-edit.component';
 import { VerifyMembersComponent } from '../verify-members/verify-members.component';
 import { ToggleCustomEvent } from '@ionic/angular';
 import { WebrtcService } from '../core/services/webrtc.service';
-import { DeviceInfo, OtpService } from '../core/services/otp.service';
-import { ICall } from '../core/interfaces/interface-call';
+import { IDataCall } from '../core/interfaces/interface-call';
 import { ToastService } from '../core/services/toast.service';
+import { RingService } from '../core/services/ring.service';
+import { RingRequest, Ring } from '../core/interfaces/interface-ring';
 
 // Interfaz para el tipo de objeto de llamada
-interface Ring {
-  id?: string;
-  code?: string;
-  userId?: string;
-  imgts?: string;
-  name?: any;
-  video?: any;
-  status?: boolean;
-}
-
-export interface RingRequest {
-  idProcess: string;
-  ring: Ring;
-  deviceInfo: DeviceInfo;
-}
 
 @Component({
   selector: 'app-menu',
@@ -41,9 +27,11 @@ export interface RingRequest {
 export class MenuComponent implements OnInit {
   // Control de la vista de llamada
   showCallView: boolean = false;
-  selectedCall: ICall | null = null;
-  private otpService = inject(OtpService);
+  selectedCall: IDataCall | null = null;
+  private ringService = inject(RingService);
 
+  indicative = localStorage.getItem("indicative")
+  cellPhoneNumber = localStorage.getItem("cellPhoneNumber")
 
   items: Ring[];
 
@@ -56,11 +44,11 @@ export class MenuComponent implements OnInit {
     { id: 6, name: 'Editar Miembro', src: 'assets/icon/person-edit.svg', dir: '' },
   ]
 
-  calls: ICall[] = [
+  calls: IDataCall[] = [
     { id:1, name: 'Daniela Rodriguez', type: 'perdida', date: '3/12/2024', src: 'assets/avatar.svg' },
     { id:2, name: 'Juan Pérez', type: 'perdida', date: '2/12/2024', src: 'assets/avatar.svg' },
     { id:3, name: 'María López', type: 'contestada', date: '1/12/2024', src: 'assets/avatar.svg' },
-    { id:4, name: 'Carlos Gómez', type: 'realizada', date: '30/11/2024', src: 'assets/avatar.svg' },
+    { id:4, name: 'Carlos Gómez', type: 'rechazada', date: '30/11/2024', src: 'assets/avatar.svg' },
     { id:5, name: 'Ana Martínez', type: 'contestada', date: '29/11/2024', src: 'assets/avatar.svg' },
     { id:6, name: 'Pablo Torres', type: 'perdida', date: '28/11/2024', src: 'assets/avatar.svg' },
     { id:7, name: 'Laura Silva', type: 'contestada', date: '27/11/2024', src: 'assets/avatar.svg' },
@@ -72,7 +60,7 @@ export class MenuComponent implements OnInit {
     { id:14, name: 'Carla Ortiz', type: 'contestada', date: '21/11/2024', src: 'assets/avatar.svg' },
     { id:15, name: 'Fernando Ruiz', type: 'perdida', date: '20/11/2024', src: 'assets/avatar.svg' },
   ]
-  filteredCalls: ICall[] = [];
+  filteredCalls: IDataCall[] = [];
   activeFilter: string = 'todas'; // filtro inicial
 
   order = [
@@ -94,6 +82,7 @@ export class MenuComponent implements OnInit {
   devicePixelRatio: any;
   realWidth: any;
   realHeight: any;
+
   ngOnInit() {
     this.getRing();
     this.viewportWidth = window.innerWidth;
@@ -139,7 +128,7 @@ export class MenuComponent implements OnInit {
   }
 
   // Método para mostrar la pantalla de llamada con el contacto seleccionado
-  showCall(call: ICall) {
+  showCall(call: IDataCall) {
     console.log('Iniciando llamada con:', call.name);
     this.selectedCall = call;
     this.showCallView = true;
@@ -297,7 +286,7 @@ export class MenuComponent implements OnInit {
       }
     };
 
-    this.otpService.createRing(payload).subscribe({
+    this.ringService.createRing(payload).subscribe({
       next: (response) => {
         this.getRing();
       },
@@ -319,7 +308,7 @@ export class MenuComponent implements OnInit {
       }
     };
 
-    this.otpService.getRing(payload).subscribe({
+    this.ringService.getRing(payload).subscribe({
       next: (response) => {
         this.items = response.processResponse;
       },

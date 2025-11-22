@@ -1,13 +1,9 @@
 import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { DeviceInfo, OtpService } from 'src/app/core/services/otp.service';
-
-export interface MemberRequest {
-  idProcess: string;
-  idRing:string;
-  deviceInfo: DeviceInfo;
-}
+import { OtpService } from 'src/app/core/services/otp.service';
+import { MemberRequest } from 'src/app/core/interfaces/interface-member';
+import { MemberService } from 'src/app/core/services/member.service';
 
 @Component({
   standalone: true,
@@ -17,11 +13,10 @@ export interface MemberRequest {
   styleUrls: ['./modal-add-members.component.scss']
 })
 
-
 export class ModalAddMembersComponent {
   @Input() title: string = 'Editar';
   @Input() value?: any;
-  private otpService = inject(OtpService);
+  private memberService = inject(MemberService);
   code: string;
 
   constructor(private modalCtrl: ModalController) { }
@@ -49,7 +44,7 @@ export class ModalAddMembersComponent {
       }
     };
 
-    this.otpService.generateCode(payload).subscribe({
+    this.memberService.generateCode(payload).subscribe({
       next: (response) => {
         this.code = response?.processResponse;
       },
